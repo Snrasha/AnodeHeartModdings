@@ -71,17 +71,21 @@ namespace TextureReplacement.Patches
         static bool Prefix(ref Texture2D __result, Species id, GameCharacterAnimationType animation)
         {
             string text;
-            
+
+
             switch (animation)
             {
                 case GameCharacterAnimationType.Idle:
                     text = $"Monsters/Overworlds/{id}_Idle";
-                    __result = TextureReplacement.GetSprite(TextureReplacement.SpritesOverworldsIdle, text).texture;
+
+                    __result = TextureReplacement.GetTexture(TextureReplacement.SpritesOverworldsIdle, text);
+
                     return __result == null;
                     
                 case GameCharacterAnimationType.Walk:
                     text = $"Monsters/Overworlds/{id}_Walk";
-                    __result = TextureReplacement.GetSprite(TextureReplacement.SpritesOverworldsWalk, text).texture;
+
+                    __result = TextureReplacement.GetTexture(TextureReplacement.SpritesOverworldsWalk, text);
                     return __result == null;
                     
             }

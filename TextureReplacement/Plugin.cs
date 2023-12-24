@@ -7,13 +7,20 @@ namespace TextureReplacement
     public class Plugin : BaseUnityPlugin
     {
         Harmony harmony = new Harmony(PluginInfo.PLUGIN_GUID);
+
+        TextureReplacement textureReplacement;
+
         private void Awake()
         {
 
-            this.gameObject.AddComponent<TextureReplacement>();
+
+
+
             // Plugin startup logic
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+            textureReplacement = new TextureReplacement(Logger);
 
+            textureReplacement.LoadAllTextures();
 
             harmony.PatchAll();
         }

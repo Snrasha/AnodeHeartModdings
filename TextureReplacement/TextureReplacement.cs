@@ -3,11 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using BepInEx;
+using BepInEx.Logging;
 
 namespace TextureReplacement
 {
 
-    class TextureReplacement : MonoBehaviour
+    class TextureReplacement
     {
 
         public static Dictionary<string, Sprite> SpritesFronts;
@@ -20,11 +22,23 @@ namespace TextureReplacement
 
         public static Dictionary<string, Sprite> SpritesFrontsGlitch;
 
-        public static Dictionary<string, Sprite> SpritesOverworldsIdle;
-        public static Dictionary<string, Sprite> SpritesOverworldsWalk;
+        public static Dictionary<string, Texture2D> SpritesOverworldsIdle;
+        public static Dictionary<string, Texture2D> SpritesOverworldsWalk;
         public static Dictionary<string, Sprite> SpritesGrid;
-        public static Dictionary<GameCharacterAnimationType, Sprite> SpritesAnimationPlayer;
+        public static Dictionary<GameCharacterAnimationType, Texture2D> SpritesAnimationPlayer;
+        public static Dictionary<GameCharacterAnimationType, Texture2D> SpritesScooterAnimationPlayer;
 
+        private BepInEx.Logging.ManualLogSource _logger;
+        public static Texture2D GetTexture(Dictionary<string, Texture2D> dict, string text)
+        {
+            if (dict.ContainsKey(text))
+            {
+                //Sprite sprite = Sprite.Create(text,new Rect(0,0,text.width,text.height), standardPivot,16);
+                //  Sprite sprite = Sprite.Create(spriteb.texture, spriteb.rect, spriteb.pivot, 16);
+                return dict[text];
+            }
+            return null;
+        }
 
         public static Sprite GetSprite(Dictionary<string, Sprite> dict, string text)
         {
@@ -36,6 +50,10 @@ namespace TextureReplacement
                 return spriteb;
             }
             return null;
+        }
+        public TextureReplacement(BepInEx.Logging.ManualLogSource logger)
+        {
+            _logger = logger;
         }
 
 
@@ -49,14 +67,14 @@ namespace TextureReplacement
             SpritesAltIcons = new Dictionary<string, Sprite>();
             SpritesCharacterIcons = new Dictionary<string, Sprite>();  
             SpritesFrontsGlitch = new Dictionary<string, Sprite>();
-            SpritesOverworldsIdle = new Dictionary<string, Sprite>();
-            SpritesOverworldsWalk   = new Dictionary<string, Sprite>();
-            SpritesAnimationPlayer = new Dictionary<GameCharacterAnimationType, Sprite>();
+            SpritesOverworldsIdle = new Dictionary<string, Texture2D>();
+            SpritesOverworldsWalk   = new Dictionary<string, Texture2D>();
+            SpritesAnimationPlayer = new Dictionary<GameCharacterAnimationType, Texture2D>();
+            SpritesScooterAnimationPlayer = new Dictionary<GameCharacterAnimationType, Texture2D>();
 
 
 
-
-           string appdataPath = Application.dataPath+ "/../";
+            string appdataPath = Application.dataPath+ "/../";
             //string appdataPath = Application.persistentDataPath;
 
             appdataPath += "/ModsAssets";
@@ -115,40 +133,40 @@ namespace TextureReplacement
                         string end = split[split.Length - 1];
                         if ("Front".Equals(end))
                         {
-                            SpritesFronts.Add("Monsters/Fronts/" + merge, CreateSpriteFromAppData(file));
+                            SpritesFronts.Add("Monsters/Fronts/" + merge, CreateSpriteFromFile(file));
                         }
                         if ("AltFront".Equals(end))
                         {
-                            SpritesAltFronts.Add("Monsters/AltFronts/" + merge, CreateSpriteFromAppData(file));
+                            SpritesAltFronts.Add("Monsters/AltFronts/" + merge, CreateSpriteFromFile(file));
                         }
                         
                         if ("Icon".Equals(end))
                         {
-                            SpritesIcons.Add("Monsters/Icons/" + merge, CreateSpriteFromAppData(file));
+                            SpritesIcons.Add("Monsters/Icons/" + merge, CreateSpriteFromFile(file));
                         }
                         if ("AltIcon".Equals(end))
                         {
-                            SpritesAltIcons.Add("Monsters/AltIcons/" + merge, CreateSpriteFromAppData(file));
+                            SpritesAltIcons.Add("Monsters/AltIcons/" + merge, CreateSpriteFromFile(file));
                         }
                         if ("OverworldsIdle".Equals(end))
                         {
-                            SpritesOverworldsIdle.Add("Monsters/Overworlds/" + merge + "_Idle", CreateSpriteFromAppData(file));
+                            SpritesOverworldsIdle.Add("Monsters/Overworlds/" + merge + "_Idle", CreateTextureFromFile(file));
                         }
                         if ("OverworldsWalk".Equals(end))
                         {
-                            SpritesOverworldsWalk.Add("Monsters/Overworlds/" + merge + "_Walk", CreateSpriteFromAppData(file));
+                            SpritesOverworldsWalk.Add("Monsters/Overworlds/" + merge + "_Walk", CreateTextureFromFile(file));
                         }
                         if ("FrontsGlitch".Equals(end))
                         {
-                            SpritesFrontsGlitch.Add("Monsters/FrontsGlitch/" + merge, CreateSpriteFromAppData(file));
+                            SpritesFrontsGlitch.Add("Monsters/FrontsGlitch/" + merge, CreateSpriteFromFile(file));
                         }
                         if ("Grid".Equals(end))
                         {
-                            SpritesGrid.Add("Monsters/Grid/" + merge, CreateSpriteFromAppData(file));
+                            SpritesGrid.Add("Monsters/Grid/" + merge, CreateSpriteFromFile(file));
                         }
                         if ("CharacterIcon".Equals(end))
                         {
-                            SpritesCharacterIcons.Add("Characters/Icons/" + merge, CreateSpriteFromAppData(file));
+                            SpritesCharacterIcons.Add("Characters/Icons/" + merge, CreateSpriteFromFile(file));
                         }
                     }
                 }
@@ -157,88 +175,97 @@ namespace TextureReplacement
         void PlayerCase(string path)
         {
             string[] files = Directory.GetFiles(path);
+            //foreach (string file in files)
+            //{
+            //    string[] splut = file.Split('\\');
+            //    string splut2 = splut[splut.Length - 1];
+            //    string filename = splut2.Split('.')[0];
+            //    Debug.Log($"File {filename} !");
+            //}
+
             foreach (string file in files)
             {
+
+
                 string[] splut = file.Split('\\');
                 string splut2 = splut[splut.Length - 1];
+                string filename = splut2.Split('.')[0];
 
-                //   Log("TextureReplacement monsters files " + file);
-                string[] split = splut2.Split('.')[0].Split('_');
-                //   Log("TextureReplacement monsters files " + string.Join(",",split));
-                if (split.Length > 1)
+
+                //_logger.LogInfo($"Filename {filename} !");
+                //Debug.Log($"Filename {filename} !");
+                switch (filename)
                 {
-                    string merge = "";
-                    for (int i = 0; i < split.Length - 1; i++)
-                    {
-                        merge += split[i];
-                        if (i < split.Length - 2)
-                        {
-                            merge += "_";
-                        }
-                    }
+                    case "Player":
+                        SpritesCharacterIcons.Add("Characters/Icons/" + filename, CreateSpriteFromFile(file));
+                        break;
+                    case "Player_Blink":
+                        SpritesCharacterIcons.Add("Characters/Icons/" + filename, CreateSpriteFromFile(file));
+                        break;
+                    case "Player_Cry":
+                        SpritesCharacterIcons.Add("Characters/Icons/" + filename, CreateSpriteFromFile(file));
+                        break;
+                    case "Player_XD":
+                        SpritesCharacterIcons.Add("Characters/Icons/" + filename, CreateSpriteFromFile(file));
+                        break;
+                    //case "PlayerCursor":
+                    //    SpritesCharacterIcons.Add("Characters/Icons/" + filename, CreateSpriteFromFile(file));
+                    //    break;
 
-                    string end = split[split.Length - 1];
-                    switch (end)
-                    {
-                        case "Walk":
-                            SpritesAnimationPlayer.Add(GameCharacterAnimationType.Walk, CreateSpriteFromAppData(file));
-                            break;
-                        case "Idle":
-                            SpritesAnimationPlayer.Add(GameCharacterAnimationType.Idle, CreateSpriteFromAppData(file));
-                            break;
-                        case "Fall":
-                            SpritesAnimationPlayer.Add(GameCharacterAnimationType.Fall, CreateSpriteFromAppData(file));
-                            break;
-                        case "IdleClimb":
-                            SpritesAnimationPlayer.Add(GameCharacterAnimationType.IdleClimb, CreateSpriteFromAppData(file));
-                            break;
-                        case "Fish":
-                            SpritesAnimationPlayer.Add(GameCharacterAnimationType.Fish, CreateSpriteFromAppData(file));
-                            break;
-                        case "Climb":
-                            SpritesAnimationPlayer.Add(GameCharacterAnimationType.Climb, CreateSpriteFromAppData(file));
-                            break;
-                        case "Run":
-                            SpritesAnimationPlayer.Add(GameCharacterAnimationType.Run, CreateSpriteFromAppData(file));
-                            break;
-                        case "Shovel":
-                            SpritesAnimationPlayer.Add(GameCharacterAnimationType.Shovel, CreateSpriteFromAppData(file));
-                            break;
-                        case "Sleep":
-                            SpritesAnimationPlayer.Add(GameCharacterAnimationType.Sleep, CreateSpriteFromAppData(file));
-                            break;
-                        case "Wake":
-                            SpritesAnimationPlayer.Add(GameCharacterAnimationType.Custom, CreateSpriteFromAppData(file));
-                            break;
-                        case "Fainted":
-                            SpritesAnimationPlayer.Add(GameCharacterAnimationType.Fainted, CreateSpriteFromAppData(file));
-                            break;
-                        case "Drop":
-                            SpritesAnimationPlayer.Add(GameCharacterAnimationType.Drop, CreateSpriteFromAppData(file));
-                            break;
-                        case "Rise":
-                            SpritesAnimationPlayer.Add(GameCharacterAnimationType.Rise, CreateSpriteFromAppData(file));
-                            break;
-                    }
-                   
+                    case "Player_Walk":
+                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Walk, CreateTextureFromFile(file));
+                        break;
+                    case "Player_Idle":
+                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Idle, CreateTextureFromFile(file));
+                        break;
+                    case "Player_Fall":
+                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Fall, CreateTextureFromFile(file));
+                        break;
+                    case "Player_IdleClimb":
+                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.IdleClimb, CreateTextureFromFile(file));
+                        break;
+                    case "Player_Fish":
+                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Fish, CreateTextureFromFile(file));
+                        break;
+                    case "Player_Climb":
+                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Climb, CreateTextureFromFile(file));
+                        break;
+                    case "Player_Run":
+                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Run, CreateTextureFromFile(file));
+                        break;
+                    case "Player_Shovel":
+                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Shovel, CreateTextureFromFile(file));
+                        break;
+                    case "Player_Sleep":
+                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Sleep, CreateTextureFromFile(file));
+                        break;
+                    case "Player_Wake":
+                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Custom, CreateTextureFromFile(file));
+                        break;
+                    case "Player_Fainted":
+                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Fainted, CreateTextureFromFile(file));
+                        break;
+                    case "Player_Drop":
+                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Drop, CreateTextureFromFile(file));
+                        break;
+                    case "Player_Rise":
+                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Rise, CreateTextureFromFile(file));
+                        break;
+                    case "Player_Scooter":
+                        SpritesScooterAnimationPlayer.Add(GameCharacterAnimationType.Walk, CreateTextureFromFile(file));
+                        SpritesScooterAnimationPlayer.Add(GameCharacterAnimationType.Run, CreateTextureFromFile(file));
 
-                    if ("Icon".Equals(end))
-                    {
-                        SpritesCharacterIcons.Add("Characters/Icons/" + merge, CreateSpriteFromAppData(file));
-                    }
+                        break;
+                    case "Player_Scooter_Idle":
+                        SpritesScooterAnimationPlayer.Add(GameCharacterAnimationType.Idle, CreateTextureFromFile(file));
+                        break;
+
                 }
             }
         }
 
 
 
-        void Awake()
-        {
-
-            LoadAllTextures();
-
-
-        }
 
         public void CreateFile(string path, string to)
         {
@@ -257,7 +284,7 @@ namespace TextureReplacement
             {
             }
         }
-        public static Sprite CreateSpriteFromAppData(string path)
+        public static Texture2D CreateTextureFromFile(string path)
         {
 
             Texture2D tex = new Texture2D(1, 1);
@@ -281,13 +308,19 @@ namespace TextureReplacement
 
             // Log("TextureReplacement v tex " + tex.isReadable + " " + tex.width + " " + tex.height);
 
-          //  tex = tex.ToReadable();
+            //  tex = tex.ToReadable();
 
             tex.filterMode = FilterMode.Point;
             tex.anisoLevel = 0;
             tex.wrapMode = TextureWrapMode.Clamp;
 
             tex.Apply();
+            return tex;
+        }
+        public static Sprite CreateSpriteFromFile(string path)
+        {
+
+            Texture2D tex = CreateTextureFromFile(path);
             Vector2 standardPivot = new Vector2(tex.width / 2f, tex.height / 2f);
             //Sprite sprite = Sprite.Create(text,new Rect(0,0,text.width,text.height), standardPivot,16);
             Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), standardPivot, 16);
