@@ -11,6 +11,7 @@ https://github.com/BepInEx/BepInEx/releases
 
 # Install mod:
 - Download the .dll (ALWAYS FROM THE OFFICIAL SOURCE, here, always from the official discord of the game).
+- On this case: https://github.com/Snrasha/AnodeHeartModdings/releases/
 - Move the .dll in Anode.Heart\BepInEx\plugins\  folder.
 - Play
 
