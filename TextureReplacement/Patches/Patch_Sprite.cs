@@ -99,15 +99,31 @@ namespace TextureReplacement.Patches
         static bool Prefix(ref Texture2D __result, Species id)
         {
             string text = $"Monsters/Grid/{id}";
-            __result = TextureReplacement.GetSprite(TextureReplacement.SpritesGrid, text).texture;
+            Sprite grid = TextureReplacement.GetSprite(TextureReplacement.SpritesGrid, text);
+            if (grid != null)
+            {
+                __result= grid.texture;
+            }
             return __result == null;
         }
     }
 
 
-    //public static Sprite LoadCharacterIcon(string id, string suffix = "")
-    //{
-    //    suffix = ((suffix == "" || suffix == null) ? "" : ("_" + suffix));
-    //    return LoadAny("Characters/Icons/" + id + suffix, "Monsters/Icons/" + id + suffix);
-    //}
+    [HarmonyPatch(typeof(SpriteLoader), nameof(SpriteLoader.LoadCharacterIcon), new[] { typeof(string), typeof(string) })]
+    static class Patch_SpriteLoader_LoadCharacterIcon
+    {
+        [HarmonyPrefix]
+        static bool Prefix(ref Sprite __result, string id, string suffix = "")
+        {
+
+            __result = TextureReplacement.GetSprite(TextureReplacement.SpritesCharacterIcons, "Characters/Icons/" + id + suffix);
+            if (__result == null)
+            {
+                __result = TextureReplacement.GetSprite(TextureReplacement.SpritesCharacterIcons, "Monsters/Icons/" + id + suffix);
+
+            }
+
+            return __result == null;
+        }
+    }
 }
