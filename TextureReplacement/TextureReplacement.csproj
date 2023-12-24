@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ImportGroup>
+    <Import Project="GamePaths.xml" />
+  </ImportGroup>
+  <PropertyGroup>
+    <TargetFramework>net46</TargetFramework>
+    <AssemblyName>TextureReplacement</AssemblyName>
+    <Description>My first plugin</Description>
+    <Version>1.0.0</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Ignafir\Ignafir_AltFront.png" />
+    <None Remove="Assets\Ignafir\Ignafir_AltIcon.png" />
+    <None Remove="Assets\Ignafir\Ignafir_Front.png" />
+    <None Remove="Assets\Ignafir\Ignafir_Icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Ignafir\Ignafir_AltFront.png" />
+    <EmbeddedResource Include="Assets\Ignafir\Ignafir_AltIcon.png" />
+    <EmbeddedResource Include="Assets\Ignafir\Ignafir_Front.png" />
+    <EmbeddedResource Include="Assets\Ignafir\Ignafir_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(GamePath)$(ManagedFolder)Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>false</SpecificVersion>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.Core" Version="5.*" />
+    <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+    <PackageReference Include="UnityEngine.Modules" Version="2019.4.28" IncludeAssets="compile" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+  </ItemGroup>
+</Project>
