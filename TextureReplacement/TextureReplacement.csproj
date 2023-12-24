@@ -10,20 +10,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Assets\Ignafir\Ignafir_AltFront.png" />
-    <None Remove="Assets\Ignafir\Ignafir_AltIcon.png" />
-    <None Remove="Assets\Ignafir\Ignafir_Front.png" />
-    <None Remove="Assets\Ignafir\Ignafir_Icon.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Assets\Ignafir\Ignafir_AltFront.png" />
-    <EmbeddedResource Include="Assets\Ignafir\Ignafir_AltIcon.png" />
-    <EmbeddedResource Include="Assets\Ignafir\Ignafir_Front.png" />
-    <EmbeddedResource Include="Assets\Ignafir\Ignafir_Icon.png" />
-  </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(GamePath)$(ManagedFolder)Assembly-CSharp.dll</HintPath>

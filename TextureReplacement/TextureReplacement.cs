@@ -75,7 +75,9 @@ namespace TextureReplacement
             SpritesIcons = new Dictionary<string, Sprite>();
             SpritesAltFronts = new Dictionary<string, Sprite>();
             SpritesAltIcons = new Dictionary<string, Sprite>();
-            SpritesCharacterIcons = new Dictionary<string, Sprite>();  
+            SpritesCharacterIcons = new Dictionary<string, Sprite>();
+            SpritesGrid = new Dictionary<string, Sprite>();
+
             SpritesFrontsGlitch = new Dictionary<string, Sprite>();
             SpritesOverworldsIdle = new Dictionary<string, Texture2D>();
             SpritesOverworldsWalk   = new Dictionary<string, Texture2D>();
@@ -221,7 +223,9 @@ namespace TextureReplacement
                     case "PlayerCursor":
                         SpritesCharacterIcons.Add(filename, CreateSpriteFromFile(file));
                         break;
-
+                    case "PlayerOnAirboat":
+                        SpritesGrid.Add("PlayerOnAirboat", CreateSpriteFromFile(file));
+                        break;
                     case "Player_Walk":
                         SpritesAnimationPlayer.Add(GameCharacterAnimationType.Walk, CreateTextureFromFile(file));
                         break;
@@ -249,9 +253,6 @@ namespace TextureReplacement
                     case "Player_Sleep":
                         SpritesAnimationPlayer.Add(GameCharacterAnimationType.Sleep, CreateTextureFromFile(file));
                         break;
-                    case "Player_Wake":
-                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Custom, CreateTextureFromFile(file));
-                        break;
                     case "Player_Fainted":
                         SpritesAnimationPlayer.Add(GameCharacterAnimationType.Fainted, CreateTextureFromFile(file));
                         break;
@@ -261,9 +262,10 @@ namespace TextureReplacement
                     case "Player_Rise":
                         SpritesAnimationPlayer.Add(GameCharacterAnimationType.Rise, CreateTextureFromFile(file));
                         break;
+
+                        
                     case "Player_Scooter":
                         SpritesScooterAnimationPlayer.Add(GameCharacterAnimationType.Walk, CreateTextureFromFile(file));
-
                         break;
                     case "Player_Scooter_Idle":
                         SpritesScooterAnimationPlayer.Add(GameCharacterAnimationType.Idle, CreateTextureFromFile(file));
