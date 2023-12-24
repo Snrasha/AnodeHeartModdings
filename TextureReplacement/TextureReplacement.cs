@@ -158,11 +158,11 @@ namespace TextureReplacement
                         {
                             SpritesAltIcons.Add("Monsters/AltIcons/" + merge, CreateSpriteFromFile(file));
                         }
-                        if ("OverworldsIdle".Equals(end))
+                        if ("Idle".Equals(end))
                         {
                             SpritesOverworldsIdle.Add("Monsters/Overworlds/" + merge + "_Idle", CreateTextureFromFile(file));
                         }
-                        if ("OverworldsWalk".Equals(end))
+                        if ("Walk".Equals(end))
                         {
                             SpritesOverworldsWalk.Add("Monsters/Overworlds/" + merge + "_Walk", CreateTextureFromFile(file));
                         }
