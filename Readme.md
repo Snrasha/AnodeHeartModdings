@@ -15,8 +15,15 @@ https://github.com/BepInEx/BepInEx/releases
 - Move the .dll in Anode.Heart\BepInEx\plugins\  folder.
 - Play
 
+# Donwload sprites:
+- Go on the Official discord for search replacement.
+- You can also download on https://github.com/Snrasha/AnodeHeartModdings/releases/ the test Pack.
+- Unzip the content on the ModAssets
+
+
 # Texture Replacement
 This is a universal mod for replace sprite, you need to add yourself sprites.
+Sprites need to be on the ModAssets of the game folder.
 
 ## Monsters
 - Create a folder named from the Monster (sensitive case). Example: Ignafir

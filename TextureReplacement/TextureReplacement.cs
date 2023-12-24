@@ -39,7 +39,17 @@ namespace TextureReplacement
             }
             return null;
         }
-
+        public static Sprite GetSprite(Dictionary<GameCharacterAnimationType, Sprite> dict, GameCharacterAnimationType type)
+        {
+            if (dict.ContainsKey(type))
+            {
+                Sprite spriteb = dict[type];
+                //Sprite sprite = Sprite.Create(text,new Rect(0,0,text.width,text.height), standardPivot,16);
+                //  Sprite sprite = Sprite.Create(spriteb.texture, spriteb.rect, spriteb.pivot, 16);
+                return spriteb;
+            }
+            return null;
+        }
         public static Sprite GetSprite(Dictionary<string, Sprite> dict, string text)
         {
             if (dict.ContainsKey(text))
@@ -92,11 +102,11 @@ namespace TextureReplacement
                 Directory.CreateDirectory(appdataPathMonsters);
                 Directory.CreateDirectory(appdataPathPlayer);
 
-                Directory.CreateDirectory(appdataPathMonsters + "/Ignafir");
-                CreateFile("Ignafir.Ignafir_Front.png", appdataPathMonsters + "/Ignafir/Ignafir_Front.png");
-                CreateFile("Ignafir.Ignafir_Icon.png", appdataPathMonsters + "/Ignafir/Ignafir_Icon.png");
-                CreateFile("Ignafir.Ignafir_AltFront.png", appdataPathMonsters + "/Ignafir/Ignafir_AltFront.png");
-                CreateFile("Ignafir.Ignafir_AltIcon.png", appdataPathMonsters + "/Ignafir/Ignafir_AltIcon.png");
+                //Directory.CreateDirectory(appdataPathMonsters + "/Ignafir");
+                //CreateFile("Ignafir.Ignafir_Front.png", appdataPathMonsters + "/Ignafir/Ignafir_Front.png");
+                //CreateFile("Ignafir.Ignafir_Icon.png", appdataPathMonsters + "/Ignafir/Ignafir_Icon.png");
+                //CreateFile("Ignafir.Ignafir_AltFront.png", appdataPathMonsters + "/Ignafir/Ignafir_AltFront.png");
+                //CreateFile("Ignafir.Ignafir_AltIcon.png", appdataPathMonsters + "/Ignafir/Ignafir_AltIcon.png");
             }
 
             string[] monsters = Directory.GetDirectories(appdataPathMonsters);
@@ -164,10 +174,10 @@ namespace TextureReplacement
                         {
                             SpritesGrid.Add("Monsters/Grid/" + merge, CreateSpriteFromFile(file));
                         }
-                        if ("CharacterIcon".Equals(end))
-                        {
-                            SpritesCharacterIcons.Add("Characters/Icons/" + merge, CreateSpriteFromFile(file));
-                        }
+                        //if ("CharacterIcon".Equals(end))
+                        //{
+                        //    SpritesCharacterIcons.Add("Characters/Icons/" + merge, CreateSpriteFromFile(file));
+                        //}
                     }
                 }
             }
@@ -208,9 +218,9 @@ namespace TextureReplacement
                     case "Player_XD":
                         SpritesCharacterIcons.Add("Characters/Icons/" + filename, CreateSpriteFromFile(file));
                         break;
-                    //case "PlayerCursor":
-                    //    SpritesCharacterIcons.Add("Characters/Icons/" + filename, CreateSpriteFromFile(file));
-                    //    break;
+                    case "PlayerCursor":
+                        SpritesCharacterIcons.Add(filename, CreateSpriteFromFile(file));
+                        break;
 
                     case "Player_Walk":
                         SpritesAnimationPlayer.Add(GameCharacterAnimationType.Walk, CreateTextureFromFile(file));
@@ -253,7 +263,6 @@ namespace TextureReplacement
                         break;
                     case "Player_Scooter":
                         SpritesScooterAnimationPlayer.Add(GameCharacterAnimationType.Walk, CreateTextureFromFile(file));
-                        SpritesScooterAnimationPlayer.Add(GameCharacterAnimationType.Run, CreateTextureFromFile(file));
 
                         break;
                     case "Player_Scooter_Idle":

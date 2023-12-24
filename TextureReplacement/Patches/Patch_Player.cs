@@ -94,10 +94,30 @@ namespace TextureReplacement.Patches
 
     //        }
     //    }
+    ////}
+    //[HarmonyPatch(typeof(SpriteLoader), nameof(SpriteLoader.LoadSprite), new[] { typeof(string) })]
+    //static class Patch_SpriteLoader_LoadSprite
+    //{
+    //    [HarmonyPrefix]
+    //    static bool Prefix(ref Sprite __result, string path)
+    //    {
+    //        if (path.Contains("Cursor"))
+    //        {
+    //            Debug.Log("Patch_SpriteLoader_LoadSprite " + path);
+    //        }
+    //        //if (path.EndsWith("Player_Scooter"))
+    //        //{
+    //        //    __result = TextureReplacement.GetSprite(TextureReplacement.SpritesScooterAnimationPlayer, GameCharacterAnimationType.Walk);
+    //        //}
+    //        //else if (path.EndsWith("Player_Scooter_Idle"))
+    //        //{
+    //        //    __result = TextureReplacement.GetSprite(TextureReplacement.SpritesScooterAnimationPlayer, GameCharacterAnimationType.Idle);
+    //        //}
+    //        return __result == null;
+    //    }
     //}
 
-
-        [HarmonyPatch(typeof(GameCharacterAnimator), nameof(GameCharacterAnimator.Load))]
+    [HarmonyPatch(typeof(GameCharacterAnimator), nameof(GameCharacterAnimator.Load))]
     static class Patch_GameCharacterAnimator_Load
     {
         static Texture2D GetTexture(GameCharacterAnimation gameCharacterAnimation)
@@ -110,7 +130,16 @@ namespace TextureReplacement.Patches
             }
             return null;
         }
+        static Texture2D GetScooterTexture(GameCharacterAnimation gameCharacterAnimation)
+        {
 
+
+            if (TextureReplacement.SpritesScooterAnimationPlayer.ContainsKey(gameCharacterAnimation.Type))
+            {
+                return TextureReplacement.SpritesScooterAnimationPlayer[gameCharacterAnimation.Type];
+            }
+            return null;
+        }
 
         [HarmonyPostfix]
         static void Postfix(GameCharacterAnimator __instance)
@@ -125,7 +154,18 @@ namespace TextureReplacement.Patches
                 foreach (GameCharacterAnimation gameCharacterAnimation in array)
                 {
                     Debug.Log("Player " + gameCharacterAnimation.Type);
-                    Texture2D texture2D= GetTexture(gameCharacterAnimation);
+
+                    Texture2D texture2D;
+
+                    if (array.Length == 2)
+                    {
+                        texture2D = GetScooterTexture(gameCharacterAnimation);
+
+                    }
+                    else
+                    {
+                        texture2D = GetTexture(gameCharacterAnimation);
+                    }
                     if (texture2D == null)
                     {
                         continue;
