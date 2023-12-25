@@ -4,6 +4,7 @@ using System.Security.Policy;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 
 namespace TextureReplacement.Patches
 {
@@ -117,7 +118,21 @@ namespace TextureReplacement.Patches
     //    }
     //}
 
-    [HarmonyPatch(typeof(GameCharacterAnimator), nameof(GameCharacterAnimator.Load))]
+    //[HarmonyPatch(typeof(GameCharacterAnimator), nameof(GameCharacterAnimator.SetAnimation), new[] { typeof(GameCharacterAnimationType), typeof(bool) })]
+    //static class Patch_GameCharacterAnimator_SetAnimation
+    //{
+    //    [HarmonyPostfix]
+    //    static void Postfix(GameCharacterAnimator __instance, GameCharacterAnimationType type, bool lockIdle = false)
+    //    {
+    //        Debug.Log("Patch_GameCharacterAnimator_SetAnimation " + type+" "+ lockIdle);
+
+
+    //    }
+    //}
+
+        // 
+
+        [HarmonyPatch(typeof(GameCharacterAnimator), nameof(GameCharacterAnimator.Load))]
     static class Patch_GameCharacterAnimator_Load
     {
         static Texture2D GetTexture(GameCharacterAnimation gameCharacterAnimation)
@@ -149,11 +164,12 @@ namespace TextureReplacement.Patches
 
 
                 GameCharacterAnimation[] array = __instance.animations;
-
-              //  Debug.Log("Patch_GameCharacterAnimator_Load " + array.Length);
+//
+             //   Debug.Log("Patch_GameCharacterAnimator_Load " + array.Length);
                 foreach (GameCharacterAnimation gameCharacterAnimation in array)
                 {
-                 //   Debug.Log("Player " + gameCharacterAnimation.Type);
+              //      Debug.Log("Player " + gameCharacterAnimation.Type);
+
 
                     Texture2D texture2D;
 
@@ -170,7 +186,7 @@ namespace TextureReplacement.Patches
                     {
                         continue;
                     }
-
+                    
                     gameCharacterAnimation.Texture = texture2D;
 
 
@@ -198,6 +214,7 @@ namespace TextureReplacement.Patches
                         }
                     }
                 }
+                
 
 
 

@@ -27,6 +27,8 @@ namespace TextureReplacement
         public static Dictionary<string, Sprite> SpritesGrid;
         public static Dictionary<GameCharacterAnimationType, Texture2D> SpritesAnimationPlayer;
         public static Dictionary<GameCharacterAnimationType, Texture2D> SpritesScooterAnimationPlayer;
+        public static Dictionary<GameCharacterAnimationType, Texture2D> SpritesFlatlandAnimationPlayer;
+        public static Dictionary<GameCharacterAnimationType, Texture2D> SpritesLowResAnimationPlayer;
 
         private BepInEx.Logging.ManualLogSource _logger;
         public static Texture2D GetTexture(Dictionary<string, Texture2D> dict, string text)
@@ -83,6 +85,8 @@ namespace TextureReplacement
             SpritesOverworldsWalk   = new Dictionary<string, Texture2D>();
             SpritesAnimationPlayer = new Dictionary<GameCharacterAnimationType, Texture2D>();
             SpritesScooterAnimationPlayer = new Dictionary<GameCharacterAnimationType, Texture2D>();
+            SpritesFlatlandAnimationPlayer = new Dictionary<GameCharacterAnimationType, Texture2D>();
+            SpritesLowResAnimationPlayer = new Dictionary<GameCharacterAnimationType, Texture2D>();
 
 
 
@@ -126,9 +130,14 @@ namespace TextureReplacement
                 {
                     string[] splut = file.Split('\\');
                     string splut2 = splut[splut.Length - 1];
+                    string[] split2 = splut2.Split('.');
+                    if (!split2[split2.Length - 1].Equals("png"))
+                    {
+                        continue;
+                    }
 
                     //   Log("TextureReplacement monsters files " + file);
-                    string[] split = splut2.Split('.')[0].Split('_');
+                    string[] split = split2[0].Split('_');
                     //   Log("TextureReplacement monsters files " + string.Join(",",split));
                     if (split.Length > 1)
                     {
@@ -262,8 +271,22 @@ namespace TextureReplacement
                     case "Player_Rise":
                         SpritesAnimationPlayer.Add(GameCharacterAnimationType.Rise, CreateTextureFromFile(file));
                         break;
+                    case "Player_Flatland_Idle":
+                        SpritesFlatlandAnimationPlayer.Add(GameCharacterAnimationType.Idle, CreateTextureFromFile(file));
+                        break;
+                    case "Player_Flatland_Run":
+                        SpritesFlatlandAnimationPlayer.Add(GameCharacterAnimationType.Walk, CreateTextureFromFile(file));
+                        SpritesFlatlandAnimationPlayer.Add(GameCharacterAnimationType.Run, CreateTextureFromFile(file));
+                        break;
 
-                        
+                    case "Player_Lowres_Idle":
+                        SpritesLowResAnimationPlayer.Add(GameCharacterAnimationType.Idle, CreateTextureFromFile(file));
+                        break;
+                    case "Player_Lowres_Run":
+                        SpritesLowResAnimationPlayer.Add(GameCharacterAnimationType.Walk, CreateTextureFromFile(file));
+                        SpritesLowResAnimationPlayer.Add(GameCharacterAnimationType.Run, CreateTextureFromFile(file));
+                        break; 
+
                     case "Player_Scooter":
                         SpritesScooterAnimationPlayer.Add(GameCharacterAnimationType.Walk, CreateTextureFromFile(file));
                         break;

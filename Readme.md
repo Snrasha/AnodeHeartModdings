@@ -54,5 +54,6 @@ Sprites need to be on the ModAssets of the game folder.
 - Player_Fall.png for the Fall animation (64x96)
 - Player_Scooter.png for the Scooter animation (32x96)
 - Player_ScooterIdle.png for the idle Scooter animation (16x96)
-- Player_Sleep.png for the Scooter animation (16x96)
-- Player_Wake.png for the Scooter animation (96x96)
+- Player_Sleep.png for the Sleep animation (16x96)
+- Player_Rise.png for the Rise animation (96x96)
+- PlayerOnAirboat.png for the AirBoat animation (96x96)
