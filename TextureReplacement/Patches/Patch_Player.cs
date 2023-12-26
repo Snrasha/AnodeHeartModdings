@@ -139,22 +139,13 @@ namespace TextureReplacement.Patches
         {
 
 
-            if (TextureReplacement.SpritesAnimationPlayer.ContainsKey(gameCharacterAnimation.Type))
+            if (TextureReplacement.SpritesAnimationPlayer.ContainsKey(gameCharacterAnimation.Texture.name))
             {
-                return TextureReplacement.SpritesAnimationPlayer[gameCharacterAnimation.Type];
+                return TextureReplacement.SpritesAnimationPlayer[gameCharacterAnimation.Texture.name];
             }
             return null;
         }
-        static Texture2D GetScooterTexture(GameCharacterAnimation gameCharacterAnimation)
-        {
 
-
-            if (TextureReplacement.SpritesScooterAnimationPlayer.ContainsKey(gameCharacterAnimation.Type))
-            {
-                return TextureReplacement.SpritesScooterAnimationPlayer[gameCharacterAnimation.Type];
-            }
-            return null;
-        }
 
         [HarmonyPostfix]
         static void Postfix(GameCharacterAnimator __instance)
@@ -165,23 +156,17 @@ namespace TextureReplacement.Patches
 
                 GameCharacterAnimation[] array = __instance.animations;
 //
-             //   Debug.Log("Patch_GameCharacterAnimator_Load " + array.Length);
+               // Debug.Log("Patch_GameCharacterAnimator_Load " + array.Length);
                 foreach (GameCharacterAnimation gameCharacterAnimation in array)
                 {
-              //      Debug.Log("Player " + gameCharacterAnimation.Type);
+                   // Debug.Log("Player " + gameCharacterAnimation.Type+" "+ gameCharacterAnimation.Texture.name);
 
 
                     Texture2D texture2D;
 
-                    if (array.Length == 2)
-                    {
-                        texture2D = GetScooterTexture(gameCharacterAnimation);
-
-                    }
-                    else
-                    {
-                        texture2D = GetTexture(gameCharacterAnimation);
-                    }
+                    
+                    texture2D = GetTexture(gameCharacterAnimation);
+                    
                     if (texture2D == null)
                     {
                         continue;

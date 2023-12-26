@@ -25,10 +25,10 @@ namespace TextureReplacement
         public static Dictionary<string, Texture2D> SpritesOverworldsIdle;
         public static Dictionary<string, Texture2D> SpritesOverworldsWalk;
         public static Dictionary<string, Sprite> SpritesGrid;
-        public static Dictionary<GameCharacterAnimationType, Texture2D> SpritesAnimationPlayer;
-        public static Dictionary<GameCharacterAnimationType, Texture2D> SpritesScooterAnimationPlayer;
-        public static Dictionary<GameCharacterAnimationType, Texture2D> SpritesFlatlandAnimationPlayer;
-        public static Dictionary<GameCharacterAnimationType, Texture2D> SpritesLowResAnimationPlayer;
+        public static Dictionary<string, Texture2D> SpritesAnimationPlayer;
+     //   public static Dictionary<GameCharacterAnimationType, Texture2D> SpritesScooterAnimationPlayer;
+    //    public static Dictionary<GameCharacterAnimationType, Texture2D> SpritesFlatlandAnimationPlayer;
+   //     public static Dictionary<GameCharacterAnimationType, Texture2D> SpritesLowResAnimationPlayer;
 
         private BepInEx.Logging.ManualLogSource _logger;
         public static Texture2D GetTexture(Dictionary<string, Texture2D> dict, string text)
@@ -83,10 +83,12 @@ namespace TextureReplacement
             SpritesFrontsGlitch = new Dictionary<string, Sprite>();
             SpritesOverworldsIdle = new Dictionary<string, Texture2D>();
             SpritesOverworldsWalk   = new Dictionary<string, Texture2D>();
-            SpritesAnimationPlayer = new Dictionary<GameCharacterAnimationType, Texture2D>();
-            SpritesScooterAnimationPlayer = new Dictionary<GameCharacterAnimationType, Texture2D>();
-            SpritesFlatlandAnimationPlayer = new Dictionary<GameCharacterAnimationType, Texture2D>();
-            SpritesLowResAnimationPlayer = new Dictionary<GameCharacterAnimationType, Texture2D>();
+        //    SpritesAnimationPlayer = new Dictionary<GameCharacterAnimationType, Texture2D>();
+            SpritesAnimationPlayer = new Dictionary<string, Texture2D>();
+
+            //SpritesScooterAnimationPlayer = new Dictionary<GameCharacterAnimationType, Texture2D>();
+            //SpritesFlatlandAnimationPlayer = new Dictionary<GameCharacterAnimationType, Texture2D>();
+            //SpritesLowResAnimationPlayer = new Dictionary<GameCharacterAnimationType, Texture2D>();
 
 
 
@@ -171,11 +173,11 @@ namespace TextureReplacement
                         }
                         if ("Idle".Equals(end))
                         {
-                            SpritesOverworldsIdle.Add("Monsters/Overworlds/" + merge + "_Idle", CreateTextureFromFile(file));
+                            SpritesOverworldsIdle.Add("Monsters/Overworlds/" + merge + "_Idle", CreateTextureFromFile(file, merge));
                         }
                         if ("Walk".Equals(end))
                         {
-                            SpritesOverworldsWalk.Add("Monsters/Overworlds/" + merge + "_Walk", CreateTextureFromFile(file));
+                            SpritesOverworldsWalk.Add("Monsters/Overworlds/" + merge + "_Walk", CreateTextureFromFile(file, merge));
                         }
                         if ("FrontsGlitch".Equals(end))
                         {
@@ -236,63 +238,30 @@ namespace TextureReplacement
                         SpritesGrid.Add("PlayerOnAirboat", CreateSpriteFromFile(file));
                         break;
                     case "Player_Walk":
-                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Walk, CreateTextureFromFile(file));
-                        break;
                     case "Player_Idle":
-                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Idle, CreateTextureFromFile(file));
-                        break;
                     case "Player_Fall":
-                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Fall, CreateTextureFromFile(file));
-                        break;
                     case "Player_IdleClimb":
-                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.IdleClimb, CreateTextureFromFile(file));
-                        break;
                     case "Player_Fish":
-                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Fish, CreateTextureFromFile(file));
-                        break;
                     case "Player_Climb":
-                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Climb, CreateTextureFromFile(file));
-                        break;
                     case "Player_Run":
-                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Run, CreateTextureFromFile(file));
-                        break;
                     case "Player_Shovel":
-                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Shovel, CreateTextureFromFile(file));
-                        break;
                     case "Player_Sleep":
-                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Sleep, CreateTextureFromFile(file));
-                        break;
                     case "Player_Fainted":
-                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Fainted, CreateTextureFromFile(file));
-                        break;
                     case "Player_Drop":
-                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Drop, CreateTextureFromFile(file));
+                    case "Player_Flatland_Idle":
+                    case "Player_Flatland_Run":
+                    case "Player_Lowres_Idle":
+                    case "Player_Lowres_Run":
+                    case "Player_Scooter":
+                    case "Player_Scooter_Idle":
+                        SpritesAnimationPlayer.Add(filename, CreateTextureFromFile(file, filename));
                         break;
                     case "Player_Rise":
-                        SpritesAnimationPlayer.Add(GameCharacterAnimationType.Rise, CreateTextureFromFile(file));
-                        break;
-                    case "Player_Flatland_Idle":
-                        SpritesFlatlandAnimationPlayer.Add(GameCharacterAnimationType.Idle, CreateTextureFromFile(file));
-                        break;
-                    case "Player_Flatland_Run":
-                        SpritesFlatlandAnimationPlayer.Add(GameCharacterAnimationType.Walk, CreateTextureFromFile(file));
-                        SpritesFlatlandAnimationPlayer.Add(GameCharacterAnimationType.Run, CreateTextureFromFile(file));
+                        SpritesAnimationPlayer.Add(filename, CreateTextureFromFile(file, filename));
+                        SpritesAnimationPlayer.Add("Player_Wake", CreateTextureFromFile(file, "Player_Wake"));
+
                         break;
 
-                    case "Player_Lowres_Idle":
-                        SpritesLowResAnimationPlayer.Add(GameCharacterAnimationType.Idle, CreateTextureFromFile(file));
-                        break;
-                    case "Player_Lowres_Run":
-                        SpritesLowResAnimationPlayer.Add(GameCharacterAnimationType.Walk, CreateTextureFromFile(file));
-                        SpritesLowResAnimationPlayer.Add(GameCharacterAnimationType.Run, CreateTextureFromFile(file));
-                        break; 
-
-                    case "Player_Scooter":
-                        SpritesScooterAnimationPlayer.Add(GameCharacterAnimationType.Walk, CreateTextureFromFile(file));
-                        break;
-                    case "Player_Scooter_Idle":
-                        SpritesScooterAnimationPlayer.Add(GameCharacterAnimationType.Idle, CreateTextureFromFile(file));
-                        break;
 
                 }
             }
@@ -318,7 +287,7 @@ namespace TextureReplacement
             {
             }
         }
-        public static Texture2D CreateTextureFromFile(string path)
+        public static Texture2D CreateTextureFromFile(string path,string filename)
         {
 
             Texture2D tex = new Texture2D(1, 1);
@@ -347,14 +316,14 @@ namespace TextureReplacement
             tex.filterMode = FilterMode.Point;
             tex.anisoLevel = 0;
             tex.wrapMode = TextureWrapMode.Clamp;
-
+            tex.name = filename;
             tex.Apply();
             return tex;
         }
         public static Sprite CreateSpriteFromFile(string path)
         {
 
-            Texture2D tex = CreateTextureFromFile(path);
+            Texture2D tex = CreateTextureFromFile(path,path);
             Vector2 standardPivot = new Vector2(tex.width / 2f, tex.height / 2f);
             //Sprite sprite = Sprite.Create(text,new Rect(0,0,text.width,text.height), standardPivot,16);
             Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), standardPivot, 16);
