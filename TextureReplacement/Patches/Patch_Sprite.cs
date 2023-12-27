@@ -116,10 +116,11 @@ namespace TextureReplacement.Patches
         static bool Prefix(ref Sprite __result, string id, string suffix = "")
         {
 
-            __result = TextureReplacement.GetSprite(TextureReplacement.SpritesCharacterIcons, "Characters/Icons/" + id + suffix);
+          //  Debug.Log("Patch_SpriteLoader_LoadCharacterIcon |" + id + "|" + suffix);
+            __result = TextureReplacement.GetSprite(TextureReplacement.SpritesCharacterIcons, "Characters/Icons/" + id+"_" + suffix);
             if (__result == null)
             {
-                __result = TextureReplacement.GetSprite(TextureReplacement.SpritesCharacterIcons, "Monsters/Icons/" + id + suffix);
+                __result = TextureReplacement.GetSprite(TextureReplacement.SpritesCharacterIcons, "Monsters/Icons/" + id + "_" + suffix);
 
             }
 

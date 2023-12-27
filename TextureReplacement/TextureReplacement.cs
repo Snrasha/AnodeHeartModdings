@@ -256,8 +256,9 @@ namespace TextureReplacement
                     case "Player_Scooter_Idle":
                         SpritesAnimationPlayer.Add(filename, CreateTextureFromFile(file, filename));
                         break;
+                    case "Player_Wake":
                     case "Player_Rise":
-                        SpritesAnimationPlayer.Add(filename, CreateTextureFromFile(file, filename));
+                        SpritesAnimationPlayer.Add("Player_Rise", CreateTextureFromFile(file, "Player_Rise"));
                         SpritesAnimationPlayer.Add("Player_Wake", CreateTextureFromFile(file, "Player_Wake"));
 
                         break;
