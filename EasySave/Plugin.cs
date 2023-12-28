@@ -39,12 +39,27 @@ namespace EasySave
             if (!currentlyLoading && !currentlySaving) {
                 if (Input.GetKey(KeyCode.F4))
                 {
+                    BattleDirector director = UnityEngine.Object.FindObjectOfType<BattleDirector>();
+
+
+                    if (director==null || director.IsBattling)
+                    {
+                        return;
+                    }
+
                     Debug.Log("F4 input");
                     guiText.Call("Save Menu");
                     //QuickSave
                     StartCoroutine(ShowSavingMenu());
                 }
                 if (Input.GetKey(KeyCode.F5)) {
+                    //   GameState.Instance().Data.
+                    BattleDirector director = UnityEngine.Object.FindObjectOfType<BattleDirector>();
+
+                    if (director == null || director.IsBattling)
+                    {
+                        return;
+                    }
                     Debug.Log("F5 input");
                     currentlySaving = true;
                     //QuickSave
