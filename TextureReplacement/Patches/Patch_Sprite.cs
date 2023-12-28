@@ -115,12 +115,18 @@ namespace TextureReplacement.Patches
         [HarmonyPrefix]
         static bool Prefix(ref Sprite __result, string id, string suffix = "")
         {
+            string text = id;
+            if(suffix!= null && suffix.Length > 0)
+            {
+                text += "_" + suffix;
+            }
 
           //  Debug.Log("Patch_SpriteLoader_LoadCharacterIcon |" + id + "|" + suffix);
-            __result = TextureReplacement.GetSprite(TextureReplacement.SpritesCharacterIcons, "Characters/Icons/" + id+"_" + suffix);
+
+            __result = TextureReplacement.GetSprite(TextureReplacement.SpritesCharacterIcons, "Characters/Icons/" + text);
             if (__result == null)
             {
-                __result = TextureReplacement.GetSprite(TextureReplacement.SpritesCharacterIcons, "Monsters/Icons/" + id + "_" + suffix);
+                __result = TextureReplacement.GetSprite(TextureReplacement.SpritesCharacterIcons, "Monsters/Icons/" + text);
 
             }
 

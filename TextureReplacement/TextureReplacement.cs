@@ -16,9 +16,11 @@ namespace TextureReplacement
         public static Dictionary<string, Sprite> SpritesAltFronts;
 
         public static Dictionary<string, Sprite> SpritesIcons;
+        public static Dictionary<string, Sprite> SpritesAltIcons;
         public static Dictionary<string, Sprite> SpritesCharacterIcons;
 
-        public static Dictionary<string, Sprite> SpritesAltIcons;
+        public static Sprite ModIcon;
+
 
         public static Dictionary<string, Sprite> SpritesFrontsGlitch;
 
@@ -73,6 +75,8 @@ namespace TextureReplacement
 
         public void LoadAllTextures()
         {
+            ModIcon = CreateSprite("Icon.png");
+
             SpritesFronts = new Dictionary<string, Sprite>();
             SpritesIcons = new Dictionary<string, Sprite>();
             SpritesAltFronts = new Dictionary<string, Sprite>();
@@ -250,6 +254,7 @@ namespace TextureReplacement
                     case "Player_Drop":
                     case "Player_Flatland_Idle":
                     case "Player_Flatland_Run":
+                    //  case "PlayerShadow":
                     case "Player_Lowres_Idle":
                     case "Player_Lowres_Run":
                     case "Player_Scooter":
@@ -258,8 +263,10 @@ namespace TextureReplacement
                         break;
                     case "Player_Wake":
                     case "Player_Rise":
-                        SpritesAnimationPlayer.Add("Player_Rise", CreateTextureFromFile(file, "Player_Rise"));
-                        SpritesAnimationPlayer.Add("Player_Wake", CreateTextureFromFile(file, "Player_Wake"));
+                        if (!SpritesAnimationPlayer.ContainsKey("Player_Rise")){
+                            SpritesAnimationPlayer.Add("Player_Rise", CreateTextureFromFile(file, "Player_Rise"));
+                            SpritesAnimationPlayer.Add("Player_Wake", CreateTextureFromFile(file, "Player_Wake"));
+                        }
 
                         break;
 
@@ -333,40 +340,40 @@ namespace TextureReplacement
         }
 
 
-        //public static Texture2D CreateTexture(string path)
-        //{
+        public static Sprite CreateSprite(string path)
+        {
 
-        //    Texture2D tex = new Texture2D(1, 1);
-        //    try
-        //    {
-        //        var assembly = Assembly.GetExecutingAssembly();
-        //        using (Stream stream = assembly.GetManifestResourceStream("TextureReplacement.Assets." + path))
-        //        {
-        //            byte[] bytes = new byte[stream.Length];
+            Texture2D tex = new Texture2D(1, 1);
+            try
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                using (Stream stream = assembly.GetManifestResourceStream("TextureReplacement.Assets." + path))
+                {
+                    byte[] bytes = new byte[stream.Length];
 
-        //            stream.Read(bytes, 0, bytes.Length);
-        //            tex.filterMode = FilterMode.Point;  // Thought maybe this would help 
-        //            tex.LoadImage(bytes);
+                    stream.Read(bytes, 0, bytes.Length);
+                    tex.filterMode = FilterMode.Point;  // Thought maybe this would help 
+                    tex.LoadImage(bytes);
 
-        //            //var bytes = File.ReadAllBytes(path);
-        //            //tex.LoadImage(bytes);
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //    }
+                    //var bytes = File.ReadAllBytes(path);
+                    //tex.LoadImage(bytes);
+                }
+            }
+            catch (Exception e)
+            {
+            }
 
-        //    Log("TextureReplacement v tex " + tex.isReadable+" "+tex.width+" "+tex.height);
+            tex.filterMode = FilterMode.Point;
+            tex.anisoLevel = 0;
+            tex.wrapMode = TextureWrapMode.Clamp;
 
-        //    tex =tex.ToReadable();
-
-        //    tex.filterMode = FilterMode.Point;
-        //    tex.anisoLevel = 0;
-        //    tex.wrapMode = TextureWrapMode.Clamp;
-
-        //    tex.Apply();
-        //    //Log("TextureReplacement v tex " + tex.isReadable, true);
-        //    return tex;
-        //}
+            tex.Apply();
+            //Log("TextureReplacement v tex " + tex.isReadable, true);
+            Vector2 standardPivot = new Vector2(tex.width / 2f, tex.height / 2f);
+            //Sprite sprite = Sprite.Create(text,new Rect(0,0,text.width,text.height), standardPivot,16);
+            Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), standardPivot, 16);
+            //Log("TextureReplacement v tex " + tex.isReadable, true);
+            return sprite;
+        }
     }
 }

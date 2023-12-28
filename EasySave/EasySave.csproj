@@ -4,15 +4,17 @@
   </ImportGroup>
   <PropertyGroup>
     <TargetFramework>net46</TargetFramework>
-    <AssemblyName>TextureReplacement</AssemblyName>
+    <AssemblyName>EasySave</AssemblyName>
     <Description>My first plugin</Description>
     <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Assets\Icon.png" />
   </ItemGroup>
+
   <ItemGroup>
     <EmbeddedResource Include="Assets\Icon.png" />
   </ItemGroup>
@@ -27,6 +29,13 @@
       <Private>False</Private>
       <SpecificVersion>false</SpecificVersion>
     </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(GamePath)$(ManagedFolder)InControl.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>false</SpecificVersion>
+    </Reference>
+
+    
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />

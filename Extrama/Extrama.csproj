@@ -4,8 +4,8 @@
   </ImportGroup>
   <PropertyGroup>
     <TargetFramework>net46</TargetFramework>
-    <AssemblyName>TextureReplacement</AssemblyName>
-    <Description>My first plugin</Description>
+    <AssemblyName>Extrama</AssemblyName>
+    <Description>Let everybody add their own tamas</Description>
     <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
@@ -24,6 +24,11 @@
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(GamePath)$(ManagedFolder)UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>false</SpecificVersion>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(GamePath)$(ManagedFolder)Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
       <SpecificVersion>false</SpecificVersion>
     </Reference>
