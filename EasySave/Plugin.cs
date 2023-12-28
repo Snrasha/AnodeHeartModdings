@@ -20,6 +20,8 @@ namespace EasySave
 
         public static Sprite ModIcon;
 
+        
+
         private void Awake()
         {
             harmony.PatchAll();
@@ -33,16 +35,46 @@ namespace EasySave
             // Plugin startup logic
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
+
+        public bool checkIfCanSave()
+        {
+
+            //if battle
+            BattleDirector director = UnityEngine.Object.FindObjectOfType<BattleDirector>();
+            if (director == null || director.IsBattling)
+            {
+                return false;
+            }
+            CardBattleScreen cardBattleScreen = UnityEngine.Object.FindObjectOfType<CardBattleScreen>();
+            if (cardBattleScreen != null && cardBattleScreen.isActiveAndEnabled)
+            {
+                return false;
+            }
+            TitleController TitleController = UnityEngine.Object.FindObjectOfType<TitleController>();
+
+            if (TitleController != null && TitleController.isActiveAndEnabled)
+            {
+                return false;
+            }
+            MainMenuHUD mainMenuHUD = UnityEngine.Object.FindObjectOfType<MainMenuHUD>();
+
+            if (mainMenuHUD != null && mainMenuHUD.isShown)
+            {
+                return false;
+            }
+
+            return true;
+
+
+        }
+
         public void Update()
         {
 
             if (!currentlyLoading && !currentlySaving) {
                 if (Input.GetKey(KeyCode.F4))
                 {
-                    BattleDirector director = UnityEngine.Object.FindObjectOfType<BattleDirector>();
-
-
-                    if (director==null || director.IsBattling)
+                    if (!checkIfCanSave())
                     {
                         return;
                     }
@@ -54,9 +86,7 @@ namespace EasySave
                 }
                 if (Input.GetKey(KeyCode.F5)) {
                     //   GameState.Instance().Data.
-                    BattleDirector director = UnityEngine.Object.FindObjectOfType<BattleDirector>();
-
-                    if (director == null || director.IsBattling)
+                    if (!checkIfCanSave())
                     {
                         return;
                     }
@@ -87,8 +117,8 @@ namespace EasySave
             if (mainMenuHUD != null)
             {
                 FreezeEvent.Set(freeze: true);
-                mainMenuHUD.Group.alpha = 1f;
-                mainMenuHUD.Group.blocksRaycasts = true;
+              //  mainMenuHUD.Group.alpha = 1f;
+              //  mainMenuHUD.Group.blocksRaycasts = true;
                 SaveGameScreen saveGameScreen = UnityEngine.Object.Instantiate(mainMenuHUD.SaveGameScreenPrefab, UnityEngine.Object.FindObjectOfType<Canvas>().transform);
                 yield return saveGameScreen.Load("QuickSave", saving: true);
                 FreezeEvent.Set(freeze: false);
