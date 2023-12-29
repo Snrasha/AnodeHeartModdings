@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
+using TextureReplacement.Scripts;
 
 namespace TextureReplacement
 {
@@ -20,6 +21,9 @@ namespace TextureReplacement
         public static Dictionary<string, Sprite> SpritesCharacterIcons;
 
         public static Sprite ModIcon;
+
+        public static OrbDict OrbDict;
+
 
 
         public static Dictionary<string, Sprite> SpritesFrontsGlitch;
@@ -83,7 +87,7 @@ namespace TextureReplacement
             SpritesAltIcons = new Dictionary<string, Sprite>();
             SpritesCharacterIcons = new Dictionary<string, Sprite>();
             SpritesGrid = new Dictionary<string, Sprite>();
-
+            OrbDict = new OrbDict();
             SpritesFrontsGlitch = new Dictionary<string, Sprite>();
             SpritesOverworldsIdle = new Dictionary<string, Texture2D>();
             SpritesOverworldsWalk   = new Dictionary<string, Texture2D>();
@@ -107,22 +111,29 @@ namespace TextureReplacement
             appdataPath += "/Replacements";
             string appdataPathMonsters= appdataPath+ "/Monsters";
             string appdataPathPlayer = appdataPath + "/Player";
+            string appdataPathFloaty = appdataPath + "/Floaty";
+
+
 
             if (!Directory.Exists(appdataPath))
             {
                 Directory.CreateDirectory(appdataPath);
-                Directory.CreateDirectory(appdataPathMonsters);
-                Directory.CreateDirectory(appdataPathPlayer);
-
-                //Directory.CreateDirectory(appdataPathMonsters + "/Ignafir");
-                //CreateFile("Ignafir.Ignafir_Front.png", appdataPathMonsters + "/Ignafir/Ignafir_Front.png");
-                //CreateFile("Ignafir.Ignafir_Icon.png", appdataPathMonsters + "/Ignafir/Ignafir_Icon.png");
-                //CreateFile("Ignafir.Ignafir_AltFront.png", appdataPathMonsters + "/Ignafir/Ignafir_AltFront.png");
-                //CreateFile("Ignafir.Ignafir_AltIcon.png", appdataPathMonsters + "/Ignafir/Ignafir_AltIcon.png");
             }
-
+            if (!Directory.Exists(appdataPathMonsters))
+            {
+                Directory.CreateDirectory(appdataPathMonsters);
+            }
+            if (!Directory.Exists(appdataPathPlayer))
+            {
+                Directory.CreateDirectory(appdataPathPlayer);
+            }
+            if (!Directory.Exists(appdataPathFloaty))
+            {
+                Directory.CreateDirectory(appdataPathFloaty);
+            }
             string[] monsters = Directory.GetDirectories(appdataPathMonsters);
 
+            FloatyCase(appdataPathFloaty);
             PlayerCase(appdataPathPlayer);
 
             foreach (string dir in monsters)
@@ -199,7 +210,23 @@ namespace TextureReplacement
                 }
             }
         }
-        void PlayerCase(string path)
+        void FloatyCase(string path)
+        {
+            string[] files = Directory.GetFiles(path);
+            OrbDict.SetFiles(files);
+            //foreach (string file in files)
+            //{
+            //    string[] splut = file.Split('\\');
+            //    string splut2 = splut[splut.Length - 1];
+            //    string filename = splut2.Split('.')[0];
+            //    Debug.Log($"File {filename} !");
+            //}
+
+
+        }
+
+
+            void PlayerCase(string path)
         {
             string[] files = Directory.GetFiles(path);
             //foreach (string file in files)
@@ -331,11 +358,12 @@ namespace TextureReplacement
         public static Sprite CreateSpriteFromFile(string path)
         {
 
-            Texture2D tex = CreateTextureFromFile(path,path);
-            Vector2 standardPivot = new Vector2(tex.width / 2f, tex.height / 2f);
+            Texture2D tex = CreateTextureFromFile(path, path);//path.Substring(path.LastIndexOf("/")+1,path.Length));
+            Vector2 standardPivot = new Vector2(0.5f, 0.5f);
             //Sprite sprite = Sprite.Create(text,new Rect(0,0,text.width,text.height), standardPivot,16);
             Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), standardPivot, 16);
             //Log("TextureReplacement v tex " + tex.isReadable, true);
+            sprite.name = tex.name;
             return sprite;
         }
 
@@ -368,10 +396,12 @@ namespace TextureReplacement
             tex.wrapMode = TextureWrapMode.Clamp;
 
             tex.Apply();
+            tex.name = path;
             //Log("TextureReplacement v tex " + tex.isReadable, true);
-            Vector2 standardPivot = new Vector2(tex.width / 2f, tex.height / 2f);
+            Vector2 standardPivot = new Vector2(0.5f, 0.5f);
             //Sprite sprite = Sprite.Create(text,new Rect(0,0,text.width,text.height), standardPivot,16);
             Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), standardPivot, 16);
+            sprite.name = tex.name;
             //Log("TextureReplacement v tex " + tex.isReadable, true);
             return sprite;
         }

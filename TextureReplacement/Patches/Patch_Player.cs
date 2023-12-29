@@ -1,10 +1,6 @@
 using UnityEngine;
 using HarmonyLib;
-using System.Security.Policy;
-using System.Reflection;
-using System.Collections.Generic;
-using System.Collections;
-using System;
+
 
 namespace TextureReplacement.Patches
 {
@@ -150,9 +146,12 @@ namespace TextureReplacement.Patches
         [HarmonyPostfix]
         static void Postfix(GameCharacterAnimator __instance)
         {
-
             if (__instance.animations != null && __instance.gameObject.name.Equals("Player")) {
 
+
+
+
+                bool isFlatLand = false;
 
                 GameCharacterAnimation[] array = __instance.animations;
 //
@@ -163,6 +162,11 @@ namespace TextureReplacement.Patches
 
 
                     Texture2D texture2D;
+
+                    if (gameCharacterAnimation.Texture.name.Contains("Flatland"))
+                    {
+                        isFlatLand = true;
+                    }
 
                     
                     texture2D = GetTexture(gameCharacterAnimation);
@@ -186,7 +190,9 @@ namespace TextureReplacement.Patches
                         {
                             Rect rect = new Rect(j * num, 0f, num, num2);
                             gameCharacterAnimation.sprites[0][j] = Sprite.Create(gameCharacterAnimation.Texture, rect, 0.5f * Vector2.one, 16f);
+               
                         }
+
                         continue;
                     }
                     for (int k = 0; k < 4; k++)
@@ -199,10 +205,7 @@ namespace TextureReplacement.Patches
                         }
                     }
                 }
-                
-
-
-
+                TextureReplacement.OrbDict.ReplaceFloaty(isFlatLand);
 
 
 

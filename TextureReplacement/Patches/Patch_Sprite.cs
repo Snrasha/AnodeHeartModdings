@@ -4,6 +4,24 @@ using System.Security.Policy;
 
 namespace TextureReplacement.Patches
 {
+    //[HarmonyPatch(typeof(SpriteLoader), nameof(SpriteLoader.LoadSprite), new[] { typeof(string) })]
+    //static class Patch_SpriteLoader_LoadSprite
+    //{
+    //    [HarmonyPrefix]
+    //    static bool Prefix(ref Sprite __result, string path)
+    //    {
+    //        if (path.EndsWith("Orb")) {
+    //            Debug.Log("Yes this is a ORB");
+    //        }
+    //        return __result == null;
+
+    //    }
+
+    //}
+
+    
+
+
     [HarmonyPatch(typeof(SpriteLoader), nameof(SpriteLoader.LoadMonsterFront), new[] { typeof(Species), typeof(bool) })]
     static class Patch_SpriteLoader_LoadMonsterFront
     {
