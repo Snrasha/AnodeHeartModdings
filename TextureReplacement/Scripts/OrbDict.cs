@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,13 +20,37 @@ namespace TextureReplacement.Scripts
         public TextureOrb textureOrbFlatLandRun;
         public TextureOrb textureOrbFlatLandWalk;
 
+        public Floaty floaty;
+
 
         public OrbDict()
         {
-
+            floaty = new Floaty();
+            floaty.duration = 0.15;
         }
 
-        public void SetFiles(string[] files)
+        public void GetJson(string path)
+        {
+
+            using (Stream stream = File.OpenRead(path))
+            {
+                byte[] bytes = new byte[stream.Length];
+
+                stream.Read(bytes, 0, bytes.Length);
+
+                string str = Encoding.ASCII.GetString(bytes);
+                try
+                {
+                    floaty = JsonConvert.DeserializeObject<Floaty>(str);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"Error parsing Floaty.json: {ex.Message}");
+                }
+            }
+        }
+
+            public void SetFiles(string[] files)
         {
             foreach (string file in files)
             {
@@ -33,6 +59,9 @@ namespace TextureReplacement.Scripts
                 string[] splut = file.Split('\\');
                 string splut2 = splut[splut.Length - 1];
                 string filename = splut2.Split('.')[0];
+                if (splut2.Equals("Floaty.json")){
+                    GetJson(file); 
+                }
 
                 if (filename.StartsWith("Orb"))
                 {
@@ -135,6 +164,7 @@ namespace TextureReplacement.Scripts
 
 
                         OrbBehaviour orbBehaviour = orb.AddComponent<OrbBehaviour>();
+                        orbBehaviour.Duration = (float)floaty.duration;
                         orbBehaviour.SetSprites((isFlatLand ? textureOrbFlatLandIdle : textureOrbIdle), 0);
                         orbBehaviour.SetSprites((isFlatLand ? textureOrbFlatLandRun : textureOrbRun), 2);
                         orbBehaviour.SetSprites((isFlatLand ? textureOrbFlatLandWalk : textureOrbWalk), 1);

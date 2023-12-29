@@ -30,7 +30,7 @@ namespace TextureReplacement.Scripts
         private int currentAnimationRow;
         public bool IsSimpleSheet;
         public SpriteRenderer spriteRenderer;
-        public float Duration = 0.2f;//0.8f
+        public float Duration = 0.15f;//0.8f
 
         public int animationType;
 
@@ -44,7 +44,7 @@ namespace TextureReplacement.Scripts
             player = GameObject.FindGameObjectWithTag("Player").transform;
             sqrKeepDistance = KeepDistance * KeepDistance;
             spriteRenderer = GetComponent<SpriteRenderer>();
-            Debug.Log("Hello " + spriteRenderer);
+            spriteRenderer.sortingOrder = 0;
         }
 
 
@@ -58,24 +58,35 @@ namespace TextureReplacement.Scripts
                 SetAnimatorDirection(vector,num2);
                 base.transform.position += num2 * Time.deltaTime * vector;
             }
+            else
+            {
+                if (this.animationType > 0)
+                {
+                    this.animationType = 0;
+                    Frames = FramesIdle;
+                    currentFrame = currentFrame % Frames;
+                    UpdateSprite();
+                }
+            }
         }
         private void SetAnimatorDirection(Vector2 direction,float speed)
         {
-
-            if (direction.x < -0.1f)
+            //float move = direction.magnitude;
+               // Debug.Log(move+" "+speed+ FramesWalk+" "+)
+            if (direction.x < -0.05f)
             {
                 SetDirection(GameCharacterDirection.Left);
             }
-            else if (direction.x > 0.1f)
+            else if (direction.x > 0.05f)
             {
                 SetDirection(GameCharacterDirection.Right);
             }
 
-            if (direction.y < -0.1f)
+            if (direction.y < -0.05f)
             {
                 SetDirection(GameCharacterDirection.Down);
             }
-            else if (direction.y > 0.1f)
+            else if (direction.y > 0.05f)
             {
                 SetDirection(GameCharacterDirection.Up);
             }
@@ -100,16 +111,6 @@ namespace TextureReplacement.Scripts
                 UpdateSprite();
 
             }
-            else if(this.animationType > 0 && speed < 0.01f)
-            {
-                this.animationType = 0;
-                Frames = FramesIdle;
-                currentFrame = currentFrame % Frames;
-
-                UpdateSprite();
-            }
-
-
         }
     
         public void FixedUpdate()
@@ -131,11 +132,10 @@ namespace TextureReplacement.Scripts
 
         public void SetDirection(GameCharacterDirection direction)
         {
-
             currentAnimationRow = GetRow(direction);
             currentDirection = direction;
             UpdateSprite();
-            if (IsSimpleSheet)
+            if (IsSimpleSheet && (direction == GameCharacterDirection.Left|| direction == GameCharacterDirection.Right))
             {
                 spriteRenderer.flipX = direction == GameCharacterDirection.Left;
             }
@@ -232,7 +232,10 @@ namespace TextureReplacement.Scripts
             }
             if (type == 0)
             {
+
                 FramesIdle = nbframes;
+                this.animationType = 0;
+                Frames = FramesIdle;
                 SetSprites(texture, hasDirection, spritesIdle, nbframes);
             }
             else if (type == 1)
