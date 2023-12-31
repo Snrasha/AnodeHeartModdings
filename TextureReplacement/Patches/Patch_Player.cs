@@ -158,7 +158,7 @@ namespace TextureReplacement.Patches
                // Debug.Log("Patch_GameCharacterAnimator_Load " + array.Length);
                 foreach (GameCharacterAnimation gameCharacterAnimation in array)
                 {
-                   // Debug.Log("Player " + gameCharacterAnimation.Type+" "+ gameCharacterAnimation.Texture.name);
+                    Debug.Log("Player " + gameCharacterAnimation.Type+" "+ gameCharacterAnimation.Texture.name);
 
 
                     Texture2D texture2D;

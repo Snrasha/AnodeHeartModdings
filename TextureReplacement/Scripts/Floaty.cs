@@ -10,5 +10,9 @@ namespace TextureReplacement.Scripts
     public class Floaty
     {
         public double duration;
+        public double durationFlatland;
+        public bool isFloating;
+        public bool isFloatingFlatLand;
+
     }
 }
