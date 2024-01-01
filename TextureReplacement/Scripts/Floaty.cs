@@ -11,8 +11,8 @@ namespace TextureReplacement.Scripts
     {
         public double duration;
         public double durationFlatland;
-        public bool isFloating;
-        public bool isFloatingFlatLand;
+        public bool isGround;
+        public bool isGroundFlatland;
 
     }
 }

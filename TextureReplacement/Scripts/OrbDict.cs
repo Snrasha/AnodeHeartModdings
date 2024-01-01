@@ -20,14 +20,21 @@ namespace TextureReplacement.Scripts
         public TextureOrb textureOrbFlatLandRun;
         public TextureOrb textureOrbFlatLandWalk;
 
+        public TextureOrb textureOrbShadowIdle;
+        public TextureOrb textureOrbShadowRun;
+        public TextureOrb textureOrbShadowWalk;
+
         public Floaty floaty;
 
 
         public OrbDict()
         {
             floaty = new Floaty();
-            floaty.duration = 0.2;
-            floaty.isFloating = true;
+            floaty.duration = 0.15;
+            floaty.isGround = false;
+            floaty.durationFlatland = 0.15;
+            floaty.isGroundFlatland = false;
+
         }
 
         public void GetJson(string path)
@@ -50,13 +57,20 @@ namespace TextureReplacement.Scripts
                 }
                 if (floaty.duration < 0.05)
                 {
-                    floaty.duration = 0.05;
+                    floaty.duration = 0.15;
                 }
                 if (floaty.duration > 5)
                 {
-                    floaty.duration = 5;
+                    floaty.duration = 0.15;
                 }
-
+                if (floaty.durationFlatland < 0.05)
+                {
+                    floaty.durationFlatland = 0.15;
+                }
+                if (floaty.durationFlatland > 5)
+                {
+                    floaty.durationFlatland = 0.15;
+                }
 
             }
         }
@@ -81,6 +95,7 @@ namespace TextureReplacement.Scripts
                     bool hasDirection = filename.StartsWith("Orb4");
                     bool walk = filename.Contains("Walk");
                     bool run = filename.Contains("Run");
+                    bool shadow = filename.Contains("Shadow");
 
 
                     string[] split = filename.Split('_');
@@ -93,16 +108,29 @@ namespace TextureReplacement.Scripts
                     {
                         frames = 4;
                     }
-                    Texture2D texture = TextureReplacement.CreateTextureFromFile(file, file);
+
+                    Texture2D texture = TextureReplacement.CreateTextureFromFile(file, filename);
                     TextureOrb textureOrb = new TextureOrb();
                     textureOrb.texture = texture;
                     textureOrb.hasDirection = hasDirection;
                     textureOrb.frames = frames;
 
-                    Debug.Log(flatland + " " + filename + " " + frames);
-
-
-                    if (flatland)
+                    if (shadow)
+                    {
+                        if (walk)
+                        {
+                            textureOrbShadowWalk = textureOrb;
+                        }
+                        else if (run)
+                        {
+                            textureOrbShadowRun = textureOrb;
+                        }
+                        else
+                        {
+                            textureOrbShadowIdle = textureOrb;
+                        }
+                    }
+                    else if (flatland)
                     {
                         if (walk)
                         {
@@ -152,12 +180,19 @@ namespace TextureReplacement.Scripts
             {
                 textureOrbRun = textureOrbWalk;
             }
+            if (textureOrbShadowRun != null && textureOrbShadowWalk == null)
+            {
+                textureOrbShadowWalk = textureOrbShadowRun;
+            }
+            if (textureOrbShadowRun == null && textureOrbShadowWalk != null)
+            {
+                textureOrbShadowRun = textureOrbShadowWalk;
+            }
         }
 
 
-        public void ReplaceFloaty(bool isFlatLand)
+        public void ReplaceFloaty(bool isFlatLand, bool isLowRes)
         {
-            Debug.Log(isFlatLand + " ");
 
             GameObject orb = GameObject.FindGameObjectWithTag("Floaty");
             SpriteRenderer spriteRendererorb = orb.GetComponent<SpriteRenderer>();
@@ -183,16 +218,16 @@ namespace TextureReplacement.Scripts
 
 
                             OrbBehaviour orbBehaviour = orb.AddComponent<OrbBehaviour>();
-                            orbBehaviour.Duration = (float)(  floaty.durationFlatland);
+                            orbBehaviour.Duration = (float) floaty.durationFlatland;
                             orbBehaviour.SetFollow(GameObject.FindGameObjectWithTag("Player").transform);
-                            orbBehaviour.SetFloating(floaty.isFloatingFlatLand, isFlatLand);
+                            orbBehaviour.SetFloating(!floaty.isGroundFlatland, isFlatLand, isLowRes);
                             orbBehaviour.SetSprites(textureOrbFlatLandIdle, 0);
                             orbBehaviour.SetSprites( textureOrbFlatLandRun , 2);
                             orbBehaviour.SetSprites(textureOrbFlatLandWalk, 1);
 
-                            orbBehaviour.MaxSpeed = followPlayer.MaxSpeed;
-                            orbBehaviour.MinSpeed = followPlayer.MinSpeed;
-                            orbBehaviour.KeepDistance = followPlayer.KeepDistance;
+                            //orbBehaviour.MaxSpeed = followPlayer.MaxSpeed;
+                            //orbBehaviour.MinSpeed = followPlayer.MinSpeed;
+                            //orbBehaviour.KeepDistance = followPlayer.KeepDistance;
                         }
 
                     }
@@ -212,18 +247,20 @@ namespace TextureReplacement.Scripts
 
                             //  Physics2D.lay
 
-
                             OrbBehaviour orbBehaviour = orb.AddComponent<OrbBehaviour>();
+                            orbBehaviour.SetCustomShadow(textureOrbShadowIdle != null || textureOrbShadowWalk != null);
                             orbBehaviour.Duration = (float)floaty.duration;
                             orbBehaviour.SetFollow(GameObject.FindGameObjectWithTag("Player").transform);
-                            orbBehaviour.SetFloating( floaty.isFloating, isFlatLand);
+                            orbBehaviour.SetFloating(!floaty.isGround, isFlatLand, isLowRes);
                             orbBehaviour.SetSprites(textureOrbIdle, 0);
+                            orbBehaviour.SetSprites(textureOrbWalk, 1);
                             orbBehaviour.SetSprites( textureOrbRun, 2);
-                            orbBehaviour.SetSprites( textureOrbWalk, 1);
-
-                            orbBehaviour.MaxSpeed = followPlayer.MaxSpeed;
-                            orbBehaviour.MinSpeed = followPlayer.MinSpeed;
-                            orbBehaviour.KeepDistance = followPlayer.KeepDistance;
+                            orbBehaviour.SetSprites(textureOrbShadowIdle, 3);
+                            orbBehaviour.SetSprites(textureOrbShadowWalk, 4);
+                            orbBehaviour.SetSprites(textureOrbShadowRun, 5);
+                            //orbBehaviour.MaxSpeed = followPlayer.MaxSpeed;
+                            //orbBehaviour.MinSpeed = followPlayer.MinSpeed;
+                            //orbBehaviour.KeepDistance = followPlayer.KeepDistance;
                         }
 
                     }

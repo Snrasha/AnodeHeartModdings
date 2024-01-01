@@ -126,9 +126,9 @@ namespace TextureReplacement.Patches
     //    }
     //}
 
-        // 
+    // 
 
-        [HarmonyPatch(typeof(GameCharacterAnimator), nameof(GameCharacterAnimator.Load))]
+    [HarmonyPatch(typeof(GameCharacterAnimator), nameof(GameCharacterAnimator.Load))]
     static class Patch_GameCharacterAnimator_Load
     {
         static Texture2D GetTexture(GameCharacterAnimation gameCharacterAnimation)
@@ -146,19 +146,22 @@ namespace TextureReplacement.Patches
         [HarmonyPostfix]
         static void Postfix(GameCharacterAnimator __instance)
         {
-            if (__instance.animations != null && __instance.gameObject.name.Equals("Player")) {
+            if (__instance.animations != null && __instance.gameObject.name.Equals("Player"))
+            {
 
 
 
 
                 bool isFlatLand = false;
+                bool isLowRes = false;
+
 
                 GameCharacterAnimation[] array = __instance.animations;
-//
-               // Debug.Log("Patch_GameCharacterAnimator_Load " + array.Length);
+                //
+                // Debug.Log("Patch_GameCharacterAnimator_Load " + array.Length);
                 foreach (GameCharacterAnimation gameCharacterAnimation in array)
                 {
-                    Debug.Log("Player " + gameCharacterAnimation.Type+" "+ gameCharacterAnimation.Texture.name);
+                    //   Debug.Log("Player " + gameCharacterAnimation.Type+" "+ gameCharacterAnimation.Texture.name);
 
 
                     Texture2D texture2D;
@@ -167,15 +170,18 @@ namespace TextureReplacement.Patches
                     {
                         isFlatLand = true;
                     }
+                    if (gameCharacterAnimation.Texture.name.Contains("Lowres"))
+                    {
+                        isLowRes = true;
+                    }
 
-                    
                     texture2D = GetTexture(gameCharacterAnimation);
-                    
+
                     if (texture2D == null)
                     {
                         continue;
                     }
-                    
+
                     gameCharacterAnimation.Texture = texture2D;
 
 
@@ -190,7 +196,7 @@ namespace TextureReplacement.Patches
                         {
                             Rect rect = new Rect(j * num, 0f, num, num2);
                             gameCharacterAnimation.sprites[0][j] = Sprite.Create(gameCharacterAnimation.Texture, rect, 0.5f * Vector2.one, 16f);
-               
+
                         }
 
                         continue;
@@ -205,7 +211,9 @@ namespace TextureReplacement.Patches
                         }
                     }
                 }
-                TextureReplacement.OrbDict.ReplaceFloaty(isFlatLand);
+
+                TextureReplacement.OrbDict.ReplaceFloaty(isFlatLand, isLowRes);
+
 
 
 
