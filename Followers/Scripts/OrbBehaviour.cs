@@ -1,11 +1,8 @@
 ﻿
 
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace TextureReplacement.Scripts
+namespace Followers.Scripts
 {
     public class OrbBehaviour : MonoBehaviour
     {
@@ -43,6 +40,8 @@ namespace TextureReplacement.Scripts
 
 
 
+
+
         public GameCharacterDirection currentDirection { get; private set; }
 
         private int currentFrame;
@@ -53,74 +52,14 @@ namespace TextureReplacement.Scripts
             spriteRenderer = GetComponent<SpriteRenderer>();
             spriteRenderer.sortingOrder = 0;
         }
-       public void SetFollow(Transform transformFollow)
+        public void SetFollow(Transform transformFollow)
         {
             follow = transformFollow;
         }
-        public void SetFloatingFlatland(bool isFloating)
+        public void SetOthersComponent(Transform player)
         {
-             
-            if (isFloating)
-            {
-                if (GetComponent<CapsuleCollider2D>() != null)
-                {
-                    Destroy(GetComponent<CapsuleCollider2D>());
-                }
-               
-                if (GetComponent<Rigidbody2D>()!= null)
-                {
-                    Destroy(GetComponent<Rigidbody2D>());
-                }
-            }
-            else
-            {
-                if (follow != null)
-                {
-                    CapsuleCollider2D capsuleCollider2D = this.gameObject.AddComponent<CapsuleCollider2D>();
-                    rigidbody2D = this.gameObject.AddComponent<Rigidbody2D>();
-                    CapsuleCollider2D capsuleCollider2D2Dfollow = this.follow.GetComponent<CapsuleCollider2D>();
-                    Rigidbody2D rigidbody2Dfollow = this.follow.GetComponent<Rigidbody2D>();
-
-
-                    this.gameObject.layer = follow.gameObject.layer;
-
-                    Physics2D.IgnoreLayerCollision(follow.gameObject.layer, follow.gameObject.layer, true);
-
-
-
-
-
-
-
-                    rigidbody2D.collisionDetectionMode = rigidbody2Dfollow.collisionDetectionMode;
-                    rigidbody2D.freezeRotation = rigidbody2Dfollow.freezeRotation;
-                    rigidbody2D.simulated = rigidbody2Dfollow.simulated;
-               //     rigidbody2D.mass = rigidbody2Dfollow.mass / 16f;
-                    rigidbody2D.mass = 0f;
-
-                    rigidbody2D.isKinematic = rigidbody2Dfollow.isKinematic;
-                    rigidbody2D.angularDrag = rigidbody2Dfollow.angularDrag;
-                    // .angularVelocity = rigidbody2Dfollow.angularVelocity;
-                    rigidbody2D.gravityScale = rigidbody2Dfollow.gravityScale;
-                    rigidbody2D.sleepMode = rigidbody2Dfollow.sleepMode;
-                    
-                    //  rigidbody2D
-                    capsuleCollider2D.direction = capsuleCollider2D2Dfollow.direction;
-                    capsuleCollider2D.isTrigger = capsuleCollider2D2Dfollow.isTrigger;
-                    capsuleCollider2D.size = capsuleCollider2D2Dfollow.size+new Vector2(0,0.3f);
-                  //  capsuleCollider2D.density = capsuleCollider2D2Dfollow.density;
-                    capsuleCollider2D.offset = capsuleCollider2D2Dfollow.offset;
-
-
-                    //circleCollider2D.friction = 0.4f;
-
-                }
-            }
-        }
-        public void SetFloatingNotFlatland(bool isFloating)
-        {
-            if (hasCustomShadow)
-            {
+            //if (hasCustomShadow)
+            //{
                 foreach (Transform child in gameObject.transform)
                 {
                     if (child.gameObject.name.Equals("Shadow"))
@@ -149,84 +88,63 @@ namespace TextureReplacement.Scripts
                 shadowSpriteRenderer.sortingGroupID = spriteRenderer.sortingGroupID;
                 shadowSpriteRenderer.renderingLayerMask = spriteRenderer.renderingLayerMask;
 
-            }
-            if (isFloating)
+            //}
+
+            if (player != null)
             {
-                if (GetComponent<CircleCollider2D>() != null)
-                {
-                    Destroy(GetComponent<CircleCollider2D>());
-                }
+                
 
-                if (GetComponent<Rigidbody2D>() != null)
-                {
-                    Destroy(GetComponent<Rigidbody2D>());
-                }
-
-            }
-            else
-            {
-                if (follow != null)
-                {
-                    CircleCollider2D circleCollider2D = this.gameObject.AddComponent<CircleCollider2D>();
-                    rigidbody2D = this.gameObject.AddComponent<Rigidbody2D>();
-                    CircleCollider2D circleCollider2Dfollow = this.follow.GetComponent<CircleCollider2D>();
-                    Rigidbody2D rigidbody2Dfollow = this.follow.GetComponent<Rigidbody2D>();
+                CircleCollider2D circleCollider2D = this.gameObject.AddComponent<CircleCollider2D>();
+                rigidbody2D = this.gameObject.AddComponent<Rigidbody2D>();
+                CircleCollider2D circleCollider2Dfollow = player.GetComponent<CircleCollider2D>();
+                Rigidbody2D rigidbody2Dfollow = player.GetComponent<Rigidbody2D>();
 
 
-                    this.gameObject.layer = follow.gameObject.layer;
+                this.gameObject.layer = player.gameObject.layer;
 
-                    Physics2D.IgnoreLayerCollision(follow.gameObject.layer, follow.gameObject.layer, true);
+                Physics2D.IgnoreLayerCollision(player.gameObject.layer, player.gameObject.layer, true);
 
-                    circleCollider2D.sharedMaterial = new PhysicsMaterial2D();
-                    //circleCollider2D.sharedMaterial.friction = 1f;
-                    circleCollider2D.sharedMaterial.bounciness = 0.3f;
-                    circleCollider2D.sharedMaterial.friction = 0f;
-                    //circleCollider2D.sharedMaterial.bounciness = 0.1f;
+                circleCollider2D.sharedMaterial = new PhysicsMaterial2D();
+                //circleCollider2D.sharedMaterial.friction = 1f;
+                circleCollider2D.sharedMaterial.bounciness = 0.3f;
+                circleCollider2D.sharedMaterial.friction = 0f;
+                //circleCollider2D.sharedMaterial.bounciness = 0.1f;
 
-                    rigidbody2D.collisionDetectionMode = rigidbody2Dfollow.collisionDetectionMode;
-                    rigidbody2D.freezeRotation = rigidbody2Dfollow.freezeRotation;
-                    rigidbody2D.simulated = rigidbody2Dfollow.simulated;
-                    rigidbody2D.mass = rigidbody2Dfollow.mass / 16f;
-                    rigidbody2D.isKinematic = rigidbody2Dfollow.isKinematic;
-                    rigidbody2D.angularDrag = rigidbody2Dfollow.angularDrag;
-                    // .angularVelocity = rigidbody2Dfollow.angularVelocity;
-                    rigidbody2D.gravityScale = rigidbody2Dfollow.gravityScale;
-                    rigidbody2D.sleepMode = rigidbody2Dfollow.sleepMode;
+                rigidbody2D.collisionDetectionMode = rigidbody2Dfollow.collisionDetectionMode;
+                rigidbody2D.freezeRotation = rigidbody2Dfollow.freezeRotation;
+                rigidbody2D.simulated = rigidbody2Dfollow.simulated;
+                rigidbody2D.mass = rigidbody2Dfollow.mass / 16f;
+                rigidbody2D.isKinematic = rigidbody2Dfollow.isKinematic;
+                rigidbody2D.angularDrag = rigidbody2Dfollow.angularDrag;
+                // .angularVelocity = rigidbody2Dfollow.angularVelocity;
+                rigidbody2D.gravityScale = rigidbody2Dfollow.gravityScale;
+                rigidbody2D.sleepMode = rigidbody2Dfollow.sleepMode;
 
-                    //  rigidbody2D
+                //  rigidbody2D
 
-                    circleCollider2D.radius = circleCollider2Dfollow.radius * 0.5f;
-                    //   circleCollider2D.density = circleCollider2Dfollow.density;
-                    circleCollider2D.offset = new Vector2(0, -0.15f);
-                    circleCollider2D.isTrigger = circleCollider2Dfollow.isTrigger;
+                circleCollider2D.radius = circleCollider2Dfollow.radius * 0.5f;
+                //   circleCollider2D.density = circleCollider2Dfollow.density;
+                circleCollider2D.offset = new Vector2(0, -0.15f);
+                circleCollider2D.isTrigger = circleCollider2Dfollow.isTrigger;
 
-                    //circleCollider2D.friction = 0.4f;
+                //circleCollider2D.friction = 0.4f;
 
-                }
+
             }
         }
 
 
 
-        public void SetFloating(bool isFloating, bool isflatland,bool isLowRes)
+        public void SetFloating(bool isFloating, float keepdistance, float speed)
         {
-
-            if (isLowRes)
+            if (followMovement != null)
             {
-                transform.position = follow.position;
+                followMovement.orbBehaviour = null;
+                followMovement = null;
             }
 
-            if (isflatland)
-            {
-                SetFloatingFlatland(isFloating);
-                followMovement = new FollowMovement(this,rigidbody2D, isflatland, isLowRes);
-                followMovement.SetTransform(transform, follow);
-                return;
-            }
-            SetFloatingNotFlatland(isFloating);
-            followMovement = new FollowMovement(this, rigidbody2D, isflatland, isLowRes);
+            followMovement = new FollowMovement(this, rigidbody2D, isFloating, keepdistance, speed);
             followMovement.SetTransform(transform, follow);
-
 
         }
 
@@ -237,6 +155,10 @@ namespace TextureReplacement.Scripts
         public void SetCustomShadow(bool customshadow)
         {
             hasCustomShadow = customshadow;
+            if (hasCustomShadow)
+            {
+                shadowSpriteRenderer.enabled = customshadow;
+            }
         }
         public void ResetToIdle()
         {
@@ -256,10 +178,10 @@ namespace TextureReplacement.Scripts
             }
         }
 
-        public void SetAnimatorDirection(Vector2 direction,float speed)
+        public void SetAnimatorDirection(Vector2 direction, float speed)
         {
             //float move = direction.magnitude;
-               // Debug.Log(move+" "+speed+ FramesWalk+" "+)
+            // Debug.Log(move+" "+speed+ FramesWalk+" "+)
             if (direction.x < -0.05f)
             {
                 SetDirection(GameCharacterDirection.Left);
@@ -282,16 +204,16 @@ namespace TextureReplacement.Scripts
                 return;
             }
 
-            if((this.animationType==0 || this.animationType==1) && speed > followMovement.MiddleSpeed)
+            if ((this.animationType == 0 || this.animationType == 1) && speed > followMovement.MiddleSpeed)
             {
-               this.animationType = 2;
+                this.animationType = 2;
                 Frames = FramesRun;
                 currentFrame = currentFrame % Frames;
                 UpdateSprite();
             }
             else if ((this.animationType == 0 || this.animationType == 2) && speed > 0f && speed < followMovement.MiddleSpeed)
             {
-               this.animationType = 1;
+                this.animationType = 1;
                 Frames = FramesWalk;
                 currentFrame = currentFrame % Frames;
 
@@ -299,7 +221,7 @@ namespace TextureReplacement.Scripts
 
             }
         }
-    
+
         public void FixedUpdate()
         {
             if (timeTillNextFrame > 0f)
@@ -311,7 +233,7 @@ namespace TextureReplacement.Scripts
                 currentFrame = (currentFrame + 1) % Frames;
                 timeTillNextFrame = Duration;
 
-             //   timeTillNextFrame = Duration / Frames;
+                //   timeTillNextFrame = Duration / Frames;
                 UpdateSprite();
             }
         }
@@ -322,7 +244,7 @@ namespace TextureReplacement.Scripts
             currentAnimationRow = GetRow(direction);
             currentDirection = direction;
             UpdateSprite();
-            if (IsSimpleSheet && (direction == GameCharacterDirection.Left|| direction == GameCharacterDirection.Right))
+            if (IsSimpleSheet && (direction == GameCharacterDirection.Left || direction == GameCharacterDirection.Right))
             {
                 spriteRenderer.flipX = direction == GameCharacterDirection.Left;
                 if (shadowSpriteRenderer != null)
@@ -355,11 +277,11 @@ namespace TextureReplacement.Scripts
         }
         private void UpdateSprite()
         {
-            //         Debug.Log(currentAnimationRow + " " + currentFrame);
+           // Debug.Log(currentAnimationRow + " " + currentFrame+" "+ animationType+" " + spritesIdle[0][0].name);
             if (animationType == 0)
             {
                 spriteRenderer.sprite = spritesIdle[currentAnimationRow][currentFrame];
-                if(shadowSpriteRenderer != null)
+                if (hasCustomShadow)
                 {
                     shadowSpriteRenderer.sprite = spritesShadowIdle[currentAnimationRow][currentFrame % spritesShadowIdle[0].Length];
                 }
@@ -368,15 +290,15 @@ namespace TextureReplacement.Scripts
             else if (animationType == 1)
             {
                 spriteRenderer.sprite = spritesWalk[currentAnimationRow][currentFrame];
-                if (shadowSpriteRenderer != null)
+                if (hasCustomShadow)
                 {
-                    shadowSpriteRenderer.sprite = spritesShadowWalk[currentAnimationRow][currentFrame% spritesShadowWalk[0].Length];
+                    shadowSpriteRenderer.sprite = spritesShadowWalk[currentAnimationRow][currentFrame % spritesShadowWalk[0].Length];
                 }
             }
-            else if(animationType == 2)
+            else if (animationType == 2)
             {
                 spriteRenderer.sprite = spritesRun[currentAnimationRow][currentFrame];
-                if (shadowSpriteRenderer != null)
+                if (hasCustomShadow)
                 {
                     shadowSpriteRenderer.sprite = spritesShadowRun[currentAnimationRow][currentFrame % spritesShadowRun[0].Length];
                 }
@@ -426,32 +348,16 @@ namespace TextureReplacement.Scripts
         }
 
 
-            public void SetSprites(Texture2D texture, bool hasDirection, int type, int nbframes)
+        public void SetSprites(Texture2D texture, bool hasDirection, int type, int nbframes)
         {
-            if (GetComponent<Animator>() != null)
-            {
-                Destroy(GetComponent<Animator>());
-            }
-
-            //for flatland
-            if (GetComponent<SpriteAnimator>() != null)
-            {
-                Destroy(GetComponent<SpriteAnimator>());
-            }
-            if (GetComponent<FollowPlayer>() != null)
-            {
-                Destroy(GetComponent<FollowPlayer>());
-            }
 
             if (texture == null)
             {
                 return;
             }
 
-
             if (type == 0)
             {
-
                 FramesIdle = nbframes;
                 this.animationType = 0;
                 Frames = FramesIdle;

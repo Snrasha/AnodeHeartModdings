@@ -1,9 +1,57 @@
 using UnityEngine;
 using HarmonyLib;
-
+using System.Reflection;
+using System.Collections.Generic;
+using TextureReplacement.Scripts;
 
 namespace TextureReplacement.Patches
 {
+    public class LevelLoader_getAnchorPosition
+    {
+        [HarmonyPatch]
+        static class Patch_LevelLoader_getAnchorPosition
+        {
+            [HarmonyTargetMethod]
+            static public MethodBase TargetMethod()
+            {
+                List<MethodInfo> methods = AccessTools.GetDeclaredMethods(typeof(LevelLoader));
+                foreach (MethodInfo method in methods)
+                {
+                    if (method.Name.Equals("getAnchorPosition"))
+                    {
+                        if (method.ReturnType == typeof(Vector3))
+                        {
+                            if (method.GetParameters().Length == 1)
+                            {
+                                return method;
+                            }
+                        }
+                    }
+                }
+                return AccessTools.Method(typeof(LevelLoader), "getAnchorPosition");
+            }
+
+            [HarmonyPrefix]
+            static void Postfix( string anchorId)
+            {
+                GameObject orb = GameObject.FindGameObjectWithTag("Floaty");
+                if (orb != null)
+                {
+                    OrbBehaviour orbBehaviour = orb.GetComponent<OrbBehaviour>();
+                    if (orbBehaviour != null)
+                    {
+                        orbBehaviour.UnlockMovement();
+                    }
+                }
+
+            }
+        }
+
+
+    }
+
+
+
     //[HarmonyPatch]
     //static class Patch_BetterMonoBehaviour_AddTempComponent
     //{

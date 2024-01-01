@@ -1,12 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <ImportGroup>
     <Import Project="GamePaths.xml" />
   </ImportGroup>
   <PropertyGroup>
+    
     <TargetFramework>net46</TargetFramework>
-    <AssemblyName>TextureReplacement</AssemblyName>
-    <Description>My first plugin</Description>
-    <Version>1.0.19</Version>
+    <AssemblyName>Followers</AssemblyName>
+    <Description>Three tamas following you</Description>
+    <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
