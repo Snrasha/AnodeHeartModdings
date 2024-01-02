@@ -180,6 +180,7 @@ namespace Followers.Scripts
                 orbBehaviour.SetSprites(textureOrbShadowRun, 5);
 
                 orbBehaviour.spriteRenderer.sortingLayerID = follow.GetComponent<SpriteRenderer>().sortingLayerID;
+                orbBehaviour.shadowSpriteRenderer.sortingLayerID = orbBehaviour.spriteRenderer.sortingLayerID;
 
 
                 return true;

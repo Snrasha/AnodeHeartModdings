@@ -49,7 +49,7 @@ namespace Followers.Scripts
             {
                 orbDict = FollowersBehaviour.OrbDicts[monster.BaseAncestor];
             }
-            Debug.Log(monster.Species+" "+orbDict);
+          //  Debug.Log(monster.Species+" "+orbDict);
 
             return orbDict;
         }

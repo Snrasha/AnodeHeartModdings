@@ -27,7 +27,6 @@ namespace Followers.Scripts
         private float timeTillNextFrame;
         private int currentAnimationRow;
         public bool IsSimpleSheet;
-        public SpriteRenderer spriteRenderer;
         public float Duration = 0.15f;//0.8f
 
 
@@ -35,8 +34,9 @@ namespace Followers.Scripts
         Rigidbody2D rigidbody2D;
         private bool hasCustomShadow = false;
 
+        public SpriteRenderer spriteRenderer;
 
-        private SpriteRenderer shadowSpriteRenderer;
+        public SpriteRenderer shadowSpriteRenderer;
 
 
 
