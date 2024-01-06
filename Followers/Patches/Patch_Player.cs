@@ -74,7 +74,7 @@ namespace Followers.Patches
                 return AccessTools.Method(typeof(DaycareHUD), "reload");
             }
 
-            [HarmonyPrefix]
+            [HarmonyPostfix]
             static void Postfix()
             {
                 FollowersBehaviour.UpdateFollowersGroup();
@@ -106,7 +106,7 @@ namespace Followers.Patches
                 return AccessTools.Method(typeof(DialogueCommander), "takeTama");
             }
 
-            [HarmonyPrefix]
+            [HarmonyPostfix]
             static void Postfix(string id)
             {
                 FollowersBehaviour.UpdateFollowersGroup();

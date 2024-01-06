@@ -5,8 +5,8 @@
   <PropertyGroup>
     <TargetFramework>net46</TargetFramework>
     <AssemblyName>TextureReplacement</AssemblyName>
-    <Description>My first plugin</Description>
-    <Version>1.0.19</Version>
+    <Description>Let you replace sprite</Description>
+    <Version>1.0.20</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

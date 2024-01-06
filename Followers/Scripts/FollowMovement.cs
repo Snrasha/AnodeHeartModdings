@@ -23,7 +23,7 @@ namespace Followers.Scripts
         private Vector3 prevPos;
         private List<Vector3> followPos = new List<Vector3>();
 
-        public OrbBehaviour orbBehaviour;
+        public FollowerBehaviour followerBehaviour;
 
         //private Vector3 UnlockTest;
         private bool isUnlocked = false;
@@ -33,9 +33,9 @@ namespace Followers.Scripts
         private bool isfloating = false;
 
 
-        public FollowMovement(OrbBehaviour orbBehaviour, Rigidbody2D rigidbody2D, bool isfloating, float keepdistance,float speed)
+        public FollowMovement(FollowerBehaviour followerBehaviour, Rigidbody2D rigidbody2D, bool isfloating, float keepdistance,float speed)
         {
-            this.orbBehaviour = orbBehaviour;
+            this.followerBehaviour = followerBehaviour;
             this.rigidbody2D = rigidbody2D;
             this.isfloating = isfloating;
             rigidbody2D.isKinematic = true;
@@ -43,7 +43,7 @@ namespace Followers.Scripts
             MaxSpeed = speed;
 
             sqrKeepDistance = KeepDistance * KeepDistance;
-            smallSqrKeepDistance = KeepDistance * KeepDistance / 4f;
+            smallSqrKeepDistance = KeepDistance * KeepDistance / 2f;
 
             MiddleSpeed = (MaxSpeed + MinSpeed) / 2;
         }
@@ -52,7 +52,6 @@ namespace Followers.Scripts
         {
             this.floaty = floaty;
             this.follow = follow;
-            //UnlockTest = this.follow.position;
             isUnlocked = false;
 
         }
@@ -68,11 +67,12 @@ namespace Followers.Scripts
                 lastPos = follow.position;
                 prevPos = follow.position;
             }
-            float num5 = floaty.position.SqrDistanceTo(follow.position);
-            if (num5 > sqrKeepDistance*200)
+            float num5 = floaty.position.DistanceTo(follow.position);
+            if (num5 > 25)
             {
                 rigidbody2D.velocity = Vector2.zero;
                 floaty.position = follow.position;
+                followPos.Clear();
             }
 
 
@@ -84,7 +84,7 @@ namespace Followers.Scripts
 
                 float num6 = prevPos.SqrDistanceTo(follow.position);
                 ////// check if the previous the last is more near of the follow, if yes ignore it.
-                if (num5 < (num6 + smallSqrKeepDistance / 4f))
+                if (num5 < (num6 + smallSqrKeepDistance / 2f))
                 {
                     followPos.Add(follow.position);
                     prevPos = lastPos;
@@ -115,14 +115,14 @@ namespace Followers.Scripts
                 // Move to the point of the path.
                 Vector3 vector = this.floaty.position.DirectionTo(togo);
                 float num2 = Mathf.Clamp(0.4f * num, MinSpeed, MaxSpeed);
-                orbBehaviour.SetAnimatorDirection(vector, num2);
+                followerBehaviour.SetAnimatorDirection(vector, num2);
                 rigidbody2D.velocity = num2 * vector;
             }
             else
             {
                 rigidbody2D.velocity /= 2;
 
-                orbBehaviour.ResetToIdle();
+                followerBehaviour.ResetToIdle();
             }
         }
         Vector3 GetNextPos()
@@ -133,8 +133,6 @@ namespace Followers.Scripts
             float dist;
             while (togo.SqrDistanceTo(this.floaty.position) < smallSqrKeepDistance / 2f)
             {
-
-
                 followPos.RemoveAt(0);
                 countBlocked = 0;
                 rigidbody2D.isKinematic = this.isfloating;
@@ -164,8 +162,16 @@ namespace Followers.Scripts
             {
                 followPos.RemoveRange(0, index);
             }
+            if (!isfloating)
+            {
+                RaycastHit2D raycastHit2D = Physics2D.Raycast(this.floaty.position, togo - this.floaty.position, sqrKeepDistance * 2, 0);
+                if (raycastHit2D.collider != null)
+                {
+                    rigidbody2D.isKinematic = true;
+                }
+            }
 
-            return togo;
+                return togo;
         }
 
         public void UnlockMovement()

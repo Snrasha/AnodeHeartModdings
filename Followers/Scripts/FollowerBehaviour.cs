@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Followers.Scripts
 {
-    public class OrbBehaviour : MonoBehaviour
+    public class FollowerBehaviour : MonoBehaviour
     {
 
         private Transform follow;
@@ -139,7 +139,7 @@ namespace Followers.Scripts
         {
             if (followMovement != null)
             {
-                followMovement.orbBehaviour = null;
+                followMovement.followerBehaviour = null;
                 followMovement = null;
             }
 
@@ -338,7 +338,7 @@ namespace Followers.Scripts
                 }
             }
         }
-        public void SetSprites(TextureOrb textureorb, int type)
+        public void SetSprites(TextureFollower textureorb, int type)
         {
             if (textureorb == null)
             {

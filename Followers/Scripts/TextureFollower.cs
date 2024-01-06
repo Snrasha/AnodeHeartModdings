@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Followers.Scripts
 {
-    public class TextureOrb
+    public class TextureFollower
     {
         public Texture2D texture;
         public int frames;

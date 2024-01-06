@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Followers.Scripts;
+using Followers.ModMenu;
 
 namespace Followers
 {
@@ -13,7 +14,14 @@ namespace Followers
 
         public static Sprite ModIcon;
 
-        public static Dictionary<Species,OrbDict> OrbDicts;
+        public static Dictionary<Species,FollowerDict> OrbDicts;
+
+        public static FollowersSubMenuGUI followersSubMenuGUI;
+        public static ModMenuGUI modMenuGUI;
+
+        
+
+
 
         private BepInEx.Logging.ManualLogSource _logger;
         public static Texture2D GetTexture(Dictionary<string, Texture2D> dict, string text)
@@ -81,7 +89,7 @@ namespace Followers
             {
                 followerBehaviour = followersGroup.GetComponent<FollowerGroup>();
             }
-            followerBehaviour.SetupFollowers(orb );
+            followerBehaviour.SetupFollowers(player);
 
         }
 
@@ -97,7 +105,10 @@ namespace Followers
 
         public void LoadAllTextures()
         {
-            OrbDicts = new Dictionary<Species, OrbDict>();
+
+            modMenuGUI = new ModMenuGUI();
+            followersSubMenuGUI =new FollowersSubMenuGUI();
+            OrbDicts = new Dictionary<Species, FollowerDict>();
             ModIcon = CreateSprite("Icon.png");
 
             string appdataPath = Application.dataPath+ "/../";
@@ -130,30 +141,13 @@ namespace Followers
                     //  Species.Anchory.
                     Species specie=dirname.ToEnum<Species>();
                     string[] files = Directory.GetFiles(pathdir);
-                    OrbDicts.Add(specie, new OrbDict());
+                    OrbDicts.Add(specie, new FollowerDict());
                     OrbDicts[specie].SetFiles(files);
                 }
             }
         }
 
 
-        public void CreateFile(string path, string to)
-        {
-            try
-            {
-                var assembly = Assembly.GetExecutingAssembly();
-                using (Stream stream = assembly.GetManifestResourceStream("TextureReplacement.Assets." + path))
-                {
-                    byte[] bytes = new byte[stream.Length];
-
-                    stream.Read(bytes, 0, bytes.Length);
-                    File.WriteAllBytes(to, bytes);
-                }
-            }
-            catch (Exception e)
-            {
-            }
-        }
         public static Texture2D CreateTextureFromFile(string path,string filename)
         {
 
@@ -187,18 +181,6 @@ namespace Followers
             tex.Apply();
             return tex;
         }
-        public static Sprite CreateSpriteFromFile(string path)
-        {
-
-            Texture2D tex = CreateTextureFromFile(path, path);//path.Substring(path.LastIndexOf("/")+1,path.Length));
-            Vector2 standardPivot = new Vector2(0.5f, 0.5f);
-            //Sprite sprite = Sprite.Create(text,new Rect(0,0,text.width,text.height), standardPivot,16);
-            Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), standardPivot, 16);
-            //Log("TextureReplacement v tex " + tex.isReadable, true);
-            sprite.name = tex.name;
-            return sprite;
-        }
-
 
         public static Sprite CreateSprite(string path)
         {
@@ -207,7 +189,7 @@ namespace Followers
             try
             {
                 var assembly = Assembly.GetExecutingAssembly();
-                using (Stream stream = assembly.GetManifestResourceStream("TextureReplacement.Assets." + path))
+                using (Stream stream = assembly.GetManifestResourceStream("Followers.Assets." + path))
                 {
                     byte[] bytes = new byte[stream.Length];
 

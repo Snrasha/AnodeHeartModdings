@@ -9,37 +9,44 @@ namespace Followers.Scripts
 {
     public class FollowerGroup: MonoBehaviour
     {
-        public OrbBehaviour[] orbBehaviours;
+        public FollowerBehaviour[] orbBehaviours;
 
 
         public void Create(GameObject floaty, GameObject player)
         {
             SpriteRenderer spriteRendererplayer = player.GetComponent<SpriteRenderer>();
-   
+
+            SpriteRenderer spriteRendererfloaty = floaty.GetComponent<SpriteRenderer>();
+
             if (spriteRendererplayer == null)
             {
                 return;
             }
 
 
-            orbBehaviours = new OrbBehaviour[3];
+            orbBehaviours = new FollowerBehaviour[3];
             for (int i = 0; i < orbBehaviours.Length; i++)
             {
                 GameObject gameobject = new GameObject("Follower_" + i);
                 gameobject.transform.parent = this.transform;
                 SpriteRenderer spriteRenderer= spriteRendererplayer.CopyComponent(gameobject);
+                if (spriteRendererfloaty != null)
+                {
+                    spriteRenderer.sharedMaterial = spriteRendererfloaty.sharedMaterial;
+                }
 
 
-                orbBehaviours[i]=gameobject.AddComponent<OrbBehaviour>();
+
+                orbBehaviours[i]=gameobject.AddComponent<FollowerBehaviour>();
                 orbBehaviours[i].enabled = false;
 
                 orbBehaviours[i].SetOthersComponent(player.transform);
 
             }
         }
-        public OrbDict GetOrbDictFromMonster(Monster monster)
+        public FollowerDict GetOrbDictFromMonster(Monster monster)
         {
-            OrbDict orbDict = null;
+            FollowerDict orbDict = null;
 
             if (FollowersBehaviour.OrbDicts.ContainsKey(monster.GetSpecies()))
             {
@@ -54,17 +61,17 @@ namespace Followers.Scripts
             return orbDict;
         }
 
-        public void SetupFollowers(GameObject floaty)
+        public void SetupFollowers(GameObject firstfollow)
         {
             List<Monster> monsters = GameState.Instance().Data.Player.MainParty;
             int inc = 0;
-            GameObject follow = floaty;
-            float keepdistance = 0.5f;
-            float speed = 20f;
+            GameObject follow = firstfollow;
+            float keepdistance = 2.5f;
+            float speed = 5f;
             foreach (Monster monster in monsters)
             {
 
-                OrbDict orbDict = GetOrbDictFromMonster(monster);
+                FollowerDict orbDict = GetOrbDictFromMonster(monster);
                 if (orbDict!=null)
                 {
                     if (orbDict.SetFollower(orbBehaviours[inc], follow, keepdistance,speed))
@@ -75,7 +82,7 @@ namespace Followers.Scripts
                         orbBehaviours[inc].ResetToIdle();
                         orbBehaviours[inc].UnlockMovement();
                         follow = orbBehaviours[inc].gameObject;
-                        keepdistance = 0.5f;
+                        keepdistance = 1f;
                         inc++;
                     }
                 }

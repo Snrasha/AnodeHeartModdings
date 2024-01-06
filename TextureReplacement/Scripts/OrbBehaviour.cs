@@ -219,12 +219,12 @@ namespace TextureReplacement.Scripts
             if (isflatland)
             {
                 SetFloatingFlatland(isFloating);
-                followMovement = new FollowMovement(this,rigidbody2D, isflatland, isLowRes);
-                followMovement.SetTransform(transform, follow);
-                return;
             }
-            SetFloatingNotFlatland(isFloating);
-            followMovement = new FollowMovement(this, rigidbody2D, isflatland, isLowRes);
+            else
+            {
+                SetFloatingNotFlatland(isFloating);
+            }
+            followMovement = new FollowMovement(this, rigidbody2D, isflatland);
             followMovement.SetTransform(transform, follow);
 
 

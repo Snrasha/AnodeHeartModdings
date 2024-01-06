@@ -7,22 +7,22 @@ using UnityEngine;
 
 namespace Followers.Scripts
 {
-    public class OrbDict
+    public class FollowerDict
     {
 
 
-        public TextureOrb textureOrbIdle;
-        public TextureOrb textureOrbRun;
-        public TextureOrb textureOrbWalk;
+        public TextureFollower textureOrbIdle;
+        public TextureFollower textureOrbRun;
+        public TextureFollower textureOrbWalk;
 
-        public TextureOrb textureOrbShadowIdle;
-        public TextureOrb textureOrbShadowRun;
-        public TextureOrb textureOrbShadowWalk;
+        public TextureFollower textureOrbShadowIdle;
+        public TextureFollower textureOrbShadowRun;
+        public TextureFollower textureOrbShadowWalk;
 
         public Floaty floaty;
 
 
-        public OrbDict()
+        public FollowerDict()
         {
             floaty = new Floaty();
             floaty.duration = 0.15;
@@ -93,7 +93,7 @@ namespace Followers.Scripts
                     }
 
                     Texture2D texture = FollowersBehaviour.CreateTextureFromFile(file, filename);
-                    TextureOrb textureOrb = new TextureOrb();
+                    TextureFollower textureOrb = new TextureFollower();
                     textureOrb.texture = texture;
                     textureOrb.hasDirection = hasDirection;
                     textureOrb.frames = frames;
@@ -151,7 +151,7 @@ namespace Followers.Scripts
         }
 
 
-        public bool SetFollower(OrbBehaviour orbBehaviour, GameObject follow, float keepdistance, float speed)
+        public bool SetFollower(FollowerBehaviour orbBehaviour, GameObject follow, float keepdistance, float speed)
         {
 
             //Debug.Log(textureOrbIdle + " " + follow+" "+keepdistance);

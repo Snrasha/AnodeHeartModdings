@@ -29,3 +29,14 @@ Sprites need to be on the ModAssets of the game folder.
 
 # EasySave
 Let you quick save and quick load with f5 and f9. F4 let you open the save menu.
+
+# Followers
+Let you have tamas following you.
+
+
+
+
+# Modders:
+Use the publicizer for get a Assembly-CSharp-Publicized.dll from Assembly-CSharp.dll
+With https://github.com/helightdev/UnityPublicizer
+Let you have every private class, method be public. Will not affect the compile and you do not need to add the new one on the game.
