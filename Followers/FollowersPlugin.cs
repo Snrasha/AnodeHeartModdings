@@ -6,7 +6,7 @@ using System.Reflection;
 using Followers.Scripts;
 using Followers.ModMenu;
 using Universal.IconLib;
-using Universal.ModMenuLib;
+using Universal.ModMenu;
 
 namespace Followers
 {

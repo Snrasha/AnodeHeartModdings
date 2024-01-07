@@ -6,10 +6,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Universal.EventBusLib;
 using Universal.ModMenuLib;
 
-namespace Followers.ModMenu
+namespace Universal.ModMenu
 {
     public static class ModMenuGUI
     {
@@ -308,7 +307,7 @@ namespace Followers.ModMenu
             return CreateText(nameText, textText, overlaydefault, parent);
         }
 
-            public static GameObject CreateText(string nameText, string textText, Color overlay, GameObject parent = null)
+            public static GameObject CreateText(string nameText, string idText, Color overlay, GameObject parent = null)
         {
             GameObject resolution = GetResolutionButton();
             GameObject newbutton = UnityEngine.Object.Instantiate(resolution);
@@ -357,10 +356,17 @@ namespace Followers.ModMenu
                     TranslationKey translationKey = text.GetComponent<TranslationKey>();
                     if (translationKey != null)
                     {
-                        translationKey.enabled = false;
-                        UnityEngine.Object.Destroy(translationKey);
+                        //    translationKey.enabled = false;
+                        //    UnityEngine.Object.Destroy(translationKey);
+                        translationKey.Key = idText;
                     }
-                    optionsController.StartCoroutine(SetTextButton(text, textText));
+                    //TranslationKey translationKey = text.GetComponent<TranslationKey>();
+                    //if (translationKey != null)
+                    //{
+                    //    translationKey.enabled = false;
+                    //    UnityEngine.Object.Destroy(translationKey);
+                    //}
+                   // optionsController.StartCoroutine(SetTextButton(text, textText));
 
                 }
             }
@@ -376,7 +382,7 @@ namespace Followers.ModMenu
 
 
 
-        public static GameObject CreateButton(Type type,string nameButton, string textButton, GameObject parent=null)
+        public static GameObject CreateButton(Type type,string nameButton, string idtext, GameObject parent=null)
         {
             GameObject resolution= GetResolutionButton();
             OptionResolution optionResolution= resolution.GetComponent<OptionResolution>();
@@ -411,10 +417,12 @@ namespace Followers.ModMenu
                     TranslationKey translationKey = text.GetComponent<TranslationKey>();
                     if (translationKey != null)
                     {
-                        translationKey.enabled = false;
-                        UnityEngine.Object.Destroy(translationKey);
+                        //    translationKey.enabled = false;
+                        //    UnityEngine.Object.Destroy(translationKey);
+                        translationKey.Key = idtext;
                     }
-                    optionsController.StartCoroutine(SetTextButton(text, textButton));
+
+               // optionsController.StartCoroutine(SetTextButton(text, textButton));
 
                 }
             }

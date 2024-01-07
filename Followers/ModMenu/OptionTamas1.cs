@@ -1,4 +1,5 @@
 ﻿
+using Followers.Langs;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,8 +11,8 @@ namespace Followers.ModMenu
         {
             return new string[2]
             {
-            StringLocalizer.t("Active teams"),
-            StringLocalizer.t("Favorite")
+            StringLocalizer.t(FollowersLang.Followers_option1_button_value_1),
+            StringLocalizer.t(FollowersLang.Followers_option1_button_value_2)
             };
         }
         //public override void load()

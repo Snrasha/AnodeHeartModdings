@@ -1,9 +1,6 @@
 ﻿using BepInEx;
-using EasySave;
-using Followers.ModMenu;
+
 using HarmonyLib;
-using UnityEngine;
-using Universal.IconLib;
 
 namespace Universal
 {

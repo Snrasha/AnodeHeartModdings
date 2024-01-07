@@ -1,21 +1,17 @@
-﻿using HarmonyLib;
-using MonoMod.Utils;
+﻿using Followers.Langs;
+
 using Newtonsoft.Json;
 using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+
 using UnityEngine;
 using Universal.EventBusLib;
+using Universal.ModMenu;
 using Universal.ModMenuLib;
-using static EventBus;
-using static UnityEngine.UIElements.UIRAtlasManager;
+
 
 namespace Followers.ModMenu
 {
@@ -90,9 +86,9 @@ namespace Followers.ModMenu
 
                 GameObject layout=ModMenuGUI.AddLayout("FollowerLayout");
 
-                ModMenuGUI.CreateText("TextFollowersTitle", "Followers Plugin",ModMenuGUI.overlaytitle, layout);
-                optionTamas1 = ModMenuGUI.CreateButton( typeof(OptionTamas1),"FollowersBtn", "Followers",layout).GetComponent<OptionTamas1>();
-                optionTamas2 = ModMenuGUI.CreateButton( typeof(OptionTamas2),"ChoiceBtn", "Choice", layout).GetComponent<OptionTamas2>();
+                ModMenuGUI.CreateText("TextFollowersTitle", FollowersLang.Followers_title_plugin, ModMenuGUI.overlaytitle, layout);
+                optionTamas1 = ModMenuGUI.CreateButton( typeof(OptionTamas1),"FollowersBtn", FollowersLang.Followers_option1_button_title, layout).GetComponent<OptionTamas1>();
+                optionTamas2 = ModMenuGUI.CreateButton( typeof(OptionTamas2),"ChoiceBtn", FollowersLang.Followers_option2_button_title, layout).GetComponent<OptionTamas2>();
                 //optionTamas1.enabled = true;
                 //optionTamas2.enabled = true;
 
@@ -174,6 +170,7 @@ namespace Followers.ModMenu
 
         public void OnEnterOptionsMenu()
         {
+
             if (optionTamas1 != null)
             {
                 optionTamas1.getStartingOption();

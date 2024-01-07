@@ -6,7 +6,10 @@ using UnityEngine;
 using HarmonyLib;
 using System.Collections;
 using Universal.IconLib;
-using Followers.ModMenu;
+using Universal;
+using Universal.ModMenu;
+using EasySave.ModMenu;
+using EasySave.Langs;
 
 namespace EasySave
 {
@@ -23,12 +26,14 @@ namespace EasySave
 
         private EasySaveSubMenuGUI easySaveSubMenuGUI = new EasySaveSubMenuGUI();
 
+        private EasySaveLang EasySaveLang;
+
         
 
         private void Awake()
         {
             harmony.PatchAll();
-
+            EasySaveLang = new EasySaveLang();
             Sprite ModIcon = CreateSprite("Icon.png");
             IconGUI.AddIcon(new Icon("EasySave", "EasySave", ModIcon));
 
@@ -40,7 +45,7 @@ namespace EasySave
 
         }
 
-        public bool checkIfCanSave()
+        public bool CheckIfCanSave()
         {
 
             //if battle
@@ -78,7 +83,7 @@ namespace EasySave
             if (!currentlyLoading && !currentlySaving) {
                 if (Input.GetKey(KeyCode.F4))
                 {
-                    if (!checkIfCanSave())
+                    if (!CheckIfCanSave())
                     {
                         return;
                     }
@@ -90,7 +95,7 @@ namespace EasySave
                 }
                 if (Input.GetKey(KeyCode.F5)) {
                     //   GameState.Instance().Data.
-                    if (!checkIfCanSave())
+                    if (!CheckIfCanSave())
                     {
                         return;
                     }

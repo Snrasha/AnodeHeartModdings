@@ -1,14 +1,6 @@
-using UnityEngine;
+
 using HarmonyLib;
-using System;
-using UnityEngine.UI;
-using System.Collections.Generic;
-using System.Reflection;
-using Followers.ModMenu;
-using static Followers.ModMenu.ModMenuGUI;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using MonoMod.Utils;
+
 using Universal.EventBusLib;
 
 namespace Universal.ModMenuLib

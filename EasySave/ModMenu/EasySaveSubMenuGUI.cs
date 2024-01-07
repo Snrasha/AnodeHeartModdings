@@ -1,9 +1,11 @@
 ﻿
+using EasySave.Langs;
 using UnityEngine;
+using Universal.ModMenu;
 using Universal.ModMenuLib;
 
 
-namespace Followers.ModMenu
+namespace EasySave.ModMenu
 {
     public class EasySaveSubMenuGUI : SubModMenuInterface
     {
@@ -66,8 +68,8 @@ namespace Followers.ModMenu
 
                 GameObject layout=ModMenuGUI.AddLayout("EasySaveLayout");
 
-                ModMenuGUI.CreateText("TextEasyTitle", "EasySave Plugin",ModMenuGUI.overlaytitle, layout);
-                ModMenuGUI.CreateText("TextEasyDesc", "F4 for save menu, F5/F9 for quick", ModMenuGUI.overlayDesc, layout);
+                ModMenuGUI.CreateText("TextEasyTitle", EasySaveLang.EasySave_title_plugin, ModMenuGUI.overlaytitle, layout);
+                ModMenuGUI.CreateText("TextEasyDesc", EasySaveLang.EasySave_desc_plugin, ModMenuGUI.overlayDesc, layout);
 
 
                 //optionTamas1.enabled = true;

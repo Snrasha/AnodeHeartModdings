@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using UnityEngine;
 
 namespace Universal.ModMenuLib
@@ -13,7 +9,6 @@ namespace Universal.ModMenuLib
 
         public void DisableButton()
         {
-            Debug.Log("SettinsOptionTogglable DisableButton");
             foreach (Transform child in transform)
             {
                 if (child.gameObject.name.Equals("Value"))

@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using Followers.Langs;
 using Followers.ModMenu;
 using HarmonyLib;
 
@@ -11,6 +12,7 @@ namespace Followers
         Harmony harmony = new Harmony(PluginInfo.PLUGIN_GUID);
 
         FollowersPlugin followersPlugin;
+        FollowersLang followersLang;
 
         private void Awake()
         {
@@ -22,7 +24,7 @@ namespace Followers
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
             followersPlugin = new FollowersPlugin(Logger);
             FollowersPlugin.followersSubMenuGUI = new FollowersSubMenuGUI();
-
+            followersLang=new FollowersLang();
             followersPlugin.LoadAllTextures();
 
             harmony.PatchAll();
