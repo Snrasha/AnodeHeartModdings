@@ -77,7 +77,7 @@ namespace Followers.Patches
             [HarmonyPostfix]
             static void Postfix()
             {
-                FollowersBehaviour.UpdateFollowersGroup();
+                FollowersPlugin.UpdateFollowersGroup();
             }
         }
     }
@@ -109,7 +109,7 @@ namespace Followers.Patches
             [HarmonyPostfix]
             static void Postfix(string id)
             {
-                FollowersBehaviour.UpdateFollowersGroup();
+                FollowersPlugin.UpdateFollowersGroup();
             }
         }
     }
@@ -121,7 +121,7 @@ namespace Followers.Patches
         [HarmonyPostfix]
         static void Postfix()
         {
-            FollowersBehaviour.UpdateFollowersGroup();
+            FollowersPlugin.UpdateFollowersGroup();
 
         }
     }
@@ -139,7 +139,7 @@ namespace Followers.Patches
         [HarmonyPostfix]
         static void Postfix()
         {
-            FollowersBehaviour.UpdateFollowersGroup();
+            FollowersPlugin.UpdateFollowersGroup();
 
         }
     }
@@ -155,7 +155,7 @@ namespace Followers.Patches
         [HarmonyPostfix]
         static void Postfix(Monster monster)
         {
-            FollowersBehaviour.UpdateFollowersGroup();
+            FollowersPlugin.UpdateFollowersGroup();
 
         }
     }
@@ -166,7 +166,7 @@ namespace Followers.Patches
         [HarmonyPostfix]
         static void Postfix(Monster monster)
         {
-            FollowersBehaviour.UpdateFollowersGroup();
+            FollowersPlugin.UpdateFollowersGroup();
 
         }
     }
@@ -182,7 +182,7 @@ namespace Followers.Patches
         {
             if (__instance.animations != null && __instance.gameObject.name.Equals("Player"))
             {
-                FollowersBehaviour.UpdateFollowersGroup();
+                FollowersPlugin.UpdateFollowersGroup();
             }
         }
     }

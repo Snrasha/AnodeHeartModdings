@@ -12,17 +12,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using UnityEngine;
+using Universal.EventBusLib;
+using Universal.ModMenuLib;
 using static EventBus;
 using static UnityEngine.UIElements.UIRAtlasManager;
 
 namespace Followers.ModMenu
 {
-    public class FollowersSubMenuGUI
+    public class FollowersSubMenuGUI : SubModMenuInterface
     {
 
         public Config config;
         public string pathConfig;
-
+        private string pathFolderConfig = "/../BepInEx/plugins/FollowersConfig";
+        private string configname = "/Config.json";
 
         public OptionTamas1 optionTamas1;
         public OptionTamas2 optionTamas2;
@@ -31,12 +34,20 @@ namespace Followers.ModMenu
         public static bool EventBusOptionsAdded = false;
 
 
+
+
+
         public FollowersSubMenuGUI()
         {
-            pathConfig = Application.dataPath + "/../BepInEx/plugins/FollowersConfig/Config.json";
+            pathConfig = Application.dataPath + pathFolderConfig;
 
             LoadOptions();
+            UniEventBus.AddTypesToEventBus("Followers", new Type[] { typeof(OptionTamas1), typeof(OptionTamas2) });
+
         }
+
+  
+
 
         public bool CheckIfExist(OptionsController optionsController)
         {
@@ -45,7 +56,7 @@ namespace Followers.ModMenu
             GameObject frame = optionsController.gameObject.transform.GetChild(0).gameObject;
             foreach (Transform child in frame.transform)
             {
-                if (child.gameObject.name.Equals(FollowersBehaviour.modMenuGUI.name))
+                if (child.gameObject.name.Equals(ModMenuGUI.name))
                 {
                     childMod = child.gameObject;
                 }
@@ -68,7 +79,7 @@ namespace Followers.ModMenu
             GameObject frame = optionsController.gameObject.transform.GetChild(0).gameObject;
             foreach (Transform child in frame.transform)
             {
-                if (child.gameObject.name.Equals(FollowersBehaviour.modMenuGUI.name))
+                if (child.gameObject.name.Equals(ModMenuGUI.name))
                 {
                     childMod = child.gameObject;
                 }
@@ -80,13 +91,13 @@ namespace Followers.ModMenu
             if (followerLayoutFlag == null)
             {
 
-                FollowersBehaviour.modMenuGUI.AddCheckLayout(typeof(FollowerLayoutFlag));
+                ModMenuGUI.AddCheckLayout(typeof(FollowerLayoutFlag));
 
+                GameObject layout=ModMenuGUI.AddLayout("FollowerLayout");
 
-
-                FollowersBehaviour.modMenuGUI.CreateText("TextFollowersTitle", "Followers Mod Options");
-                optionTamas1 = FollowersBehaviour.modMenuGUI.CreateButton( typeof(OptionTamas1),"FollowersBtn", "Followers").GetComponent<OptionTamas1>();
-                optionTamas2 = FollowersBehaviour.modMenuGUI.CreateButton( typeof(OptionTamas2),"ChoiceBtn", "Choice").GetComponent<OptionTamas2>();
+                ModMenuGUI.CreateText("TextFollowersTitle", "Followers Mod Options", layout);
+                optionTamas1 = ModMenuGUI.CreateButton( typeof(OptionTamas1),"FollowersBtn", "Followers",layout).GetComponent<OptionTamas1>();
+                optionTamas2 = ModMenuGUI.CreateButton( typeof(OptionTamas2),"ChoiceBtn", "Choice", layout).GetComponent<OptionTamas2>();
                 //optionTamas1.enabled = true;
                 //optionTamas2.enabled = true;
 
@@ -96,14 +107,11 @@ namespace Followers.ModMenu
         }
 
 
-     
-
-
         public void LoadOptions()
         {
-            if (!Directory.Exists(Application.dataPath + "/../BepInEx/plugins/FollowersConfig"))
+            if (!Directory.Exists(pathConfig))
             {
-                Directory.CreateDirectory(Application.dataPath + "/../BepInEx/plugins/FollowersConfig");
+                Directory.CreateDirectory(pathConfig);
             }
             
             LoadConfigFile();
@@ -113,36 +121,36 @@ namespace Followers.ModMenu
 
         public void LoadConfigFile()
         {
-        if (!File.Exists(pathConfig))
-        {
-            try
+            if (File.Exists(pathConfig+configname))
             {
-                using (Stream stream = File.OpenRead(pathConfig))
+                try
                 {
-                    byte[] bytes = new byte[stream.Length];
-
-                    stream.Read(bytes, 0, bytes.Length);
-
-                    string str = Encoding.ASCII.GetString(bytes);
-                    try
+                    using (Stream stream = File.OpenRead(pathConfig + configname))
                     {
-                        config = JsonConvert.DeserializeObject<Config>(str);
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError($"Error parsing {pathConfig}: {ex.Message}");
+                        byte[] bytes = new byte[stream.Length];
+
+                        stream.Read(bytes, 0, bytes.Length);
+
+                        string str = Encoding.ASCII.GetString(bytes);
+                        try
+                        {
+                            config = JsonConvert.DeserializeObject<Config>(str);
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.LogError($"Error parsing {pathConfig}: {ex.Message}");
+                        }
                     }
                 }
+                catch
+                {
+                }
             }
-            catch
-            {
-            }
-        }
             else
             {
                 config = new Config();
                 config.option_followers = 0;
-                config.option_species = Species.Beebee.ToString() ;
+                config.option_species = Species.Beebee.ToString();
             }
         }
         public void SaveConfigFile()
@@ -150,7 +158,8 @@ namespace Followers.ModMenu
             try
             {
                 string textjson=JsonConvert.SerializeObject(config);
-                using (Stream stream = File.OpenWrite(pathConfig))
+                
+                using (Stream stream = File.Open(pathConfig + configname, FileMode.Create))
                 {
                     byte[] bytes = Encoding.UTF8.GetBytes(textjson);
 
@@ -254,7 +263,19 @@ namespace Followers.ModMenu
 
             EventBus.class_register_map.AddRange(class_register_map);
             EventBus.cached_raise.AddRange(cached_raise);
+        }
 
+        public void OnExitOptionsMenu()
+        {
+            FollowersPlugin.UpdateFollowersGroup();
+        }
+
+        public void OnEnterOptionsMenu()
+        {
+            if (optionTamas1 != null)
+            {
+                optionTamas1.getStartingOption();
+            }
         }
     }
 

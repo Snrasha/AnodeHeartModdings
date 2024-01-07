@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Followers.ModMenu;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,56 +49,112 @@ namespace Followers.Scripts
         {
             FollowerDict orbDict = null;
 
-            if (FollowersBehaviour.OrbDicts.ContainsKey(monster.GetSpecies()))
+            if (FollowersPlugin.OrbDicts.ContainsKey(monster.GetSpecies()))
             {
-                orbDict = FollowersBehaviour.OrbDicts[monster.GetSpecies()];
+                orbDict = FollowersPlugin.OrbDicts[monster.GetSpecies()];
             }
-            else if(FollowersBehaviour.OrbDicts.ContainsKey(monster.BaseAncestor))
+            else if(FollowersPlugin.OrbDicts.ContainsKey(monster.BaseAncestor))
             {
-                orbDict = FollowersBehaviour.OrbDicts[monster.BaseAncestor];
+                orbDict = FollowersPlugin.OrbDicts[monster.BaseAncestor];
             }
           //  Debug.Log(monster.Species+" "+orbDict);
 
             return orbDict;
         }
+        public FollowerDict GetOrbDictFromSpecies(Species specie)
+        {
+            FollowerDict orbDict = null;
 
+
+            if (FollowersPlugin.OrbDicts.ContainsKey(specie))
+            {
+                orbDict = FollowersPlugin.OrbDicts[specie];
+            }
+            else
+            {
+                if (MonsterLibrary.Data.ContainsKey(specie)){
+                    if (FollowersPlugin.OrbDicts.ContainsKey(MonsterLibrary.Data[specie].BaseAncestor))
+                    {
+                        orbDict = FollowersPlugin.OrbDicts[MonsterLibrary.Data[specie].BaseAncestor];
+                    }
+                }
+            }
+            //  Debug.Log(monster.Species+" "+orbDict);
+
+            return orbDict;
+        }
         public void SetupFollowers(GameObject firstfollow)
         {
-            List<Monster> monsters = GameState.Instance().Data.Player.MainParty;
-            int inc = 0;
             GameObject follow = firstfollow;
             float keepdistance = 2.5f;
             float speed = 5f;
-            foreach (Monster monster in monsters)
+            int inc = 0;
+            Debug.Log("SetupFollowers");
+            Config config = FollowersPlugin.followersSubMenuGUI.config;
+            if (config.option_followers == 0)
             {
 
-                FollowerDict orbDict = GetOrbDictFromMonster(monster);
-                if (orbDict!=null)
+                List<Monster> monsters = GameState.Instance().Data.Player.MainParty;
+               
+                foreach (Monster monster in monsters)
                 {
-                    if (orbDict.SetFollower(orbBehaviours[inc], follow, keepdistance,speed))
+
+                    FollowerDict orbDict = GetOrbDictFromMonster(monster);
+                    if (orbDict != null)
                     {
-                        orbBehaviours[inc].transform.position=follow.transform.position;
+                        if (orbDict.SetFollower(orbBehaviours[inc], follow, keepdistance, speed))
+                        {
+                            orbBehaviours[inc].transform.position = follow.transform.position;
+                            orbBehaviours[inc].enabled = true;
+                            orbBehaviours[inc].gameObject.SetActive(true);
+                            orbBehaviours[inc].ResetToIdle();
+                            orbBehaviours[inc].UnlockMovement();
+                            follow = orbBehaviours[inc].gameObject;
+                            keepdistance = 1f;
+                            inc++;
+                        }
+                    }
+
+                    if (inc > 2)
+                    {
+                        break;
+                    }
+                }
+
+            }
+            else
+            {
+                string speciestr = config.option_species;
+                Species specie;
+                if (Enum.IsDefined(typeof(Species), speciestr))
+                {
+                    specie = (Species)Enum.Parse(typeof(Species), speciestr);
+                }
+                else
+                {
+                    specie = Species.Beebee;
+                }
+
+                FollowerDict orbDict = GetOrbDictFromSpecies(specie);
+                if (orbDict != null)
+                {
+                    if (orbDict.SetFollower(orbBehaviours[inc], follow, keepdistance, speed))
+                    {
+                        orbBehaviours[inc].transform.position = follow.transform.position;
                         orbBehaviours[inc].enabled = true;
                         orbBehaviours[inc].gameObject.SetActive(true);
                         orbBehaviours[inc].ResetToIdle();
                         orbBehaviours[inc].UnlockMovement();
-                        follow = orbBehaviours[inc].gameObject;
-                        keepdistance = 1f;
-                        inc++;
                     }
                 }
+                inc = 1;
 
-                if (inc > 2)
-                {
-                    break;
-                }
             }
             for (; inc < orbBehaviours.Length; inc++)
             {
                 orbBehaviours[inc].enabled = false;
                 orbBehaviours[inc].gameObject.SetActive(false);
             }
-
         }
 
 

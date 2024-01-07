@@ -1,25 +1,29 @@
-﻿using HarmonyLib;
+﻿
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
-using System.Runtime.Remoting.Contexts;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEngine.UIElements.UIRAtlasAllocator;
+using Universal.EventBusLib;
+using Universal.ModMenuLib;
 
 namespace Followers.ModMenu
 {
-    public class ModMenuGUI
+    public static class ModMenuGUI
     {
 
+        private static Dictionary<string, SubModMenuInterface> subModMenus;
 
-        private OptionsController optionsController;
-        public GameObject ModMenu;
-        private GameObject Settings;
 
-        public string name = "ModMenu";
+        private static OptionsController optionsController;
+        public static GameObject ModMenu;
+        private static GameObject Settings;
 
-        public class ListenerOption
+        public static string name { get { return "ModMenu"; } } 
+
+    public class ListenerOption
         {
             public OptionsController OptionsController;
             public int j;
@@ -45,15 +49,65 @@ namespace Followers.ModMenu
                 OptionsController.OptionButtons[j].MoveRight();
             }
         }
-        
-
-
-        // LevelBase -> Canvas -> Below Overlay -> MainMenu -> Options -> Frame
-        public ModMenuGUI() { 
-        
+        public static bool __IsOptionMenuOpen()
+        {
+            return optionsController != null && optionsController.gameObject.activeSelf;
         }
 
-        public bool CheckIfExist(OptionsController optionsController)
+        public static void __SaveConfigFileAll()
+        {
+            if (subModMenus == null)
+            {
+                subModMenus = new Dictionary<string, SubModMenuInterface>();
+            }
+            foreach (SubModMenuInterface subModMenuInterface in subModMenus.Values)
+            {
+                subModMenuInterface.SaveConfigFile();
+            }
+        }
+        public static void __OnExitOptionsMenuAll()
+        {
+            Debug.Log("__OnExitOptionsMenuAll");
+            if (subModMenus == null)
+            {
+                subModMenus = new Dictionary<string, SubModMenuInterface>();
+            }
+            foreach (SubModMenuInterface subModMenuInterface in subModMenus.Values)
+            {
+                subModMenuInterface.OnExitOptionsMenu();
+            }
+        }
+
+        public static void __OnEnterModMenuAll()
+        {
+            if (subModMenus == null)
+            {
+                subModMenus = new Dictionary<string, SubModMenuInterface>();
+            }
+            Debug.Log("__OnEnterOptionsMenuAll");
+
+            foreach (SubModMenuInterface subModMenuInterface in subModMenus.Values)
+            {
+                subModMenuInterface.OnEnterOptionsMenu();
+            }
+        }
+
+
+        public static void AddSubMenu(string nameMod,SubModMenuInterface subModMenuInterface)
+        {
+            if (subModMenus == null)
+            {
+                subModMenus = new Dictionary<string, SubModMenuInterface>();
+            }
+            if (subModMenus.ContainsKey(nameMod))
+            {
+                subModMenus[nameMod] = subModMenuInterface;
+                return;
+            }
+            subModMenus.Add(nameMod, subModMenuInterface);
+        }
+
+        public static bool __CheckIfNotExist(OptionsController optionsController)
         {
             GameObject childMod = null;
             GameObject Rows = null;
@@ -72,7 +126,7 @@ namespace Followers.ModMenu
             return childMod == null && Rows != null;
         }
 
-        public bool CheckIfNotExist(OptionsController optionsController, out GameObject settings, out GameObject childMod, out GameObject Rows)
+        private static bool CheckIfNotExist(OptionsController optionsController, out GameObject settings, out GameObject childMod, out GameObject Rows)
         {
             childMod = null;
             Rows= null;
@@ -98,9 +152,9 @@ namespace Followers.ModMenu
         }
 
 
-        public void CreateModMenu(OptionsController optionsController)
+        public static void __CreateModMenu(OptionsController optionsController2)
         {
-            this.optionsController = optionsController;
+            optionsController = optionsController2;
           GameObject frame= optionsController.gameObject.transform.GetChild(0).gameObject;
             GameObject childMod = null;
             GameObject Rows = null;
@@ -108,22 +162,23 @@ namespace Followers.ModMenu
 
 
             if (CheckIfNotExist(optionsController, out settings, out childMod, out Rows)) {
-                this.Settings = settings;
+                Settings = settings;
+          //      UniEventBus.EventBusOptionsAdded = false;
 
 
 
                 //  this.ModMenu =
                 // this.ModMenu = childMod;
 
-                this.ModMenu = UnityEngine.Object.Instantiate(Settings.gameObject);
-                this.ModMenu.transform.SetParent(frame.transform);
-                this.ModMenu.transform.localPosition= frame.transform.localPosition;
-                this.ModMenu.transform.localScale = frame.transform.localScale;
+                ModMenu = UnityEngine.Object.Instantiate(Settings.gameObject);
+                ModMenu.transform.SetParent(frame.transform);
+                ModMenu.transform.localPosition= frame.transform.localPosition;
+                ModMenu.transform.localScale = frame.transform.localScale;
 
-                this.ModMenu.SetActive(false);
+                ModMenu.SetActive(false);
 
-                this.ModMenu.name = name;
-                foreach (Transform child in this.ModMenu.transform)
+                ModMenu.name = name;
+                foreach (Transform child in ModMenu.transform)
                 {
                     GameObject.Destroy(child.gameObject);
                 }
@@ -176,18 +231,58 @@ namespace Followers.ModMenu
                 }
             }
         }
-        private IEnumerator SetTextButton(TextUI text,string texttoput)
+
+        public static void __CreateSubModMenu(OptionsController optionsController2)
         {
-         //   Button button = clone.AddComponent<Button>();
+            if (subModMenus == null)
+            {
+                subModMenus = new Dictionary<string, SubModMenuInterface>();
+            }
+            foreach (SubModMenuInterface subModMenuInterface in subModMenus.Values)
+            {
+                if (!subModMenuInterface.CheckIfExist(optionsController2))
+                {
+                    subModMenuInterface.CreateModMenu(optionsController2);
+                }
+                subModMenuInterface.SaveConfigFile();
+            }
+        }
+
+        private static IEnumerator SetTextButton(TextUI text,string texttoput)
+        {
             yield return new WaitForSeconds(0.1f);
             text.SetText(texttoput);
         }
 
-        public GameObject GetResolutionButton()
+        private static GameObject GetResolutionButton()
         {
             return Settings.transform.GetChild(0).gameObject;
         }
-        public void AddCheckLayout(Type type)
+        public static GameObject AddLayout(string namelayout, GameObject parent = null)
+        {
+            GameObject newlayout = new GameObject(namelayout);
+            if (parent == null)
+            {
+                newlayout.transform.SetParent(ModMenu.transform);
+            }
+            else
+            {
+                newlayout.transform.SetParent(parent.transform);
+
+            }
+            newlayout.transform.localScale = ModMenu.transform.localScale;
+
+            VerticalLayoutGroup verticalLayoutGroup = ModMenu.GetComponent<VerticalLayoutGroup>();
+            verticalLayoutGroup.childAlignment = TextAnchor.UpperCenter;
+            verticalLayoutGroup.CopyComponent(newlayout);
+            newlayout.transform.localPosition = Vector3.zero;
+            RectTransform rectTransform = newlayout.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition = Vector2.zero;
+            rectTransform.anchoredPosition3D = Vector2.zero;
+
+            return newlayout;
+        }
+        public static void AddCheckLayout(Type type)
         {
           //  GameObject newlayout = new GameObject(name);
             ModMenu.AddComponent(type);
@@ -201,11 +296,19 @@ namespace Followers.ModMenu
 
           //  return newlayout;
         }
-        public GameObject CreateText(string nameText, string textText)
+        public static GameObject CreateText(string nameText, string textText,GameObject parent=null)
         {
             GameObject resolution = GetResolutionButton();
             GameObject newbutton = UnityEngine.Object.Instantiate(resolution);
-            newbutton.transform.SetParent(ModMenu.transform);
+            if (parent == null)
+            {
+                newbutton.transform.SetParent(ModMenu.transform);
+            }
+            else
+            {
+                newbutton.transform.SetParent(parent.transform);
+
+            }
             newbutton.transform.localPosition = resolution.transform.localPosition;
             newbutton.transform.localScale = resolution.transform.localScale;
 
@@ -227,10 +330,14 @@ namespace Followers.ModMenu
             {
                 TextUI text = key.GetComponent<TextUI>();
                 RectTransform rectTransform= key.GetComponent<RectTransform>();
-                rectTransform.pivot = new Vector2(0, 0.5f);
-                rectTransform.sizeDelta = new Vector2(203f, 11f);
-
-
+                rectTransform.pivot = new Vector2(0,1f);
+                rectTransform.anchorMin = new Vector2(0, 1f);
+                rectTransform.anchorMax = new Vector2(1f, 1f);
+                text.alignment = TextAnchor.MiddleCenter;
+                rectTransform.sizeDelta = new Vector2(0f, 11f);
+                rectTransform.localPosition = new Vector3(0, rectTransform.localPosition.y, rectTransform.localPosition.z);
+                rectTransform.anchoredPosition = Vector2.zero;
+                rectTransform.anchoredPosition3D = Vector2.zero;
 
                 if (text != null)
                 {
@@ -252,13 +359,24 @@ namespace Followers.ModMenu
 
             return newbutton;
         }
-        public GameObject CreateButton(Type type,string nameButton, string textButton)
+
+
+
+
+        public static GameObject CreateButton(Type type,string nameButton, string textButton, GameObject parent=null)
         {
             GameObject resolution= GetResolutionButton();
             OptionResolution optionResolution= resolution.GetComponent<OptionResolution>();
 
             GameObject newbutton = UnityEngine.Object.Instantiate(resolution);
-            newbutton.transform.SetParent(ModMenu.transform);
+            if (parent == null)
+            {
+                newbutton.transform.SetParent(ModMenu.transform);
+            }
+            else
+            {
+                newbutton.transform.SetParent(parent.transform);
+            }
             newbutton.transform.localPosition = resolution.transform.localPosition;
             newbutton.transform.localScale = resolution.transform.localScale;
             newbutton.name= nameButton;

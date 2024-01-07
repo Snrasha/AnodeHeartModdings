@@ -5,19 +5,19 @@ using System.IO;
 using System.Reflection;
 using Followers.Scripts;
 using Followers.ModMenu;
+using Universal.IconLib;
+using Universal.ModMenuLib;
 
 namespace Followers
 {
 
-    class FollowersBehaviour
+    class FollowersPlugin
     {
 
-        public static Sprite ModIcon;
 
         public static Dictionary<Species,FollowerDict> OrbDicts;
 
         public static FollowersSubMenuGUI followersSubMenuGUI;
-        public static ModMenuGUI modMenuGUI;
 
         
 
@@ -95,7 +95,7 @@ namespace Followers
 
 
 
-        public FollowersBehaviour(BepInEx.Logging.ManualLogSource logger)
+        public FollowersPlugin(BepInEx.Logging.ManualLogSource logger)
         {
             _logger = logger;
         }
@@ -106,10 +106,12 @@ namespace Followers
         public void LoadAllTextures()
         {
 
-            modMenuGUI = new ModMenuGUI();
-            followersSubMenuGUI =new FollowersSubMenuGUI();
             OrbDicts = new Dictionary<Species, FollowerDict>();
-            ModIcon = CreateSprite("Icon.png");
+            Sprite ModIcon = CreateSprite("Icon.png");
+            IconGUI.AddIcon(new Icon("Followers", "Followers", ModIcon));
+
+            ModMenuGUI.AddSubMenu("Followers", followersSubMenuGUI);
+            
 
             string appdataPath = Application.dataPath+ "/../";
             //string appdataPath = Application.persistentDataPath;

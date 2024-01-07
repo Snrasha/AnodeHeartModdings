@@ -1,0 +1,12 @@
+D:\Documents\AnodeHeart\AnodeHeartModdings\Universal\bin\Debug\net46\Assembly-CSharp-Publicized.dll
+D:\Documents\AnodeHeart\AnodeHeartModdings\Universal\obj\Debug\net46\Universal.csproj.AssemblyReference.cache
+D:\Documents\AnodeHeart\AnodeHeartModdings\Universal\obj\Debug\net46\PluginInfo.cs
+D:\Documents\AnodeHeart\AnodeHeartModdings\Universal\obj\Debug\net46\Universal.GeneratedMSBuildEditorConfig.editorconfig
+D:\Documents\AnodeHeart\AnodeHeartModdings\Universal\obj\Debug\net46\Universal.AssemblyInfoInputs.cache
+D:\Documents\AnodeHeart\AnodeHeartModdings\Universal\obj\Debug\net46\Universal.AssemblyInfo.cs
+D:\Documents\AnodeHeart\AnodeHeartModdings\Universal\obj\Debug\net46\Universal.csproj.CoreCompileInputs.cache
+D:\Documents\AnodeHeart\AnodeHeartModdings\Universal\obj\Debug\net46\Universal.csproj.CopyComplete
+D:\Documents\AnodeHeart\AnodeHeartModdings\Universal\bin\Debug\net46\_Universal.dll
+D:\Documents\AnodeHeart\AnodeHeartModdings\Universal\bin\Debug\net46\_Universal.pdb
+D:\Documents\AnodeHeart\AnodeHeartModdings\Universal\obj\Debug\net46\_Universal.dll
+D:\Documents\AnodeHeart\AnodeHeartModdings\Universal\obj\Debug\net46\_Universal.pdb

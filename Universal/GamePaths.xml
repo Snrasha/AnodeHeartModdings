@@ -8,9 +8,5 @@
     <!-- Set this partial path to the game's Managed folder. Must contain a slash at the end. -->
 	<!-- Example: GameName_Data\Managed\ -->
     <ManagedFolder>AnodeHeart_Data\Managed\</ManagedFolder>
-
-    <BepinexFolder>BepInEx\plugins\</BepinexFolder>
-
-    
   </PropertyGroup>
 </Project>

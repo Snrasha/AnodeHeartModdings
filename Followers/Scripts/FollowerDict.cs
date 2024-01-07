@@ -92,7 +92,7 @@ namespace Followers.Scripts
                         frames = 4;
                     }
 
-                    Texture2D texture = FollowersBehaviour.CreateTextureFromFile(file, filename);
+                    Texture2D texture = FollowersPlugin.CreateTextureFromFile(file, filename);
                     TextureFollower textureOrb = new TextureFollower();
                     textureOrb.texture = texture;
                     textureOrb.hasDirection = hasDirection;

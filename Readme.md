@@ -23,6 +23,9 @@ https://github.com/BepInEx/BepInEx/releases
 - https://snrasha.github.io/ for some examples.
 - Unzip the content on the ModAssets
 
+# Universal
+Dependency Library, used for common function for modders. Implement also GUI.
+
 # Texture Replacement
 This is a universal mod for replace sprite, you need to add yourself sprites.
 Sprites need to be on the ModAssets of the game folder.
@@ -32,9 +35,6 @@ Let you quick save and quick load with f5 and f9. F4 let you open the save menu.
 
 # Followers
 Let you have tamas following you.
-
-
-
 
 # Modders:
 Use the publicizer for get a Assembly-CSharp-Publicized.dll from Assembly-CSharp.dll

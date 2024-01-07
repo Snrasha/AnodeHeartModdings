@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
+using Universal.ModMenuLib;
 
 namespace Followers.ModMenu
 {
-    public class OptionTamas2 : SettingsOption
+    public class OptionTamas2 : SettinsOptionTogglable
     {
         public string[] species;
         public override void load()
@@ -15,7 +16,7 @@ namespace Followers.ModMenu
             GameState gameState = GameState.Instance();
             if (gameState == null || gameState.Data == null || gameState.Data.Player == null)
             {
-                species= new string[] { FollowersBehaviour.followersSubMenuGUI.config.option_species };
+                species= new string[] { FollowersPlugin.followersSubMenuGUI.config.option_species };
             }
             List<Monster> monsters1 = gameState.Data.Player.MainParty;
             List<Monster> monsters2 = gameState.Data.Player.BenchedParty;
@@ -30,7 +31,7 @@ namespace Followers.ModMenu
             {
                 strings.Add(monster.Species);
             }
-            strings.Add(FollowersBehaviour.followersSubMenuGUI.config.option_species);
+            strings.Add(FollowersPlugin.followersSubMenuGUI.config.option_species);
             species=strings.ToArray();
         }
 
@@ -45,7 +46,7 @@ namespace Followers.ModMenu
             int i = 00;
             foreach(string specie in species)
             {
-                if (specie.Equals(FollowersBehaviour.followersSubMenuGUI.config.option_species))
+                if (specie.Equals(FollowersPlugin.followersSubMenuGUI.config.option_species))
                 {
                     return i;
                 }
@@ -56,7 +57,7 @@ namespace Followers.ModMenu
 
         public override void selectOption(int option)
         {
-            FollowersBehaviour.followersSubMenuGUI.config.option_species = species[option];
+            FollowersPlugin.followersSubMenuGUI.config.option_species = species[option];
         }
     }
 
