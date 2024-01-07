@@ -264,6 +264,7 @@ namespace TextureReplacement
                         SpritesCharacterIcons.Add("Characters/Icons/" + filename, CreateSpriteFromFile(file));
                         break;
                     case "PlayerCursor":
+                    case "PlayerIcon":
                         SpritesCharacterIcons.Add(filename, CreateSpriteFromFile(file));
                         break;
                     case "PlayerOnAirboat":

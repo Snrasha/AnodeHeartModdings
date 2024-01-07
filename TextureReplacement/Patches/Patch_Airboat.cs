@@ -3,8 +3,7 @@ using HarmonyLib;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Collections;
-using UnityEngine.UIElements;
-using System;
+using UnityEngine.UI;
 
 namespace TextureReplacement.Patches
 {
@@ -66,48 +65,26 @@ namespace TextureReplacement.Patches
 
 
     }
-    public class GadgetsHUD_showWorldMapEnumerator
+
+    [HarmonyPatch(typeof(AirboatTrackHUD), nameof(AirboatTrackHUD.Start))]
+    static class Patch_AirboatTrackHUD_Start
     {
-        [HarmonyPatch]
-        static class Patch_GadgetsHUD_showWorldMap
+        [HarmonyPostfix]
+        static void Postfix(AirboatTrackHUD __instance)
         {
-            [HarmonyTargetMethod]
-            static public MethodBase TargetMethod()
+
+            Sprite spritecursor = TextureReplacement.GetSprite(TextureReplacement.SpritesCharacterIcons, "PlayerIcon");
+            if (__instance.Icons != null && spritecursor != null)
             {
-                List<MethodInfo> methods = AccessTools.GetDeclaredMethods(typeof(GadgetsHUD));
-                foreach (MethodInfo method in methods)
-                {
-                    if (method.Name.Equals("showWorldMap"))
+                foreach(Image icon in  __instance.Icons) { 
+                    if (icon != null && icon.sprite.name.ToLower().Contains("player"))
                     {
-                        if (method.ReturnType == typeof(IEnumerator))
-                        {
-                            if (method.GetParameters().Length == 0)
-                            {
-                                return method;
-                            }
-                        }
+                        icon.sprite = spritecursor;
                     }
                 }
-                return AccessTools.Method(typeof(GadgetsHUD), "showWorldMap");
             }
 
-            [HarmonyPrefix]
-            static void Prefix(ref IEnumerator __result, GadgetsHUD __instance)
-            {
-                Sprite spritecursor = TextureReplacement.GetSprite(TextureReplacement.SpritesCharacterIcons, "PlayerCursor");
-
-                if (spritecursor != null && __instance!=null && __instance.WorldMap!=null && __instance.WorldMap.Player != null)
-                {
-                    UnityEngine.UI.Image image = __instance.WorldMap.Player.GetComponent<UnityEngine.UI.Image>();
-                    if (image != null)
-                    {
-                        image.sprite = spritecursor;
-                    }
-                }
-
-            }
         }
-
 
     }
 }
