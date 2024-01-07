@@ -1,6 +1,8 @@
 ﻿using BepInEx;
+using EasySave;
 using Followers.ModMenu;
 using HarmonyLib;
+using UnityEngine;
 using Universal.IconLib;
 
 namespace Universal
@@ -10,9 +12,9 @@ namespace Universal
     {
         Harmony harmony = new Harmony(PluginInfo.PLUGIN_GUID);
 
-       // public static ModMenuGUI ModMenuGUI;
-       // public static IconGUI IconGUI;
-
+        // public static ModMenuGUI ModMenuGUI;
+        // public static IconGUI IconGUI;
+        private PopupInfo popupInfo;
 
         private void Awake()
         {
@@ -20,6 +22,7 @@ namespace Universal
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
             harmony.PatchAll();
+            popupInfo = gameObject.AddComponent<PopupInfo>();
 
            // ModMenuGUI = new ModMenuGUI();
 

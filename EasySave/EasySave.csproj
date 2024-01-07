@@ -5,8 +5,8 @@
   <PropertyGroup>
     <TargetFramework>net46</TargetFramework>
     <AssemblyName>EasySave</AssemblyName>
-    <Description>My first plugin</Description>
-    <Version>1.0.0</Version>
+    <Description>Save with F4, or quicksave/load with f5/f9</Description>
+    <Version>1.1.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -34,8 +34,12 @@
       <Private>False</Private>
       <SpecificVersion>false</SpecificVersion>
     </Reference>
+    <Reference Include="_Universal">
+      <HintPath>..\Universal\bin\Debug\net46\_Universal.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
 
-    
+
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />

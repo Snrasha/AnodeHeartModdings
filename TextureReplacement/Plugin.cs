@@ -4,6 +4,7 @@ using HarmonyLib;
 namespace TextureReplacement
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+    [BepInDependency("_Universal")]
     public class Plugin : BaseUnityPlugin
     {
         Harmony harmony = new Harmony(PluginInfo.PLUGIN_GUID);

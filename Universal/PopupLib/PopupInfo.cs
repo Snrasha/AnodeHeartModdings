@@ -7,24 +7,38 @@ using UnityEngine;
 
 namespace EasySave
 {
-    internal class GuiText: MonoBehaviour
+    public class PopupInfo: MonoBehaviour
     {
 
-        public string currentTextToDisplay;
-        private float coldown = 0f;
-      //  private GUIStyle GUIStyle;
+        private static PopupInfo instance;
 
+        private string currentTextToDisplay;
+        private float coldown = 0f;
         public void Awake()
         {
-         //   GUIStyle=new GUIStyle();
-           // GUIStyle.
+            instance = this;
         }
 
-        public void Call(string text)
+        
+        public void OnDestroy()
         {
+            instance = null;
+        }
+        public void CallInner(string text)
+        {
+
+
             currentTextToDisplay = text;
             this.enabled = true;
             coldown = 3f;
+
+        }
+        public static void Call(string text)
+        {
+            if (instance != null)
+            {
+                instance.CallInner(text);
+            }
 
         }
 

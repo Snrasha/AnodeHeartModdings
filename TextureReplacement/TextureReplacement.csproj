@@ -6,7 +6,7 @@
     <TargetFramework>net46</TargetFramework>
     <AssemblyName>TextureReplacement</AssemblyName>
     <Description>Let you replace sprite</Description>
-    <Version>1.0.20</Version>
+    <Version>1.1.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -31,6 +31,10 @@
       <HintPath>$(GamePath)$(ManagedFolder)Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
       <SpecificVersion>false</SpecificVersion>
+    </Reference>
+    <Reference Include="_Universal">
+      <HintPath>..\Universal\bin\Debug\net46\_Universal.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

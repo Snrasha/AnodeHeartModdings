@@ -21,6 +21,10 @@ namespace Followers.ModMenu
         public static GameObject ModMenu;
         private static GameObject Settings;
 
+        public static Color overlaydefault = new Color(0.5377f, 0.5377f, 0.5377f);
+        public static Color overlaytitle = new Color(0.8377f, 0.5377f, 0.5377f);
+        public static Color overlayDesc = new Color(0.2377f, 0.2377f, 0.2377f);
+
         public static string name { get { return "ModMenu"; } } 
 
     public class ListenerOption
@@ -174,7 +178,7 @@ namespace Followers.ModMenu
                 ModMenu.transform.SetParent(frame.transform);
                 ModMenu.transform.localPosition= frame.transform.localPosition;
                 ModMenu.transform.localScale = frame.transform.localScale;
-
+                ModMenu.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.MinSize;
                 ModMenu.SetActive(false);
 
                 ModMenu.name = name;
@@ -275,6 +279,9 @@ namespace Followers.ModMenu
             VerticalLayoutGroup verticalLayoutGroup = ModMenu.GetComponent<VerticalLayoutGroup>();
             verticalLayoutGroup.childAlignment = TextAnchor.UpperCenter;
             verticalLayoutGroup.CopyComponent(newlayout);
+
+            newlayout.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.MinSize;
+
             newlayout.transform.localPosition = Vector3.zero;
             RectTransform rectTransform = newlayout.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = Vector2.zero;
@@ -296,7 +303,12 @@ namespace Followers.ModMenu
 
           //  return newlayout;
         }
-        public static GameObject CreateText(string nameText, string textText,GameObject parent=null)
+        public static GameObject CreateText(string nameText, string textText, GameObject parent = null)
+        {
+            return CreateText(nameText, textText, overlaydefault, parent);
+        }
+
+            public static GameObject CreateText(string nameText, string textText, Color overlay, GameObject parent = null)
         {
             GameObject resolution = GetResolutionButton();
             GameObject newbutton = UnityEngine.Object.Instantiate(resolution);
@@ -311,6 +323,7 @@ namespace Followers.ModMenu
             }
             newbutton.transform.localPosition = resolution.transform.localPosition;
             newbutton.transform.localScale = resolution.transform.localScale;
+            newbutton.GetComponent<Image>().color = overlay;
 
             newbutton.name = nameText;
             GameObject key = null;

@@ -6,6 +6,7 @@ using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
 using TextureReplacement.Scripts;
+using Universal.IconLib;
 
 namespace TextureReplacement
 {
@@ -20,7 +21,6 @@ namespace TextureReplacement
         public static Dictionary<string, Sprite> SpritesAltIcons;
         public static Dictionary<string, Sprite> SpritesCharacterIcons;
 
-        public static Sprite ModIcon;
 
         public static OrbDict OrbDict;
 
@@ -79,7 +79,8 @@ namespace TextureReplacement
 
         public void LoadAllTextures()
         {
-            ModIcon = CreateSprite("Icon.png");
+            Sprite ModIcon = CreateSprite("Icon.png");
+            IconGUI.AddIcon(new Icon("TextureReplacement", "TextureReplacement", ModIcon));
 
             SpritesFronts = new Dictionary<string, Sprite>();
             SpritesIcons = new Dictionary<string, Sprite>();

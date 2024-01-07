@@ -5,10 +5,14 @@ using System;
 using UnityEngine;
 using HarmonyLib;
 using System.Collections;
+using Universal.IconLib;
+using Followers.ModMenu;
 
 namespace EasySave
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+    [BepInDependency("_Universal")]
+
     public class Plugin : BaseUnityPlugin
     {
         Harmony harmony = new Harmony(PluginInfo.PLUGIN_GUID);
@@ -16,9 +20,8 @@ namespace EasySave
         private bool currentlyLoading = false;
         private bool currentlySaving = false;
         public static int slotSave = -100;
-        private GuiText guiText;
 
-        public static Sprite ModIcon;
+        private EasySaveSubMenuGUI easySaveSubMenuGUI = new EasySaveSubMenuGUI();
 
         
 
@@ -26,14 +29,15 @@ namespace EasySave
         {
             harmony.PatchAll();
 
-            guiText= gameObject.AddComponent<GuiText>();
-
-            
-
-            ModIcon = CreateSprite("Icon.png");
+            Sprite ModIcon = CreateSprite("Icon.png");
+            IconGUI.AddIcon(new Icon("EasySave", "EasySave", ModIcon));
 
             // Plugin startup logic
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+            easySaveSubMenuGUI = new EasySaveSubMenuGUI();
+
+            ModMenuGUI.AddSubMenu("EasySave", easySaveSubMenuGUI);
+
         }
 
         public bool checkIfCanSave()
@@ -80,7 +84,7 @@ namespace EasySave
                     }
 
                     Debug.Log("F4 input");
-                    guiText.Call("Save Menu");
+                    PopupInfo.Call("Save Menu");
                     //QuickSave
                     StartCoroutine(ShowSavingMenu());
                 }
@@ -93,7 +97,7 @@ namespace EasySave
                     Debug.Log("F5 input");
                     currentlySaving = true;
                     //QuickSave
-                    guiText.Call("Quick Save");
+                    PopupInfo.Call("Quick Save");
 
                   //  guiText.Call("Quick Load");
 
@@ -103,7 +107,7 @@ namespace EasySave
                 {
                     Debug.Log("F9 input");
                     currentlyLoading = true;
-                    guiText.Call("Quick Load");
+                    PopupInfo.Call("Quick Load");
 
                     StartCoroutine(QuickLoadGame(slotSave));
                 }
