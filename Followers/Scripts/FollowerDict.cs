@@ -15,6 +15,10 @@ namespace Followers.Scripts
         public TextureFollower textureOrbRun;
         public TextureFollower textureOrbWalk;
 
+        public TextureFollower textureOrbIdleAltColor;
+        public TextureFollower textureOrbRunAltColor;
+        public TextureFollower textureOrbWalkAltColor;
+
         public TextureFollower textureOrbShadowIdle;
         public TextureFollower textureOrbShadowRun;
         public TextureFollower textureOrbShadowWalk;
@@ -79,7 +83,7 @@ namespace Followers.Scripts
                     bool walk = filename.Contains("Walk");
                     bool run = filename.Contains("Run");
                     bool shadow = filename.Contains("Shadow");
-
+                    bool altcolor = filename.Contains("AltColor");
 
                     string[] split = filename.Split('_');
                     int frames;
@@ -98,7 +102,21 @@ namespace Followers.Scripts
                     textureOrb.hasDirection = hasDirection;
                     textureOrb.frames = frames;
 
-                    if (shadow)
+                    if (altcolor) {
+                        if (walk)
+                        {
+                            textureOrbWalkAltColor = textureOrb;
+                        }
+                        else if (run)
+                        {
+                            textureOrbRunAltColor = textureOrb;
+                        }
+                        else
+                        {
+                            textureOrbIdleAltColor = textureOrb;
+                        }
+                    }
+                    else if (shadow)
                     {
                         if (walk)
                         {
@@ -148,10 +166,18 @@ namespace Followers.Scripts
             {
                 textureOrbShadowRun = textureOrbShadowWalk;
             }
+            if (textureOrbRunAltColor != null && textureOrbWalkAltColor == null)
+            {
+                textureOrbWalkAltColor = textureOrbRunAltColor;
+            }
+            if (textureOrbRunAltColor == null && textureOrbWalkAltColor != null)
+            {
+                textureOrbRunAltColor = textureOrbWalkAltColor;
+            }
         }
 
 
-        public bool SetFollower(FollowerBehaviour orbBehaviour, GameObject follow, float keepdistance, float speed)
+        public bool SetFollower(FollowerBehaviour orbBehaviour, GameObject follow, float keepdistance, float speed, bool altcolor)
         {
 
             //Debug.Log(textureOrbIdle + " " + follow+" "+keepdistance);
@@ -171,10 +197,19 @@ namespace Followers.Scripts
         orbBehaviour.SetCustomShadow(textureOrbShadowIdle != null || textureOrbShadowWalk != null);
                 orbBehaviour.Duration = (float)floaty.duration;
                 orbBehaviour.SetFollow(follow.transform);
-                orbBehaviour.SetFloating(!floaty.isGround, keepdistance, speed);
-                orbBehaviour.SetSprites(textureOrbIdle, 0);
-                orbBehaviour.SetSprites(textureOrbWalk, 1);
-                orbBehaviour.SetSprites(textureOrbRun, 2);
+                orbBehaviour.SetFollower(!floaty.isGround, keepdistance, speed);
+                if (altcolor && textureOrbIdleAltColor!=null)
+                {
+                    orbBehaviour.SetSprites(textureOrbIdleAltColor, 0);
+                    orbBehaviour.SetSprites(textureOrbWalkAltColor, 1);
+                    orbBehaviour.SetSprites(textureOrbRunAltColor, 2);
+                }
+                else
+                {
+                    orbBehaviour.SetSprites(textureOrbIdle, 0);
+                    orbBehaviour.SetSprites(textureOrbWalk, 1);
+                    orbBehaviour.SetSprites(textureOrbRun, 2);
+                }
                 orbBehaviour.SetSprites(textureOrbShadowIdle, 3);
                 orbBehaviour.SetSprites(textureOrbShadowWalk, 4);
                 orbBehaviour.SetSprites(textureOrbShadowRun, 5);

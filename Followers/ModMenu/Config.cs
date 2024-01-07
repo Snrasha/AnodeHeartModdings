@@ -10,6 +10,7 @@ namespace Followers.ModMenu
     public class Config
     {
         public int option_followers;
+        public bool altcolor;
         public string option_species;
 
     }

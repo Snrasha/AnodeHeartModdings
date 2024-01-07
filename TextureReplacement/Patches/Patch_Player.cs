@@ -176,6 +176,26 @@ namespace TextureReplacement.Patches
 
     // 
 
+    [HarmonyPatch(typeof(CameraController), nameof(CameraController.SetToPlayer))]
+    static class Patch_CameraController_SetToPlayer
+    {
+
+        [HarmonyPostfix]
+        static void Postfix()
+        {
+            GameObject orb = GameObject.FindGameObjectWithTag("Floaty");
+            if (orb != null)
+            {
+                OrbBehaviour orbBehaviour = orb.GetComponent<OrbBehaviour>();
+                if (orbBehaviour != null)
+                {
+                    orbBehaviour.UnlockMovement();
+                }
+            }
+
+        }
+    }
+
     [HarmonyPatch(typeof(GameCharacterAnimator), nameof(GameCharacterAnimator.Load))]
     static class Patch_GameCharacterAnimator_Load
     {

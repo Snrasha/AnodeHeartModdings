@@ -41,7 +41,7 @@ namespace Followers.Scripts
                 orbBehaviours[i]=gameobject.AddComponent<FollowerBehaviour>();
                 orbBehaviours[i].enabled = false;
 
-                orbBehaviours[i].SetOthersComponent(player.transform);
+                orbBehaviours[i].SetOthersComponent(player.transform, floaty.transform);
 
             }
         }
@@ -83,11 +83,23 @@ namespace Followers.Scripts
 
             return orbDict;
         }
+        public void TeleportFollowers(GameObject togo)
+        {
+            if (togo != null)
+            {
+                for (int inc =0; inc < orbBehaviours.Length; inc++) {
+                    orbBehaviours[inc].UnlockMovement();
+                }
+            }
+        }
+
+
         public void SetupFollowers(GameObject firstfollow)
         {
             GameObject follow = firstfollow;
             float keepdistance = 2.5f;
-            float speed = 5f;
+
+            float speed =6f;
             int inc = 0;
             Debug.Log("SetupFollowers");
             Config config = FollowersPlugin.followersSubMenuGUI.config;
@@ -102,7 +114,7 @@ namespace Followers.Scripts
                     FollowerDict orbDict = GetOrbDictFromMonster(monster);
                     if (orbDict != null)
                     {
-                        if (orbDict.SetFollower(orbBehaviours[inc], follow, keepdistance, speed))
+                        if (orbDict.SetFollower(orbBehaviours[inc], follow, keepdistance, speed, monster.AltColor))
                         {
                             orbBehaviours[inc].transform.position = follow.transform.position;
                             orbBehaviours[inc].enabled = true;
@@ -111,6 +123,7 @@ namespace Followers.Scripts
                             orbBehaviours[inc].UnlockMovement();
                             follow = orbBehaviours[inc].gameObject;
                             keepdistance = 1f;
+                            speed = 10f;
                             inc++;
                         }
                     }
@@ -125,6 +138,7 @@ namespace Followers.Scripts
             else
             {
                 string speciestr = config.option_species;
+                bool altcolor = config.altcolor;
                 Species specie;
                 if (Enum.IsDefined(typeof(Species), speciestr))
                 {
@@ -134,11 +148,12 @@ namespace Followers.Scripts
                 {
                     specie = Species.Beebee;
                 }
+            
 
-                FollowerDict orbDict = GetOrbDictFromSpecies(specie);
+                    FollowerDict orbDict = GetOrbDictFromSpecies(specie);
                 if (orbDict != null)
                 {
-                    if (orbDict.SetFollower(orbBehaviours[inc], follow, keepdistance, speed))
+                    if (orbDict.SetFollower(orbBehaviours[inc], follow, keepdistance, speed, altcolor))
                     {
                         orbBehaviours[inc].transform.position = follow.transform.position;
                         orbBehaviours[inc].enabled = true;

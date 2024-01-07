@@ -82,9 +82,9 @@ namespace TextureReplacement.Scripts
                     Rigidbody2D rigidbody2Dfollow = this.follow.GetComponent<Rigidbody2D>();
 
 
-                    this.gameObject.layer = follow.gameObject.layer;
+                    //this.gameObject.layer = follow.gameObject.layer;
 
-                    Physics2D.IgnoreLayerCollision(follow.gameObject.layer, follow.gameObject.layer, true);
+                   // Physics2D.IgnoreLayerCollision(follow.gameObject.layer, follow.gameObject.layer, true);
 
 
 

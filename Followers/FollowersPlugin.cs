@@ -56,6 +56,18 @@ namespace Followers
             }
             return null;
         }
+        public static void TeleportFollowersGroup()
+        {
+            GameObject orb = GameObject.FindGameObjectWithTag("Floaty");
+            Transform followersGroup = orb.transform.parent.Find("Followers");
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+            if (followersGroup != null)
+            {
+                FollowerGroup followerBehaviour = followersGroup.GetComponent<FollowerGroup>();
+                followerBehaviour.TeleportFollowers(player);
+            }
+        }
 
         public static void UpdateFollowersGroup()
         {

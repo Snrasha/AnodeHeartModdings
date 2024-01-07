@@ -33,7 +33,7 @@ namespace Followers.Scripts
         private bool isfloating = false;
 
 
-        public FollowMovement(FollowerBehaviour followerBehaviour, Rigidbody2D rigidbody2D, bool isfloating, float keepdistance,float speed)
+        public FollowMovement(FollowerBehaviour followerBehaviour, Rigidbody2D rigidbody2D, bool isfloating, float keepdistance,float speed )
         {
             this.followerBehaviour = followerBehaviour;
             this.rigidbody2D = rigidbody2D;
@@ -102,15 +102,15 @@ namespace Followers.Scripts
                 {
                     return;
                 }
-                if (!this.isfloating)
-                {
+                //if (!this.isfloating)
+                //{
 
-                    countBlocked += Time.deltaTime;
-                    if (countBlocked > 1f)
-                    {
-                        rigidbody2D.isKinematic = true;
-                    }
-                }
+                //    countBlocked += Time.deltaTime;
+                //    if (countBlocked > 1f)
+                //    {
+                //        rigidbody2D.isKinematic = true;
+                //    }
+                //}
 
                 // Move to the point of the path.
                 Vector3 vector = this.floaty.position.DirectionTo(togo);
@@ -135,7 +135,7 @@ namespace Followers.Scripts
             {
                 followPos.RemoveAt(0);
                 countBlocked = 0;
-                rigidbody2D.isKinematic = this.isfloating;
+                //rigidbody2D.isKinematic = this.isfloating;
 
                 if (followPos.Count == 0)
                 {
@@ -162,14 +162,14 @@ namespace Followers.Scripts
             {
                 followPos.RemoveRange(0, index);
             }
-            if (!isfloating)
-            {
-                RaycastHit2D raycastHit2D = Physics2D.Raycast(this.floaty.position, togo - this.floaty.position, sqrKeepDistance * 2, 0);
-                if (raycastHit2D.collider != null)
-                {
-                    rigidbody2D.isKinematic = true;
-                }
-            }
+            //if (!isfloating)
+            //{
+            //    RaycastHit2D raycastHit2D = Physics2D.Raycast(this.floaty.position, togo - this.floaty.position, sqrKeepDistance * 2, 0);
+            //    if (raycastHit2D.collider != null)
+            //    {
+            //        rigidbody2D.isKinematic = true;
+            //    }
+            //}
 
                 return togo;
         }

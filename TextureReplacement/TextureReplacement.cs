@@ -318,7 +318,7 @@ namespace TextureReplacement
                     File.WriteAllBytes(to, bytes);
                 }
             }
-            catch (Exception e)
+            catch
             {
             }
         }
@@ -340,7 +340,7 @@ namespace TextureReplacement
                     //tex.LoadImage(bytes);
                 }
             }
-            catch (Exception e)
+            catch
             {
             }
 
@@ -387,7 +387,7 @@ namespace TextureReplacement
                     //tex.LoadImage(bytes);
                 }
             }
-            catch (Exception e)
+            catch
             {
             }
 

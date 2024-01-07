@@ -30,7 +30,7 @@ namespace TextureReplacement.Scripts
         //private Vector3 UnlockTest;
         private bool isUnlocked = false;
 
-        private float countBlocked = 0;
+        //private float countBlocked = 0;
 
 
         public FollowMovement(OrbBehaviour orbBehaviour, Rigidbody2D rigidbody2D, bool flatland)
@@ -64,7 +64,7 @@ namespace TextureReplacement.Scripts
                 prevPos = follow.position;
             }
             float num5 = floaty.position.DistanceTo(follow.position);
-            if (num5 > 50)
+            if (num5 > 25)
             {
                 rigidbody2D.velocity = Vector2.zero;
                 floaty.position = follow.position;
@@ -98,11 +98,11 @@ namespace TextureReplacement.Scripts
                     return;
                 }
 
-                    countBlocked += Time.deltaTime;
-                    if (countBlocked > 1f)
-                    {
-                        rigidbody2D.isKinematic = true;
-                    }
+                    //countBlocked += Time.deltaTime;
+                    //if (countBlocked > 1f)
+                    //{
+                    //    rigidbody2D.isKinematic = true;
+                    //}
                 
 
                 // Move to the point of the path.
@@ -129,8 +129,8 @@ namespace TextureReplacement.Scripts
 
 
                 followPos.RemoveAt(0);
-                countBlocked = 0;
-                rigidbody2D.isKinematic = false;
+                //countBlocked = 0;
+                //rigidbody2D.isKinematic = false;
 
                 if (followPos.Count == 0)
                 {

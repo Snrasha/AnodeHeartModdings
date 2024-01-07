@@ -56,7 +56,7 @@ namespace Followers.Scripts
         {
             follow = transformFollow;
         }
-        public void SetOthersComponent(Transform player)
+        public void SetOthersComponent(Transform player, Transform floaty)
         {
             //if (hasCustomShadow)
             //{
@@ -100,9 +100,9 @@ namespace Followers.Scripts
                 Rigidbody2D rigidbody2Dfollow = player.GetComponent<Rigidbody2D>();
 
 
-                this.gameObject.layer = player.gameObject.layer;
+                this.gameObject.layer = floaty.gameObject.layer;
 
-                Physics2D.IgnoreLayerCollision(player.gameObject.layer, player.gameObject.layer, true);
+              //  Physics2D.IgnoreLayerCollision(player.gameObject.layer, player.gameObject.layer, true);
 
                 circleCollider2D.sharedMaterial = new PhysicsMaterial2D();
                 //circleCollider2D.sharedMaterial.friction = 1f;
@@ -135,7 +135,7 @@ namespace Followers.Scripts
 
 
 
-        public void SetFloating(bool isFloating, float keepdistance, float speed)
+        public void SetFollower(bool isFloating, float keepdistance, float speed)
         {
             if (followMovement != null)
             {

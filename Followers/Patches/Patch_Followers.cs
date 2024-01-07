@@ -125,11 +125,22 @@ namespace Followers.Patches
 
         }
     }
+    [HarmonyPatch(typeof(CameraController), nameof(CameraController.SetToPlayer))]
+    static class Patch_CameraController_SetToPlayer
+    {
 
+        [HarmonyPostfix]
+        static void Postfix()
+        {
+            FollowersPlugin.TeleportFollowersGroup();
+
+        }
+    }
 
 
 
     
+
 
 
     [HarmonyPatch(typeof(Player), nameof(Player.SwitchParty))]

@@ -58,6 +58,21 @@ namespace Followers.ModMenu
         public override void selectOption(int option)
         {
             FollowersPlugin.followersSubMenuGUI.config.option_species = species[option];
+
+            if (GameState.Instance() != null && GameState.Instance().Data != null && GameState.Instance().Data.Player != null)
+            {
+                List<Monster> monsters = GameState.Instance().Data.Player.MainParty;
+
+                if (monsters.Count<=option)
+                {
+                    return;
+                }
+                else
+                {
+                   
+                    FollowersPlugin.followersSubMenuGUI.config.altcolor = monsters[option].AltColor;
+                }
+            }
         }
     }
 
