@@ -61,6 +61,26 @@ namespace Followers.Scripts
 
             return orbDict;
         }
+        public FollowerDict SearchInEvolution(Species currentSpecies)
+        {
+            foreach (Species item in currentSpecies.Evolutions())
+            {
+
+                if (FollowersPlugin.OrbDicts.ContainsKey(item))
+                {
+                    return FollowersPlugin.OrbDicts[item];
+                }
+                else
+                {
+                    FollowerDict followerDict = SearchInEvolution(item);
+                    if (followerDict != null)
+                    {
+                        return followerDict;
+                    }
+                }
+            }
+            return null;
+        }
         public FollowerDict GetOrbDictFromSpecies(Species specie)
         {
             FollowerDict orbDict = null;
@@ -72,10 +92,22 @@ namespace Followers.Scripts
             }
             else
             {
+                //MonsterLibrary.Data[specie].Evolutions
+
+             
+
+
                 if (MonsterLibrary.Data.ContainsKey(specie)){
-                    if (FollowersPlugin.OrbDicts.ContainsKey(MonsterLibrary.Data[specie].BaseAncestor))
+                    MonsterLibrary libMainSpecie = MonsterLibrary.Data[specie];
+                    if (FollowersPlugin.OrbDicts.ContainsKey(libMainSpecie.BaseAncestor))
                     {
-                        orbDict = FollowersPlugin.OrbDicts[MonsterLibrary.Data[specie].BaseAncestor];
+                        orbDict = FollowersPlugin.OrbDicts[libMainSpecie.BaseAncestor];
+                    }
+                    else
+                    {
+                        Species baseancestor = MonsterLibrary.Data[specie].BaseAncestor;
+                        orbDict = SearchInEvolution(baseancestor);
+
                     }
                 }
             }
@@ -83,6 +115,7 @@ namespace Followers.Scripts
 
             return orbDict;
         }
+
         public void TeleportFollowers(GameObject togo)
         {
             if (togo != null)
