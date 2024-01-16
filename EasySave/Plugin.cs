@@ -125,12 +125,20 @@ namespace EasySave
             MainMenuHUD mainMenuHUD = UnityEngine.Object.FindObjectOfType<MainMenuHUD>();
             if (mainMenuHUD != null)
             {
-                FreezeEvent.Set(freeze: true);
-              //  mainMenuHUD.Group.alpha = 1f;
-              //  mainMenuHUD.Group.blocksRaycasts = true;
-                SaveGameScreen saveGameScreen = UnityEngine.Object.Instantiate(mainMenuHUD.SaveGameScreenPrefab, UnityEngine.Object.FindObjectOfType<Canvas>().transform);
+          //      Debug.Log(mainMenuHUD);
+             //   FreezeEvent.Set(freeze: true);
+                //  mainMenuHUD.Group.alpha = 1f;
+                //  mainMenuHUD.Group.blocksRaycasts = true;
+
+                
+
+               // SaveGameScreen saveGameScreen = UnityEngine.Object.Instantiate(mainMenuHUD.SaveGameScreenPrefab, UnityEngine.Object.FindObjectOfType<Canvas>().transform);
+                SaveGameScreen saveGameScreen = UnityEngine.Object.Instantiate(mainMenuHUD.SaveGameScreenPrefab, mainMenuHUD.transform.parent.parent.transform);
+
+             //   Debug.Log(saveGameScreen);
+
                 yield return saveGameScreen.Load("QuickSave", saving: true);
-                FreezeEvent.Set(freeze: false);
+              //  FreezeEvent.Set(freeze: false);
             }
         }
 

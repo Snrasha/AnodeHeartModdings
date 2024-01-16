@@ -27,15 +27,22 @@ namespace Universal.IconLib
         public static void AddIconsToSaveSlot(SaveSlotHUD __instance)
         {
             int shift = 0;
+            bool hasicon;
             foreach (Icon icon in icons.Values)
             {
+                hasicon = false;
                 GameObject moddedUI = new GameObject(prefix + icon.NameMod, typeof(RectTransform));
                 foreach (Transform child in __instance.gameObject.transform)
                 {
                     if (child.gameObject.name.Equals(prefix + icon.NameMod))
                     {
-                        continue;
+                        hasicon = true;
+                        break;
                     }
+                }
+                if(hasicon)
+                {
+                    continue;
                 }
 
                 moddedUI.transform.SetParent(__instance.gameObject.transform, false);

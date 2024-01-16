@@ -67,18 +67,32 @@ namespace Followers.Scripts
                         shadowSpriteRenderer = child.GetComponent<SpriteRenderer>();
                     }
                 }
+            //SpriteRenderer shadowFromPlayer = null;
+            //foreach (Transform child in player.transform)
+            //{
+            //    if (child.gameObject.name.Equals("Shadow"))
+            //    {
+            //        shadowFromPlayer = child.GetComponent<SpriteRenderer>();
+            //    }
+            //}
 
-                if (shadowSpriteRenderer == null)
+            if (shadowSpriteRenderer == null)
                 {
                     GameObject shadow = new GameObject("Shadow");
                     shadowSpriteRenderer = shadow.AddComponent<SpriteRenderer>();
                     shadow.transform.parent = this.transform;
+
+
                     //   shadowSpriteRenderer.material=Material.CreateWithString()
 
                 }
+            //if (shadowFromPlayer != null)
+            //{
+            //    shadowSpriteRenderer.material=shadowFromPlayer.material;
+            //}
                 shadowSpriteRenderer.drawMode = spriteRenderer.drawMode;
                 shadowSpriteRenderer.size = spriteRenderer.size;
-                shadowSpriteRenderer.material = spriteRenderer.material;
+            shadowSpriteRenderer.material = spriteRenderer.material;
                 shadowSpriteRenderer.sortingOrder = -1;
                 shadowSpriteRenderer.transform.localPosition = Vector3.zero;
                 shadowSpriteRenderer.transform.localScale = Vector3.one;

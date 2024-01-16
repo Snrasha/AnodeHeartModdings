@@ -6,7 +6,7 @@
     <TargetFramework>net46</TargetFramework>
     <AssemblyName>EasySave</AssemblyName>
     <Description>Save with F4, or quicksave/load with f5/f9</Description>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -20,9 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>$(GamePath)$(ManagedFolder)Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>false</SpecificVersion>
+      <HintPath>..\..\Delivery\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(GamePath)$(ManagedFolder)UnityEngine.UI.dll</HintPath>
