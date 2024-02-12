@@ -7,6 +7,7 @@ using Followers.Scripts;
 using Followers.ModMenu;
 using Universal.IconLib;
 using Universal.ModMenu;
+using System.Numerics;
 
 namespace Followers
 {
@@ -58,14 +59,27 @@ namespace Followers
         }
         public static void TeleportFollowersGroup()
         {
+
             GameObject orb = GameObject.FindGameObjectWithTag("Floaty");
+            if (orb == null)
+            {
+                return;
+            }
             Transform followersGroup = orb.transform.parent.Find("Followers");
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-            if (followersGroup != null)
+            if (player != null)
             {
-                FollowerGroup followerBehaviour = followersGroup.GetComponent<FollowerGroup>();
-                followerBehaviour.TeleportFollowers(player);
+
+                if (followersGroup != null)
+                {
+                    FollowerGroup followerBehaviour = followersGroup.GetComponent<FollowerGroup>();
+
+                    if (followerBehaviour != null)
+                    {
+                        followerBehaviour.TeleportFollowers(player);
+                    }
+
+                }
             }
         }
 
@@ -226,7 +240,7 @@ namespace Followers
             tex.Apply();
             tex.name = path;
             //Log("TextureReplacement v tex " + tex.isReadable, true);
-            Vector2 standardPivot = new Vector2(0.5f, 0.5f);
+            UnityEngine.Vector2 standardPivot = new UnityEngine.Vector2(0.5f, 0.5f);
             //Sprite sprite = Sprite.Create(text,new Rect(0,0,text.width,text.height), standardPivot,16);
             Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), standardPivot, 16);
             sprite.name = tex.name;

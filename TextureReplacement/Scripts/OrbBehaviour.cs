@@ -51,7 +51,7 @@ namespace TextureReplacement.Scripts
         public void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
-            spriteRenderer.sortingOrder = 0;
+            spriteRenderer.sortingOrder = -1;
         }
        public void SetFollow(Transform transformFollow)
         {
@@ -137,10 +137,11 @@ namespace TextureReplacement.Scripts
                     //   shadowSpriteRenderer.material=Material.CreateWithString()
 
                 }
+              //  spriteRenderer.sortingOrder--;
+                shadowSpriteRenderer.sortingOrder = spriteRenderer.sortingOrder - 1;
                 shadowSpriteRenderer.drawMode = spriteRenderer.drawMode;
                 shadowSpriteRenderer.size = spriteRenderer.size;
                 shadowSpriteRenderer.material = spriteRenderer.material;
-                shadowSpriteRenderer.sortingOrder = -1;
                 shadowSpriteRenderer.transform.localPosition = Vector3.zero;
                 shadowSpriteRenderer.transform.localScale = Vector3.one;
                 shadowSpriteRenderer.transform.localRotation = Quaternion.identity;
