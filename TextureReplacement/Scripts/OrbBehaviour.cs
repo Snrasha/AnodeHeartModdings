@@ -145,7 +145,7 @@ namespace TextureReplacement.Scripts
                 shadowSpriteRenderer.transform.localPosition = Vector3.zero;
                 shadowSpriteRenderer.transform.localScale = Vector3.one;
                 shadowSpriteRenderer.transform.localRotation = Quaternion.identity;
-                shadowSpriteRenderer.color = new Color(1f, 1f, 1f, .55f);
+                shadowSpriteRenderer.color = new Color(1f, 1f, 1f, .8f);
                 shadowSpriteRenderer.sortingLayerID = spriteRenderer.sortingLayerID;
                 shadowSpriteRenderer.sortingGroupID = spriteRenderer.sortingGroupID;
                 shadowSpriteRenderer.renderingLayerMask = spriteRenderer.renderingLayerMask;
