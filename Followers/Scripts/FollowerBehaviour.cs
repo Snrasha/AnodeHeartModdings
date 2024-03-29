@@ -113,6 +113,8 @@ namespace Followers.Scripts
                 CircleCollider2D circleCollider2Dfollow = player.GetComponent<CircleCollider2D>();
                 Rigidbody2D rigidbody2Dfollow = player.GetComponent<Rigidbody2D>();
 
+                circleCollider2D.enabled = false;
+
 
                 this.gameObject.layer = floaty.gameObject.layer;
 

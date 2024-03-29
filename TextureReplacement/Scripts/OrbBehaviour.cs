@@ -80,11 +80,11 @@ namespace TextureReplacement.Scripts
                     rigidbody2D = this.gameObject.AddComponent<Rigidbody2D>();
                     CapsuleCollider2D capsuleCollider2D2Dfollow = this.follow.GetComponent<CapsuleCollider2D>();
                     Rigidbody2D rigidbody2Dfollow = this.follow.GetComponent<Rigidbody2D>();
-
+                    capsuleCollider2D.enabled = false;
 
                     //this.gameObject.layer = follow.gameObject.layer;
 
-                   // Physics2D.IgnoreLayerCollision(follow.gameObject.layer, follow.gameObject.layer, true);
+                    // Physics2D.IgnoreLayerCollision(follow.gameObject.layer, follow.gameObject.layer, true);
 
 
 
