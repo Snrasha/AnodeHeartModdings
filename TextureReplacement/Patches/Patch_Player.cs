@@ -221,6 +221,8 @@ namespace TextureReplacement.Patches
 
 
                 bool isFlatLand = false;
+                bool isAztland = false;
+
                 bool isLowRes = false;
 
 
@@ -238,6 +240,12 @@ namespace TextureReplacement.Patches
                     {
                         isFlatLand = true;
                     }
+
+                    if (gameCharacterAnimation.Texture.name.Contains("Aztland"))
+                    {
+                        isAztland = true;
+                    }
+                    
                     if (gameCharacterAnimation.Texture.name.Contains("Lowres"))
                     {
                         isLowRes = true;
@@ -280,7 +288,7 @@ namespace TextureReplacement.Patches
                     }
                 }
 
-                TextureReplacement.OrbDict.ReplaceFloaty(isFlatLand, isLowRes);
+                TextureReplacement.OrbDict.ReplaceFloaty(isFlatLand, isLowRes, isAztland);
 
 
 

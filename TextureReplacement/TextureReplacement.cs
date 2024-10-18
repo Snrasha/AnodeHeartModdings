@@ -279,6 +279,9 @@ namespace TextureReplacement
                     case "Player_Sleep":
                     case "Player_Fainted":
                     case "Player_Drop":
+                    case "Player_Aztland_Idle":
+                    case "Player_Aztland_Run":
+                        
                     case "Player_Flatland_Idle":
                     case "Player_Flatland_Run":
                     //  case "PlayerShadow":

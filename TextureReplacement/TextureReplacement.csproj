@@ -6,7 +6,7 @@
     <TargetFramework>net46</TargetFramework>
     <AssemblyName>TextureReplacement</AssemblyName>
     <Description>Let you replace sprite</Description>
-    <Version>1.1.5</Version>
+    <Version>1.1.6</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

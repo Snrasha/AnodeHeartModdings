@@ -20,6 +20,10 @@ namespace TextureReplacement.Scripts
         public TextureOrb textureOrbFlatLandRun;
         public TextureOrb textureOrbFlatLandWalk;
 
+        public TextureOrb textureOrbAztlandIdle;
+        public TextureOrb textureOrbAztlandRun;
+        public TextureOrb textureOrbAztlandWalk;
+
         public TextureOrb textureOrbShadowIdle;
         public TextureOrb textureOrbShadowRun;
         public TextureOrb textureOrbShadowWalk;
@@ -92,6 +96,7 @@ namespace TextureReplacement.Scripts
                 if (filename.StartsWith("Orb"))
                 {
                     bool flatland = filename.Contains("Flatland");
+                    bool aztland = filename.Contains("Aztland");
                     bool hasDirection = filename.StartsWith("Orb4");
                     bool walk = filename.Contains("Walk");
                     bool run = filename.Contains("Run");
@@ -145,6 +150,21 @@ namespace TextureReplacement.Scripts
                             textureOrbFlatLandIdle = textureOrb;
                         }
                     }
+                    else if (aztland)
+                    {
+                        if (walk)
+                        {
+                            textureOrbAztlandWalk = textureOrb;
+                        }
+                        else if (run)
+                        {
+                            textureOrbAztlandRun = textureOrb;
+                        }
+                        else
+                        {
+                            textureOrbAztlandIdle = textureOrb;
+                        }
+                    }
                     else
                     {
                         if (walk)
@@ -172,6 +192,14 @@ namespace TextureReplacement.Scripts
             {
                 textureOrbFlatLandRun = textureOrbFlatLandWalk;
             }
+            if (textureOrbAztlandRun != null && textureOrbAztlandWalk == null)
+            {
+                textureOrbAztlandWalk = textureOrbAztlandRun;
+            }
+            if (textureOrbAztlandRun == null && textureOrbAztlandWalk != null)
+            {
+                textureOrbAztlandRun = textureOrbAztlandWalk;
+            }
             if (textureOrbRun != null && textureOrbWalk == null)
             {
                 textureOrbWalk = textureOrbRun;
@@ -191,7 +219,7 @@ namespace TextureReplacement.Scripts
         }
 
 
-        public void ReplaceFloaty(bool isFlatLand, bool isLowRes)
+        public void ReplaceFloaty(bool isFlatLand, bool isLowRes,bool isAztland)
         {
 
             GameObject orb = GameObject.FindGameObjectWithTag("Floaty");
@@ -218,16 +246,46 @@ namespace TextureReplacement.Scripts
 
 
                             OrbBehaviour orbBehaviour = orb.AddComponent<OrbBehaviour>();
-                            orbBehaviour.Duration = (float) floaty.durationFlatland;
+                            orbBehaviour.Duration = (float)floaty.durationFlatland;
                             orbBehaviour.SetFollow(GameObject.FindGameObjectWithTag("Player").transform);
                             orbBehaviour.SetFloating(!floaty.isGroundFlatland, isFlatLand, isLowRes);
                             orbBehaviour.SetSprites(textureOrbFlatLandIdle, 0);
-                            orbBehaviour.SetSprites( textureOrbFlatLandRun , 2);
+                            orbBehaviour.SetSprites(textureOrbFlatLandRun, 2);
                             orbBehaviour.SetSprites(textureOrbFlatLandWalk, 1);
 
                             //orbBehaviour.MaxSpeed = followPlayer.MaxSpeed;
                             //orbBehaviour.MinSpeed = followPlayer.MinSpeed;
                             //orbBehaviour.KeepDistance = followPlayer.KeepDistance;
+                        }
+
+                    }
+
+
+
+                }
+                else if (isAztland)
+                {
+                    SpriteAnimator Animatororb = orb.GetComponent<SpriteAnimator>();
+                    FollowPlayer followPlayer = orb.GetComponent<FollowPlayer>();
+
+                    if (Animatororb != null && followPlayer != null && followPlayer.enabled)
+                    {
+                        bool hasOrb = ((isAztland ? textureOrbAztlandIdle : textureOrbIdle) != null);
+                        if (hasOrb)
+                        {
+                            Animatororb.enabled = false;
+                            followPlayer.enabled = false;
+
+                            //  Physics2D.lay
+
+
+                            OrbBehaviour orbBehaviour = orb.AddComponent<OrbBehaviour>();
+                            orbBehaviour.Duration = (float)floaty.durationFlatland;
+                            orbBehaviour.SetFollow(GameObject.FindGameObjectWithTag("Player").transform);
+                            orbBehaviour.SetFloating(!floaty.isGroundFlatland, isAztland, isLowRes);
+                            orbBehaviour.SetSprites(textureOrbAztlandIdle, 0);
+                            orbBehaviour.SetSprites(textureOrbAztlandRun, 2);
+                            orbBehaviour.SetSprites(textureOrbAztlandWalk, 1);
                         }
 
                     }
@@ -254,7 +312,7 @@ namespace TextureReplacement.Scripts
                             orbBehaviour.SetFloating(!floaty.isGround, isFlatLand, isLowRes);
                             orbBehaviour.SetSprites(textureOrbIdle, 0);
                             orbBehaviour.SetSprites(textureOrbWalk, 1);
-                            orbBehaviour.SetSprites( textureOrbRun, 2);
+                            orbBehaviour.SetSprites(textureOrbRun, 2);
                             orbBehaviour.SetSprites(textureOrbShadowIdle, 3);
                             orbBehaviour.SetSprites(textureOrbShadowWalk, 4);
                             orbBehaviour.SetSprites(textureOrbShadowRun, 5);
