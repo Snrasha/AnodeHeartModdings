@@ -20,6 +20,9 @@ namespace Impossible.ModMenu
         private string pathFolderConfig = "/../BepInEx/plugins/ImpossibleConfig";
         private string configname = "/Config.json";
         public OptionEnable optionEnable;
+        public OptionTPLimit optionTPLimit;
+
+        
 
         public ImpossibleLayoutFlag impossibleLayoutFlag;
 
@@ -30,7 +33,9 @@ namespace Impossible.ModMenu
             pathConfig = Application.dataPath + pathFolderConfig;
 
             LoadOptions();
-            UniEventBus.AddTypesToEventBus("Impossible", new Type[] { typeof(OptionEnable) });
+            UniEventBus.AddTypesToEventBus("Impossible", new Type[] { typeof(OptionEnable), typeof(OptionTPLimit) });
+
+            
 
         }
 
@@ -84,7 +89,8 @@ namespace Impossible.ModMenu
                 GameObject layout=ModMenuGUI.AddLayout("ImpossibleLayout");
 
                 ModMenuGUI.CreateText("TextImpossibleTitle", ImpossibleLang.Impossible_title_plugin, ModMenuGUI.overlaytitle, layout);
-                optionEnable = ModMenuGUI.CreateButton(typeof(OptionEnable), "ImpossibleBtn", "", layout).GetComponent<OptionEnable>();
+                optionEnable = ModMenuGUI.CreateButton(typeof(OptionEnable), "ImpossibleBtn", ImpossibleLang.Impossible_option1_plugin, layout).GetComponent<OptionEnable>();
+                optionTPLimit = ModMenuGUI.CreateButton(typeof(OptionTPLimit), "ImpossibleBtn2", ImpossibleLang.Impossible_option2_plugin, layout).GetComponent<OptionTPLimit>();
 
 
                 //optionTamas1.enabled = true;
@@ -138,7 +144,9 @@ namespace Impossible.ModMenu
             else
             {
                 config = new Config();
-                config.enabled = 0;
+                config.tech_enabled = 1;
+                config.tp_limit = 0;
+
             }
         }
         public void SaveConfigFile()
@@ -170,6 +178,11 @@ namespace Impossible.ModMenu
             {
                 optionEnable.getStartingOption();
             }
+            if (optionTPLimit != null)
+            {
+                optionTPLimit.getStartingOption();
+            }
+
         }
     }
 

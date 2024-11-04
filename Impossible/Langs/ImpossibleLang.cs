@@ -11,6 +11,8 @@ namespace Impossible.Langs
         public static string Impossible_disable_plugin = "Impossible_disable_plugin";
 
         public static string Impossible_title_plugin = "Impossible_title_plugin";
+        public static string Impossible_option1_plugin = "Impossible_option1_plugin";
+        public static string Impossible_option2_plugin = "Impossible_option2_plugin";
 
 
 
@@ -30,6 +32,21 @@ namespace Impossible.Langs
                 { Language.French, "Désactive" }
             };
             Add(Impossible_disable_plugin, dict);
+
+            dict = new Dictionary<Language, string>
+            {
+                { Language.English, "Stun" },
+                { Language.French, "Etourdi" }
+            };
+            Add(Impossible_option1_plugin, dict);
+
+            dict = new Dictionary<Language, string>
+            {
+                { Language.English, "TP Limit" },
+                { Language.French, "TP Limité" }
+            };
+            Add(Impossible_option2_plugin, dict);
+
             dict = new Dictionary<Language, string>
             {
                 { Language.English, "Impossible Plugin" },

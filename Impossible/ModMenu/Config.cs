@@ -9,6 +9,7 @@ namespace Followers.ModMenu
     [Serializable]
     public class Config
     {
-        public int enabled;
+        public int tech_enabled;
+        public int tp_limit;
     }
 }

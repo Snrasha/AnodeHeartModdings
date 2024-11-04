@@ -6,7 +6,7 @@
     <TargetFramework>net46</TargetFramework>
     <AssemblyName>Impossible</AssemblyName>
     <Description>Let full stun your Tamas</Description>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

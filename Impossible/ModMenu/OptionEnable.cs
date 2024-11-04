@@ -22,7 +22,7 @@ namespace Followers.ModMenu
 
         public override int getStartingOption()
         {
-            if (Plugin.ImpossibleSubMenuGUI.config.enabled==0)
+            if (Plugin.ImpossibleSubMenuGUI.config.tech_enabled == 0)
             {
                 return 0;
             }
@@ -33,7 +33,7 @@ namespace Followers.ModMenu
 
         public override void selectOption(int option)
         {
-            Plugin.ImpossibleSubMenuGUI.config.enabled = option;
+            Plugin.ImpossibleSubMenuGUI.config.tech_enabled = option;
 
         }
     }
