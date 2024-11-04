@@ -187,8 +187,8 @@ namespace Universal.ModMenu
                 }
 
 
-
-                Transform Gamemodebutton = Rows.transform.GetChild(1);
+                
+                Transform Gamemodebutton = Rows.transform.GetChild(Rows.transform.childCount-1);
                 RectTransform Gamemodebuttonrect = Gamemodebutton.GetComponent<RectTransform>();
 
                 GameObject clone = UnityEngine.Object.Instantiate(Gamemodebutton.gameObject);
@@ -204,7 +204,7 @@ namespace Universal.ModMenu
                 Button button = clone.GetComponent<Button>();
                // UnityEngine.Object.Destroy(button);
                 button.onClick = new Button.ButtonClickedEvent();
-                button.onClick.AddListener(delegate { optionsController.Load(2); });
+                button.onClick.AddListener(delegate { optionsController.Load(3); });
 
                 GameObject clonechild = clone.transform.GetChild(0).gameObject;
 

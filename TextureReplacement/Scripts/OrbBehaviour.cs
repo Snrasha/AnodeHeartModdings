@@ -110,7 +110,7 @@ namespace TextureReplacement.Scripts
                     capsuleCollider2D.size = capsuleCollider2D2Dfollow.size+new Vector2(0,0.3f);
                   //  capsuleCollider2D.density = capsuleCollider2D2Dfollow.density;
                     capsuleCollider2D.offset = capsuleCollider2D2Dfollow.offset;
-
+                    capsuleCollider2D.enabled = false;
 
                     //circleCollider2D.friction = 0.4f;
 
@@ -193,6 +193,7 @@ namespace TextureReplacement.Scripts
                     // .angularVelocity = rigidbody2Dfollow.angularVelocity;
                     rigidbody2D.gravityScale = rigidbody2Dfollow.gravityScale;
                     rigidbody2D.sleepMode = rigidbody2Dfollow.sleepMode;
+                    circleCollider2D.enabled = false;
 
                     //  rigidbody2D
 

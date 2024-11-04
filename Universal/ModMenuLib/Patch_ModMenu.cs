@@ -27,16 +27,18 @@ namespace Universal.ModMenuLib
 
 
             }
-            ModMenuGUI.ModMenu.SetActive(page == 2);
+            ModMenuGUI.ModMenu.SetActive(page == 3);
 
-            if (page == 2 && ___page != 2)
+            if (page == 3 && ___page != 3)
             {
                 ___page = page;
                 ___OptionButtons = ModMenuGUI.ModMenu.GetComponentsInChildren<SettingsOption>();
-                __instance.SettingsRowButtonOverlay.SetActive(page == 1);
-                __instance.GameModesRowButtonOverlay.SetActive(page == 0);
                 __instance.SettingsOptionsContainer.SetActive(page == 0);
+                __instance.GameplayOptionsContainer.SetActive(page == 2);
 
+                __instance.SettingsRowButtonOverlay.SetActive(page != 0);
+                __instance.GameModesRowButtonOverlay.SetActive(page != 1);
+                __instance.GameplayRowButtonOverlay.SetActive(page != 2);
 
                 bool flag = BuildOptions.IsDemo && __instance.GameModesUnavailableTab != null;
                 __instance.GameModesUnavailableTab.SetActive(flag && page == 1);

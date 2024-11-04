@@ -191,15 +191,17 @@ namespace TextureReplacement
                         }
                         if ("Walk".Equals(end))
                         {
+
                             SpritesOverworldsWalk.Add("Monsters/Overworlds/" + merge + "_Walk", CreateTextureFromFile(file, merge));
                         }
                         if ("FrontsGlitch".Equals(end))
                         {
-                            SpritesFrontsGlitch.Add("Monsters/FrontsGlitch/" + merge, CreateSpriteFromFile(file));
+                            AddWithCheck(SpritesFrontsGlitch, "Monsters/FrontsGlitch/" + merge, CreateSpriteFromFile(file));
+
                         }
                         if ("Grid".Equals(end))
                         {
-                            SpritesGrid.Add("Monsters/Grid/" + merge, CreateSpriteFromFile(file));
+                            AddWithCheck(SpritesGrid, "Monsters/Grid/" + merge, CreateSpriteFromFile(file));
                         }
                         //if ("CharacterIcon".Equals(end))
                         //{
@@ -207,6 +209,20 @@ namespace TextureReplacement
                         //}
                     }
                 }
+            }
+        }
+        void AddWithCheck(Dictionary<string,Sprite> dic,  string key, Sprite value)
+        {
+            if(!dic.ContainsKey(key))
+            {
+                dic.Add(key, value);
+            }
+        }
+        void AddWithCheck(Dictionary<string, Texture2D> dic, string key, Texture2D value)
+        {
+            if (!dic.ContainsKey(key))
+            {
+                dic.Add(key, value);
             }
         }
         void FloatyCase(string path)
@@ -250,23 +266,17 @@ namespace TextureReplacement
                 switch (filename)
                 {
                     case "Player":
-                        SpritesCharacterIcons.Add("Characters/Icons/" + filename, CreateSpriteFromFile(file));
-                        break;
                     case "Player_Blink":
-                        SpritesCharacterIcons.Add("Characters/Icons/" + filename, CreateSpriteFromFile(file));
-                        break;
                     case "Player_Cry":
-                        SpritesCharacterIcons.Add("Characters/Icons/" + filename, CreateSpriteFromFile(file));
-                        break;
                     case "Player_XD":
-                        SpritesCharacterIcons.Add("Characters/Icons/" + filename, CreateSpriteFromFile(file));
+                        AddWithCheck(SpritesCharacterIcons, "Characters/Icons/" + filename, CreateSpriteFromFile(file));
                         break;
                     case "PlayerCursor":
                     case "PlayerIcon":
-                        SpritesCharacterIcons.Add(filename, CreateSpriteFromFile(file));
+                        AddWithCheck(SpritesCharacterIcons, filename, CreateSpriteFromFile(file));
                         break;
                     case "PlayerOnAirboat":
-                        SpritesGrid.Add("PlayerOnAirboat", CreateSpriteFromFile(file));
+                        AddWithCheck(SpritesGrid, "PlayerOnAirboat", CreateSpriteFromFile(file));
                         break;
                     case "Player_Walk":
                     case "Player_Idle":
@@ -289,7 +299,7 @@ namespace TextureReplacement
                     case "Player_Lowres_Run":
                     case "Player_Scooter":
                     case "Player_Scooter_Idle":
-                        SpritesAnimationPlayer.Add(filename, CreateTextureFromFile(file, filename));
+                        AddWithCheck(SpritesAnimationPlayer,  filename, CreateTextureFromFile(file, filename));
                         break;
                     case "Player_Wake":
                     case "Player_Rise":
@@ -297,7 +307,6 @@ namespace TextureReplacement
                             SpritesAnimationPlayer.Add("Player_Rise", CreateTextureFromFile(file, "Player_Rise"));
                             SpritesAnimationPlayer.Add("Player_Wake", CreateTextureFromFile(file, "Player_Wake"));
                         }
-
                         break;
 
 
