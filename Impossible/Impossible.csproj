@@ -5,7 +5,7 @@
   <PropertyGroup>
     <TargetFramework>net46</TargetFramework>
     <AssemblyName>Impossible</AssemblyName>
-    <Description>Let full stun your Tamas</Description>
+    <Description>Let add impossible options to play</Description>
     <Version>1.0.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
