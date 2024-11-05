@@ -12,6 +12,12 @@ https://github.com/BepInEx/BepInEx/releases
 - Extract the contents into the game root.
 - Launch the game one time.
 
+https://github.com/sinai-dev/BepInExConfigManager/releases/
+- Download BepInExConfigManager.Mono.zip
+- Put the plugins/BepInExConfigManager.{VERSION}.dll and the UniverseLib.{VERSION}.dll files in your BepInEx/plugins/ folder.
+- Put the patchers/BepInExConfigManager.{VERSION}.Patcher.dll file in your BepInEx/patchers/ folder.
+- They are used for Mod Options GUI. Pretty usefull.
+
 # Install mod:
 - Download the .dll (ALWAYS FROM THE OFFICIAL SOURCE, here, always from the official discord of the game).
 - On this case: https://github.com/Snrasha/AnodeHeartModdings/releases/
@@ -36,7 +42,15 @@ Let you quick save and quick load with f5 and f9. F4 let you open the save menu.
 # Followers
 Let you have tamas following you.
 
+# Impossible
+Harder challenges
+
+# Randomizer
+Self-explanatory
+
 # Modders:
 Use the publicizer for get a Assembly-CSharp-Publicized.dll from Assembly-CSharp.dll
 With https://github.com/helightdev/UnityPublicizer
 Let you have every private class, method be public. Will not affect the compile and you do not need to add the new one on the game.
+
+Then use Asset Ripper for extract files.

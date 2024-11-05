@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Followers.ModMenu
+namespace Randomizer.Config.Enums
 {
-    [Serializable]
-    public class Config
+    public enum Spawn_enums
     {
-        public int tech_enabled;
-        public int tp_limit;
+        Disabled,
+        Limited,
+        Wild
     }
 }

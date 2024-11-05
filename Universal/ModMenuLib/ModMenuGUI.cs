@@ -153,6 +153,10 @@ namespace Universal.ModMenu
            // Debug.Log(childMod + " settings" + settings + " Rows" + Rows);
             return childMod == null && Rows != null;
         }
+        public static bool NotNeedToCreateModMenu()
+        {
+            return subModMenus == null;
+        }
 
 
         public static void __CreateModMenu(OptionsController optionsController2)

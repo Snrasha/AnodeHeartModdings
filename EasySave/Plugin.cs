@@ -7,10 +7,8 @@ using HarmonyLib;
 using System.Collections;
 using Universal.IconLib;
 using Universal;
-using Universal.ModMenu;
-using EasySave.ModMenu;
-using EasySave.Langs;
-
+using Universal.TexturesLib;
+using EasySave.Config;
 namespace EasySave
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
@@ -24,25 +22,26 @@ namespace EasySave
         private bool currentlySaving = false;
         public static int slotSave = -100;
 
-        private EasySaveSubMenuGUI easySaveSubMenuGUI = new EasySaveSubMenuGUI();
+        private EasySaveConfigManager easySaveConfigManager;
 
-        private EasySaveLang EasySaveLang;
+      //  private EasySaveLang EasySaveLang;
 
         
 
         private void Awake()
         {
             harmony.PatchAll();
-            EasySaveLang = new EasySaveLang();
-            Sprite ModIcon = CreateSprite("Icon.png");
+         //   EasySaveLang = new EasySaveLang();
+            Sprite ModIcon = TexturesLib.CreateSprite("EasySave.Assets.", "Icon.png");
             IconGUI.AddIcon(new Icon("EasySave", "EasySave", ModIcon));
 
             // Plugin startup logic
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
-            easySaveSubMenuGUI = new EasySaveSubMenuGUI();
+            // easySaveSubMenuGUI = new EasySaveSubMenuGUI();
 
-            ModMenuGUI.AddSubMenu("EasySave", easySaveSubMenuGUI);
-
+            //  ModMenuGUI.AddSubMenu("EasySave", easySaveSubMenuGUI);
+            easySaveConfigManager = new EasySaveConfigManager();
+            easySaveConfigManager.Init(Config);
         }
 
         public bool CheckIfCanSave()
@@ -81,7 +80,7 @@ namespace EasySave
         {
 
             if (!currentlyLoading && !currentlySaving) {
-                if (Input.GetKey(KeyCode.F4))
+                if (Input.GetKey(easySaveConfigManager.Save_Menu_Toggle.Value))
                 {
                     if (!CheckIfCanSave())
                     {
@@ -93,7 +92,7 @@ namespace EasySave
                     //QuickSave
                     StartCoroutine(ShowSavingMenu());
                 }
-                if (Input.GetKey(KeyCode.F5)) {
+                if (Input.GetKey(easySaveConfigManager.Fast_Save_Save.Value)) {
                     //   GameState.Instance().Data.
                     if (!CheckIfCanSave())
                     {
@@ -108,8 +107,13 @@ namespace EasySave
 
                     StartCoroutine(QuickSaveGame(slotSave));
                 }
-                if (Input.GetKey(KeyCode.F9))
+                if (Input.GetKey(easySaveConfigManager.Fast_Save_Load.Value))
                 {
+                    // also for load
+                    if (!CheckIfCanSave())
+                    {
+                        return;
+                    }
                     Debug.Log("F9 input");
                     currentlyLoading = true;
                     PopupInfo.Call("Quick Load");
@@ -125,20 +129,8 @@ namespace EasySave
             MainMenuHUD mainMenuHUD = UnityEngine.Object.FindObjectOfType<MainMenuHUD>();
             if (mainMenuHUD != null)
             {
-          //      Debug.Log(mainMenuHUD);
-             //   FreezeEvent.Set(freeze: true);
-                //  mainMenuHUD.Group.alpha = 1f;
-                //  mainMenuHUD.Group.blocksRaycasts = true;
-
-                
-
-               // SaveGameScreen saveGameScreen = UnityEngine.Object.Instantiate(mainMenuHUD.SaveGameScreenPrefab, UnityEngine.Object.FindObjectOfType<Canvas>().transform);
                 SaveGameScreen saveGameScreen = UnityEngine.Object.Instantiate(mainMenuHUD.SaveGameScreenPrefab, mainMenuHUD.transform.parent.parent.transform);
-
-             //   Debug.Log(saveGameScreen);
-
                 yield return saveGameScreen.Load("QuickSave", saving: true);
-              //  FreezeEvent.Set(freeze: false);
             }
         }
 
@@ -198,34 +190,5 @@ namespace EasySave
         }
 
 
-            public static Sprite CreateSprite(string path)
-        {
-
-            Texture2D tex = new Texture2D(1, 1);
-            try
-            {
-                var assembly = Assembly.GetExecutingAssembly();
-                using (Stream stream = assembly.GetManifestResourceStream("EasySave.Assets." + path))
-                {
-                    byte[] bytes = new byte[stream.Length];
-
-                    stream.Read(bytes, 0, bytes.Length);
-                    tex.filterMode = FilterMode.Point;  // Thought maybe this would help 
-                    tex.LoadImage(bytes);
-                }
-            }
-            catch (Exception e)
-            {
-            }
-
-            tex.filterMode = FilterMode.Point;
-            tex.anisoLevel = 0;
-            tex.wrapMode = TextureWrapMode.Clamp;
-
-            tex.Apply();
-            Vector2 standardPivot = new Vector2(tex.width / 2f, tex.height / 2f);
-            Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), standardPivot, 16);
-            return sprite;
-        }
     }
 }

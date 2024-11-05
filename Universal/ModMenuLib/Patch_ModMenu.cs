@@ -14,6 +14,10 @@ namespace Universal.ModMenuLib
         [HarmonyPrefix]
         static bool Prefix(OptionsController __instance, int page, ref int ___page, ref SettingsOption[] ___OptionButtons, ref int ___selectedOption, ref bool ___focus)
         {
+            if (ModMenuGUI.NotNeedToCreateModMenu())
+            {
+                return true;
+            }
 
             if (page == 0)
             {

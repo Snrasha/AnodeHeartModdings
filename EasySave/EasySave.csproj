@@ -6,7 +6,7 @@
     <TargetFramework>net46</TargetFramework>
     <AssemblyName>EasySave</AssemblyName>
     <Description>Save with F4, or quicksave/load with f5/f9</Description>
-    <Version>1.1.2</Version>
+    <Version>1.1.3</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

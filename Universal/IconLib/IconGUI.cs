@@ -28,6 +28,10 @@ namespace Universal.IconLib
         {
             int shift = 0;
             bool hasicon;
+            if (icons == null)
+            {
+                icons = new Dictionary<string, Icon>();
+            }
             foreach (Icon icon in icons.Values)
             {
                 hasicon = false;
