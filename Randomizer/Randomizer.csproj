@@ -6,7 +6,7 @@
     <TargetFramework>net46</TargetFramework>
     <AssemblyName>Randomizer</AssemblyName>
     <Description>Let randomize</Description>
-    <Version>1.0.2</Version>
+    <Version>1.0.4</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -42,6 +42,9 @@
       <HintPath>..\Universal\bin\Debug\net46\_Universal.dll</HintPath>
       <Private>False</Private>
     </Reference>
+  <!--  <Reference Include="Assembly-CSharp">-->
+    <!--  <HintPath>..\..\Delivery\BepInExConfigManager.Mono.dll</HintPath>-->
+   <!-- </Reference>-->
 
   </ItemGroup>
   <ItemGroup>

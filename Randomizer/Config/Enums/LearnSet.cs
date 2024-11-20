@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Randomizer.Config.Enums
 {
-    public enum Passive_enums
+    public enum LearnSet
     {
         Disabled,
-        Limited,
-        Wild
+        Balanced,
+        Wild,
+        WildCrazy
     }
 }

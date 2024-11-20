@@ -1,0 +1,21 @@
+- Rajout du NPCItem, pour la randomization.  <--- pour les objets au sol
+Ground item randomization (need to find key item to ban)
+//Enemi tama team randomization.
+//Tama drops randomization.
+?? Item stats randomization ??
+
+
+
+17/11/2024:
+- les données de randomisation, lié à la sauvegarde.
+- Ajouter une option de randomization, pour utiliser une seed spécifique.
+- Rajout du fishing, digging randomization
+- Rajout du shop.
+- Simplification du code, lié au seed.
+- Rajout du tech randomization.
+
+19/11/2024:
+- Ajout du random drops.
+- Ajout du random trainers.
+
+

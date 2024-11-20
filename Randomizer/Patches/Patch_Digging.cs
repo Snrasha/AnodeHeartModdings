@@ -6,18 +6,18 @@ using Randomizer.Scripts;
 namespace Randomizer.Patches
 {
 
-    public class Patch_EnemySpawner
+    public class Patch_Digging
     {
 
 
 
-        [HarmonyPatch(typeof(EnemySpawner), nameof(EnemySpawner.spawn))]
-        static class Patch_EnemySpawner_spawn
+        [HarmonyPatch(typeof(ShovelingArea), nameof(ShovelingArea.OnTriggerEnter2D))]
+        static class Patch_ShovelingArea_OnTriggerEnter2D
         {
             [HarmonyPrefix]
-            public static void Prefix(EnemySpawner __instance)
+            public static void Prefix(ShovelingArea __instance, Collider2D col)
             {
-                if (Plugin.configManager.Rand_Spawn_Dropdown.Value!=Config.Enums.Encounters.Disabled && Plugin.configManager.Randomizer_toggle.Value)
+                if (Plugin.configManager.Rand_Digging1_DropDown.Value && Plugin.configManager.Randomizer_toggle.Value)
                 {
                     if (__instance.GetComponent<RSpawner>() != null)
                     {
@@ -25,9 +25,14 @@ namespace Randomizer.Patches
                     }
                     else
                     {
-                        __instance.SpeciesId = Plugin.randomizerSpawn.species[(int)__instance.SpeciesId.ToEnum<Species>()].ToString();
+                    
+
                         __instance.gameObject.AddComponent<RSpawner>();
+                      
+                        Plugin.randomizerDigging.Randomize(__instance);
+
                     }
+
                 }
             }
 

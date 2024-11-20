@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Randomizer.Config.Enums
 {
-    public enum Stats_enums
+    public enum PassiveTama
     {
         Disabled,
-        Balanced,
+        Limited,
         Wild
     }
 }

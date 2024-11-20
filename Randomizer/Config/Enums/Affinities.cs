@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Randomizer.Config.Enums
 {
-    public enum Spawn_enums
+    public enum Affinities
     {
         Disabled,
-        Limited,
+        Balanced,
         Wild
     }
 }
