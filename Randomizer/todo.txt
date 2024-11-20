@@ -1,5 +1,5 @@
-- Rajout du NPCItem, pour la randomization.  <--- pour les objets au sol
-Ground item randomization (need to find key item to ban)
+//- Rajout du NPCItem, pour la randomization.  <--- pour les objets au sol
+//Ground item randomization (need to find key item to ban)
 //Enemi tama team randomization.
 //Tama drops randomization.
 ?? Item stats randomization ??
@@ -18,4 +18,5 @@ Ground item randomization (need to find key item to ban)
 - Ajout du random drops.
 - Ajout du random trainers.
 
-
+20/11/2024:
+- Ajout du random ground items.
